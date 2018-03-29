@@ -1,50 +1,33 @@
-
-<div class="main_container">
-
-
-        <div class="form_container">
-            <h3 class="for_h1">Log In Here</h3>
-                <form class="form1" action="" (ngSubmit)="submitLogIn()" #logInForm="ngForm" method="post" name="SignUp">
-                    
-                                    
-                    <input [(ngModel)]="formData.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel" type="email" name="email" placeholder="email@example.com" minlength="10" [ngClass]="{'error':email.errors && email.touched}" required="" autofocus=""> 
-        
-                        <div *ngIf="email.errors && email.touched" class="red error"> 
-                    
-                            <div *ngIf="email.errors.required" class="for_error">This is required field.</div> 
-                    
-                            <div *ngIf="email.errors.pattern" class="for_error">Enter Valid Email ID</div>
-                    
-                        </div> 
+<div>
     
-    
-         
-    
-                
-                <input [(ngModel)]="formData.password" #pwd="ngModel" name="password" minlength="8" maxlength="32" [ngClass]="{'errors':pwd.errors && pwd.touched}"  type="password" placeholder="Password" required=""> 
-                    <div *ngIf="pwd.errors && pwd.touched" class="red error"> 
-                      <div *ngIf="pwd.errors.required" class="for_error">This is required field.</div>
-                    </div>
-                
-
-                    
+    <br /><br />
+    <div class="form">
             
-                    <div class="set_button">
-                    <button class="for_button"  type="submit" name="submit" 
-                    [disabled]="logInForm.invalid" 
-                     name="logInForm" value="SignUp">Log In</button>
-                    </div>
-    
-                    <h3 id="for_link_page"><a href="#">Sign Up</a> | <a href="#">Lost Your Password</a></h3>
-    
-                </form>
-                
-                
-                
-                
+        <form>
             
-                
-    </div>
+            <div class="imgcontainer">
+                <img src="img_avatar2.png" alt="Avatar" class="avatar">
+              </div>
+            
+              <div class="container">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+            
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                    
+                <button type="submit">Login</button>
+                <label>
+                  <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+              </div>
+            
+              <div class="container" style="background-color:#f1f1f1">
+                <button type="button" class="cancelbtn">Cancel</button>
+                <span class="psw">Forgot <a href="#">password?</a></span>
+              </div>
+        </form>       
+    </div>                  
     
-    </div>
     
+</div>
