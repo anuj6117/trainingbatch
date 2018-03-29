@@ -28,7 +28,7 @@ export class MainService  {
               "email": fromData.email,
               "password":fromData.password,
               "country":fromData.country,
-              "mobileNo" :fromData.mobileNumber
+              "phoneNumber" :fromData.mobileNumber
       }
          return this.http.post('http://192.168.9.180:8080/signup', data);
     }
