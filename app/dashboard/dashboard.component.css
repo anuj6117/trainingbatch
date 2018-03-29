@@ -1,34 +1,38 @@
-
-
-.main_div{
-    width: 100%;
-    position: relative;
-    
-}
-
-
-.container2{
-    width: 40%;
-    height: 500px;
-    margin-left: 4%;
-    position: absolute;
-    
-}
-
-.live_price{
-    width: 35%;
-    max-height: 540px;
-    position: absolute;
-    margin-left: 60% ;
-    padding: 0;
-    overflow: hidden;
-    box-shadow: 0 3px 1px 0 rgba(0, 0, 0, 0.2), 0 0px 0px 0 rgba(0, 0, 0, 0.19);
-    
-}
-.tab-content{
-    border:  1px solid #DDDDDD;
-    border-top: 0px;
-    border-bottom: 1px solid #DDDDDD;
-    overflow: hidden;
-    
-}
+@media (min-width: 768px) {
+    .navbar-collapse {
+      height: auto;
+      border-top: 0;
+      box-shadow: none;
+      max-height: none;
+      padding-left:0;
+      padding-right:0;
+    }
+    .navbar-collapse.collapse {
+      display: block !important;
+      width: auto !important;
+      padding-bottom: 0;
+      overflow: visible !important;
+    }
+    .navbar-collapse.in {
+      overflow-x: visible;
+    }
+  
+  .navbar
+  {
+      max-width:300px;
+      margin-right: 0;
+      margin-left: 0;
+  }	
+  
+  .navbar-nav,
+  .navbar-nav > li,
+  .navbar-left,
+  .navbar-right,
+  .navbar-header
+  {float:none !important;}
+  
+  .navbar-right .dropdown-menu {left:0;right:auto;}
+  .navbar-collapse .navbar-nav.navbar-right:last-child {
+      margin-right: 0;
+  }
+  }
