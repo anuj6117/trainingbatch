@@ -1,14 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 @Component({
-  selector: 'app-addcoin',
-  templateUrl: './addcoin.component.html',
-  styleUrls: ['./addcoin.component.css']
+  selector: 'app-viewcoin',
+  templateUrl: './viewcoin.component.html',
+  styleUrls: ['./viewcoin.component.css']
 })
+export class ViewcoinComponent implements OnInit {
 
 
 
 
-export class AddcoinComponent implements OnInit {
 
    public isShowMenu: string = "";
   constructor() { }

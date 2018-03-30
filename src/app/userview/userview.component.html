@@ -10,12 +10,13 @@
     </div>
     </nav>
 
-<div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px;position: absolute !important;">
+<div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px;position: absolute !important;background-color:#007b5e !important;">
   <a href="#" class="w3-bar-item w3-button">Payment</a>
   <button class="w3-button w3-block w3-left-align" (click)="myAccFunc('coinManagement')">
         Coin Management <i class="fa fa-caret-down"></i>
         </button>
-        <div id="demoAcc" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'coinManagement'" >
+        <div id="demoAcc" class="w3-hide w3-white w3-card" style="
+        background-color: #007b5e !important;" [class.show-menu]="isShowMenu == 'coinManagement'" >
       
           <a href="#" class="w3-bar-item w3-button">View Currency</a>
         </div>
@@ -24,29 +25,36 @@
   <button class="w3-button w3-block w3-left-align" (click)="myAccFunc('userManagement')">
   User Management <i class="fa fa-caret-down"></i>
   </button>
-  <div id="demoAcc" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'userManagement'">
+  <div id="demoAcc" style="
+  background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'userManagement'">
+
 
     <a href="#" class="w3-bar-item w3-button">View User</a>
   </div>
-<button class="w3-button w3-block w3-left-align" (click)="myAccFunc()">
-  Transaction Management<i class="fa fa-caret-down"></i>
-  </button>
+
+  <button class="w3-button w3-block w3-left-align" (click)="myAccFunc('transactionManagement')">
+    Transaction Management <i class="fa fa-caret-down"></i>
+    </button>
+    <div id="demoAcc" style="
+    background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'transactionManagement'">
+  
+  
+      <a href="#" class="w3-bar-item w3-button">View Transaction</a>
+    </div>
+ 
 
 
-<div id="demoAcc" class="w3-hide w3-white w3-card">
 
-  <a href="#" class="w3-bar-item w3-button">Transaction</a>
-</div>
 <button class="w3-button w3-block w3-left-align" (click)="myAccFunc('trading')">
         Trading <i class="fa fa-caret-down"></i>
         </button>
-        <div id="demoAcc" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'trading'">
+        <div id="demoAcc" style="
+        background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'trading'">
       
           <a href="#" class="w3-bar-item w3-button">Orders</a>
         </div>
   
  
-  
 </div>
 
 <div class="w3-container" style="margin-left:217px">
@@ -70,7 +78,7 @@
             <select ng-model="statusFilter" class="form-control angularSelect ng-pristine ng-valid" ng-change="currentPage = 1;getAllUsers()">
                 <option value="">All</option>
                 <option value="ACTIVE">Active</option>
-                <option value="DISABLED">Disabled</option>
+                <option value="INACTIVE">Inactive</option>
             </select>
         </div>
         <div class="col-md-2 pull-right">
@@ -95,14 +103,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>User 1</td>
-               
-                  <td>Cfu Admin</td>
-                  <!--  <td>#@141&amp;^/$</td> -->
-                  <td>16-2-2017 10:10</td>
-                  <td>16-2-2017 10:10</td>
-                  <td><a href="edit_user.html"> Edit</a> | <a href="javascript:void(0)" class="action-act red">Inactive </a> | <a href="#">Delete</a></td>
+                <tr *ngFor="let user of userDetail">
+                  <td>{{user.userName}}</td>
+                  <td>{{user.roles[0].roleTypes}}</td>
+                  <td>{{user.createdOn | date}}</td>
+                  <td>{{user.userName}}</td>
+                  <td><a href="javascript:void(0)" class="action-act red">Inactive </a> | <a href="javascript:void(0)" class="action-act red">Message </a></td>
                 </tr>
                 <tr class="alt">
                   <td>User 2</td>
@@ -111,24 +117,25 @@
                   <!--  <td>#@141&amp;^/$</td> -->
                   <td>16-2-2017 10:10</td>
                   <td>16-2-2017 10:10</td>
-                  <td><a href="edit_user.html">Edit</a> | <a href="javascript:void(0)" class="action-act red">Active  </a> | <a href="#">Delete</a></td>
+                  <td><a href="javascript:void(0)" class="action-act red">Active</a> | <a href="javascript:void(0)" class="action-act red" data-toggle="modal" data-target="#myModal">Message </a></td>
                 </tr>
-                <tr class="alt">
+                <tr>
                   <td>User 3</td>
                
-                  <td>Netops Admin</td>
+                  <td>Cfu Admin</td>
                   <!--  <td>#@141&amp;^/$</td> -->
                   <td>16-2-2017 10:10</td>
                   <td>16-2-2017 10:10</td>
-                  <td><a href="edit_user.html">Edit</a> | <a href="javascript:void(0)" class="action-act red">Active </a> | <a href="#">Delete</a></td>
+                  <td><a href="javascript:void(0)" class="action-act red">Inactive </a> | <a href="javascript:void(0)" class="action-act red">Message </a></td>
                 </tr>
                 <tr class="alt">
                   <td>User 4</td>
-                
-                  <td>Netops User</td>
+               
+                  <td>Cfu Admin</td>
+                  <!--  <td>#@141&amp;^/$</td> -->
                   <td>16-2-2017 10:10</td>
                   <td>16-2-2017 10:10</td>
-                  <td><a href="edit_user.html">Edit</a> | <a href="javascript:void(0)" class="action-act red">Active </a> | <a href="#">Delete</a></td>
+                  <td><a href="javascript:void(0)" class="action-act red">Inactive </a> | <a href="javascript:void(0)" class="action-act red">Message </a></td>
                 </tr>
               </tbody>
             </table>
@@ -159,8 +166,30 @@
                                 <a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
                             </li>
                         </ul>
+
+                        
                     </div>
                 </div>
             </div>
             </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    
+  </div>
 </div>

@@ -37,6 +37,7 @@ import { SignUpService } from './signup/signup.service';
 import { ResourceService } from './shared/resource.component';
 import { EmailComponent } from './email/email.component';
 import { AddcoinComponent } from './addcoin/addcoin.component';
+import { ViewcoinComponent } from './viewcoin/viewcoin.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { AddcoinComponent } from './addcoin/addcoin.component';
     UserdashboardComponent,
     EqualValidator,
     EmailComponent,
-    AddcoinComponent
+    AddcoinComponent,
+    ViewcoinComponent
   ],
   
   imports: [

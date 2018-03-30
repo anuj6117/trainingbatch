@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {MainService} from './../service/mainService'
 
 @Component({
   selector: 'app-userview',
@@ -7,7 +8,9 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class UserviewComponent implements OnInit {
    public isShowMenu: string = "";
-  constructor() { }
+   public userDetail: any = [];
+   
+  constructor(private mainService:MainService) { }
 
   ngOnInit() {
     !function ($) {
@@ -20,6 +23,19 @@ export class UserviewComponent implements OnInit {
   
   };
   //this.isShowMenu = "userManagement";
+  this.getViewUser();
+  }
+
+  getViewUser(){
+    this.mainService.getViewUser().subscribe(
+      response =>
+      {
+        if(response){
+    //         this.userDetail = response.data;
+        }
+      //  console.log("succes",succes);
+      //  this.toasterService.pop('success', 'Success!', "You have successfully created your account!")
+      })
   }
 
   myAccFunc(type){

@@ -1,0 +1,147 @@
+
+<nav class="navbar navbar-inverse navbar-new">
+  <div class="container">
+<div class="container-fluid">
+  <div class="navbar-header">
+    <a class="navbar-brand logo-padding" href="#"><img src="./assets/images/logo.png"/></a>
+  </div>
+ 
+</div>
+</div>
+</nav>
+
+<div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px;position: absolute !important;background-color:#007b5e !important;">
+<a href="#" class="w3-bar-item w3-button">Payment</a>
+<button class="w3-button w3-block w3-left-align" (click)="myAccFunc('coinManagement')">
+  Coin Management <i class="fa fa-caret-down"></i>
+  </button>
+  <div id="demoAcc" class="w3-hide w3-white w3-card" style="
+  background-color: #007b5e !important;" [class.show-menu]="isShowMenu == 'coinManagement'" >
+
+    <a href="#" class="w3-bar-item w3-button">View Currency</a>
+  </div>
+
+
+<button class="w3-button w3-block w3-left-align" (click)="myAccFunc('userManagement')">
+User Management <i class="fa fa-caret-down"></i>
+</button>
+<div id="demoAcc" style="
+background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'userManagement'">
+
+
+<a href="#" class="w3-bar-item w3-button">View User</a>
+</div>
+
+<button class="w3-button w3-block w3-left-align" (click)="myAccFunc('transactionManagement')">
+Transaction Management <i class="fa fa-caret-down"></i>
+</button>
+<div id="demoAcc" style="
+background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'transactionManagement'">
+
+
+<a href="#" class="w3-bar-item w3-button">View Transaction</a>
+</div>
+
+
+
+
+<button class="w3-button w3-block w3-left-align" (click)="myAccFunc('trading')">
+  Trading <i class="fa fa-caret-down"></i>
+  </button>
+  <div id="demoAcc" style="
+  background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'trading'">
+
+    <a href="#" class="w3-bar-item w3-button">Orders</a>
+  </div>
+
+
+</div>
+
+<div class="w3-container" style="margin-left:217px">
+<span><h2>People</h2><h6>  All Users</h6></span>
+
+<div class="row">
+  
+  
+  <div class="col-md-2 pull-right">
+      <!-- <span class="pull-left">Count Per Page: {{(users
+          |filter:statusFilter | filter:userFilter|
+          orderBy:predicate:!reverse | startFrom:(currentPage-1)*pageSize
+          | limitTo:pageSize).length}}</span> -->
+          <input type="Button" value="Add Currency" class="btn btn-primary btn-add-coin"/>
+  </div>
+</div>
+
+<div class="panel-body table-light broadcasts-table">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:20px;" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Coin Name</th>
+            <th>Symbol</th>
+            <!--  <th>Password</th> -->
+            <th>Initial Supply</th>
+            <th>Price</th>
+            <th width="15%">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bitcoin</td>
+         
+            <td>btc/td>
+            <!--  <td>#@141&amp;^/$</td> -->
+            <td>50</td>
+            <td>7899989</td>
+            <td><a href="javascript:void(0)" class="action-act red">Update </a> | <a href="javascript:void(0)" class="action-act red">Delete </a></td>
+          </tr>
+          <tr class="alt">
+            <td>Etherium</td>
+            <td>eth</td>
+            <!--  <td>#@141&amp;^/$</td> -->
+            <td>20</td>
+            <td>5465767</td>
+            <td><a href="javascript:void(0)" class="action-act red">Update </a> | <a href="javascript:void(0)" class="action-act red">Delete </a></td>
+          </tr>
+          <tr>
+            <td>litecoin</td>
+         
+            <td>ltc</td>
+            <!--  <td>#@141&amp;^/$</td> -->
+            <td>50</td>
+            <td>767878</td>
+            <td><a href="javascript:void(0)" class="action-act red">Update </a> | <a href="javascript:void(0)" class="action-act red">Delete </a></td>
+          </tr>
+         </tbody>
+      </table>
+      
+      <div class="table-footer clearfix">
+      <div class="DT-label">
+      <div class="dataTables_info" id="jq-datatables-example_info" role="alert" aria-live="polite" aria-relevant="all">Showing 1 to 50 of 57 entries</div>
+      </div>
+          <div class="DT-pagination">
+              <div class="dataTables_paginate paging_simple_numbers">
+                  <ul class="pagination">
+                      <li class="paginate_button previous disabled" aria-controls="jq-datatables-example" tabindex="0" id="jq-datatables-example_previous">
+                      <a href="#"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+                      
+                      <li class="paginate_button active" aria-controls="jq-datatables-example" tabindex="0"><a href="#">1</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">2</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">3</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">4</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">5</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">6</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">7</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">8</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">9</a></li>
+                      <li class="paginate_button " aria-controls="jq-datatables-example" tabindex="0"><a href="#">10</a></li>
+                      <li class="paginate_button next" aria-controls="jq-datatables-example" tabindex="0" id="jq-datatables-example_next"><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+                    
+                      <li>
+                          <a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      </div>
+</div>

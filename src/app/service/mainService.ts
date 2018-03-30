@@ -29,7 +29,7 @@ export class MainService  {
       //         "country":fromData.country,
       //         "mobileNo" :fromData.number
       // }
-         return this.http.post('http://192.168.9.180:8080/signup', signUpData);
+         return this.http.post('http://192.168.9.180:8181/signup', signUpData);
     
         }
         submitSignin(SignInData){
@@ -41,5 +41,9 @@ export class MainService  {
                   
           // }
              return this.http.post('http://192.168.9.180:8080/userlogin', SignInData);
+        }
+
+        getViewUser(){
+          return this.http.get('http://192.168.9.200:8080/getallusers');
         }
   }
