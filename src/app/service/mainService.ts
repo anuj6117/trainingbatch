@@ -24,13 +24,13 @@ export class MainService  {
     
       console.log('fromData',fromData);
       let data:any = {
-              "userName": fromData.fullName,
+              "userName": fromData.userName,
               "email": fromData.email,
               "password":fromData.password,
               "country":fromData.country,
               "phoneNumber" :fromData.mobileNumber
       }
-         return this.http.post('http://192.168.9.180:8080/signup', data);
+         return this.http.post('http://192.168.9.180:8181/signup', data);
     }
 
     submitLogIn(fromData){
@@ -42,7 +42,8 @@ export class MainService  {
               "password":fromData.password
               
       }
-         return this.http.post('http://192.168.9.180:8080/userlogin', data);
+      
+         return this.http.post('http://192.168.9.180:8181/userlogin', data);
     }
 
 

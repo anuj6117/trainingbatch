@@ -14,6 +14,12 @@ import { SettingComponent } from './setting/setting.component';
 import { BuyComponent } from './buy/buy.component';
 import { SellComponent } from './sell/sell.component';
 import {MainService} from './service/mainService';
+import {AddCoinComponent} from './add-coin/add-coin.component';
+import {UpdateCoinComponent} from './update-coin/update-coin.component';
+import {AdminSideMenuComponent} from './admin-side-menu/admin-side-menu.component';
+import {AdminNavComponent} from './admin-nav/admin-nav.component';
+
+import { importExpr } from '@angular/compiler/src/output/output_ast';
 
 
 const appRoutes: Routes = [
@@ -25,6 +31,10 @@ const appRoutes: Routes = [
    { path: 'setting', component: SettingComponent },
    { path: 'buy', component: BuyComponent },
    { path: 'sell', component: SellComponent },
+   { path: 'add-coin', component: AddCoinComponent },
+   { path: 'admin-side-menu', component: AdminSideMenuComponent},
+   { path: 'update-coin', component: UpdateCoinComponent},
+   { path: 'admin-nav', component: AdminNavComponent},
    
   { path: '',
     redirectTo: '/login',
@@ -45,6 +55,10 @@ const appRoutes: Routes = [
     SettingComponent,
     BuyComponent,
     SellComponent,
+    AddCoinComponent,
+    AdminSideMenuComponent,
+    AdminNavComponent,
+    UpdateCoinComponent,
     
   ],
   

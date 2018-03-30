@@ -1,0 +1,126 @@
+
+  .logo_serach_container{
+    width: 17%;
+  }
+  
+  logo_container{
+    width: 100%;
+    height: 80px;
+    margin-left: 0px;
+  }
+  
+  .logo{
+    width: 100%;
+    height: 80px;
+  }
+  
+  .search_container{
+    width: 100%;
+    height: 50px;
+  }
+  
+  .search_container input[type="text"]{
+    width: 80%;
+    height: 50px;
+    float: left;
+    padding: 0;
+    border: 0px;
+    text-align: center;
+  }
+  
+  .dropdown li img:nth-child(1) {
+    background: red;
+    height: 66px;
+  }
+  
+  input[type="text"]:active{
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  input:focus {
+    background-color: #eee;
+    border: none;
+  }
+  
+  .search_button{
+    width: 20%;
+    height: 50px;
+    border: 0px;
+  }
+  
+  ul{
+    list-style-type: none;
+  }
+  .dropdown {
+    width: 17%;
+    position: absolute;
+    display: inline-block;
+    background-color: #9d9d9d;
+    color: rgb(15, 15, 15);
+    text-align: center;
+  }
+  
+  .dropdown li {
+    width: 100%;
+    height: 45px;
+    border-bottom: 1px solid white;
+    line-height: 45px;
+  }
+  
+  .dropdown li a{
+  
+    font-size: 15px;
+  }
+  
+  ul li:hover{
+    background-color:  #9d9d9d;
+    color:rgb(15, 15, 15);
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #9d9d9d;
+    color:rgb(15, 15, 15);
+    width: 100%;
+    margin-left: 100%;
+    margin-top: -45px;
+    z-index: 5;
+  }
+  
+
+  
+  li:hover .dropdown-content {
+    display: block;
+    color: white;
+    background-color: #9d9d9d;
+    border-left: 1px solid white;
+  }
+  
+  ul li ul li:hover{
+    background-color: rgb(15, 15, 15) #9d9d9d;
+    color:#9d9d9d;
+  }
+  
+  
+  
+  .container{
+    z-index: 2;
+    width: 83%;
+    margin-left: 17%;
+    position: absolute;
+    border: 1px solid rgb(136, 134, 134);
+    overflow-x: scroll;
+    color: rgb(145, 143, 143);
+    
+  }
+  
+
+  
+  
+  
+  
+  
+  

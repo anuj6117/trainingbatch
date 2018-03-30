@@ -6,17 +6,17 @@
         <h3 class="for_h1">Register Here</h3>
             <form class="form1" action="" (ngSubmit)="submitSignUp()" #signUpForm="ngForm" method="get" name="SignUp">
                 
-                <input class="input_top_radius" [(ngModel)]="formData.fullName" pattern="[a-zA-Z][a-zA-Z ]+" #fullName="ngModel" type="text" name="fullName" placeholder="First Name" minlength="3" maxlength="25" [ngClass]="{'error':fullName.errors && fullName.touched}" required="" autofocus=""/>
+                <input class="input_top_radius" [(ngModel)]="formData.userName" pattern="[a-zA-Z][a-zA-Z ]+" #fullName="ngModel" type="text" name="userName" placeholder="username" minlength="3" maxlength="25" [ngClass]="{'error':userName.errors && userName.touched}" required="" autofocus=""/>
 
-                    <div *ngIf="fullName.errors && fullName.touched" class="red error"> 
+                    <div *ngIf="userName.errors && userName.touched" class="red error"> 
             
-                            <div *ngIf="fullName.errors.required" class="for_error">Full name required.</div> 
+                            <div *ngIf="userName.errors.required" class="for_error">Full name required.</div> 
                             
-                            <div *ngIf="fullName.errors.minlength" class="for_error">minimum 3 Cheracter required</div> 
+                            <div *ngIf="userName.errors.minlength" class="for_error">minimum 3 Cheracter required</div> 
 
-                            <div *ngIf="fullName.errors.maxlength" class="for_error">Maximum 25 required</div> 
+                            <div *ngIf="userName.errors.maxlength" class="for_error">Maximum 25 required</div> 
 
-                            <div *ngIf="fullName.errors.pattern" class="for_error">Only Alphabet Allowed</div>
+                            <div *ngIf="userName.errors.pattern" class="for_error">Only Alphabet Allowed</div>
                     </div>
               
 
@@ -44,13 +44,13 @@
                   <div *ngIf="pwd.errors.maxlength" class="for_error">Maximum 32 Cheracter required</div> 
                 </div>
             
-            <!-- <input [(ngModel)]="formData.Copassword" validateEqual="pwd" #Copwd="ngModel" name="Copwd" minlength="8" maxlength="32" [ngClass]="{'errors':Copwd.errors && Copwd.touched}"  type="password" placeholder="Confirm Password" required=""> 
+            <input [(ngModel)]="formData.Copassword" validateEqual="pwd" #Copwd="ngModel" name="Copwd" minlength="8" maxlength="32" [ngClass]="{'errors':Copwd.errors && Copwd.touched}"  type="password" placeholder="Confirm Password" required=""> 
                 <div *ngIf="Copwd.errors && Copwd.touched" class="red error"> 
                   <div *ngIf="Copwd.errors.required" class="for_error">Password required.</div> 
                   <div *ngIf="Copwd.errors.minlength" class="for_error">minimum 8 Cheracter required</div>
                   <div *ngIf="Copwd.errors.maxlength" class="for_error">Maximum 32 Cheracter required</div>  
                 </div>
-             -->
+            
             <input [(ngModel)]="formData.mobileNumber" pattern="[0-9]*" #mobileNumber="ngModel" type="text" name="mobileNumber" placeholder="Mobile Number" minlength="10" maxlength="10" [ngClass]="{'error':mobileNumber.errors && mobileNumber.touched}" required="" autofocus=""> 
         
                 <div *ngIf="mobileNumber.errors && mobileNumber.touched" class="red error"> 

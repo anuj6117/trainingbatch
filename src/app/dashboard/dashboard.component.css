@@ -135,13 +135,31 @@ ul li ul li:hover{
   z-index: 2;
   width: 83%;
   margin-left: 17%;
+  padding: 0px;
+  margin-top: -130px;
   position: absolute;
   border: 1px solid rgb(136, 134, 134);
   overflow-x: scroll;
   color: rgb(145, 143, 143);
-  position: fixed;
   
 }
+
+.sub_container{
+  padding: 5px;
+  
+}
+
+/*for shorting*/
+
+.container ul li{
+  width: 200px;
+  float: left;
+}
+
+
+
+
+
 table{
   border:1px solid rgb(87, 86, 86);
   width: 98%;
@@ -171,3 +189,23 @@ tr:nth-child(even){background-color: #d4d4d4;}
   color:white;
 }
 
+/*pagination*/
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination a.active {
+  background-color: #9D9D9D;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
