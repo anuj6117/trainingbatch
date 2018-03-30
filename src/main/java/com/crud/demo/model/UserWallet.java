@@ -9,15 +9,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.crud.demo.enums.wallet.WalletType;
+
+
+import com.crud.demo.enums.WalletType;
 import com.crud.demo.id.randomgenerator.RandomIDGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="UserWallet")
 public class UserWallet {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer wallet_id;
+	private Integer walletId;
 	private Integer wallet_random_id=RandomIDGenerator.randomIdGenerator().nextInt(100);
 	private float balance;
 	private float shadowBalance;
@@ -26,16 +29,17 @@ public class UserWallet {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_wallet_fk",nullable=false)
+	@JsonIgnore
 	private User user;
 	
 	
 	
 	
-	public Integer getWallet_id() {
-		return wallet_id;
+	public Integer getWalletId() {
+		return walletId;
 	}
-	public void setWallet_id(Integer wallet_id) {
-		this.wallet_id = wallet_id;
+	public void setWalletId(Integer walletId) {
+		this.walletId = walletId;
 	}
 	public Integer getWallet_random_id() {
 		return wallet_random_id;

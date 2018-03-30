@@ -7,7 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crud.demo.enums.wallet.WalletType;
+import com.crud.demo.enums.WalletType;
 import com.crud.demo.jpaRepositories.UserJpaRepository;
 import com.crud.demo.jpaRepositories.UserWalletJpaRepository;
 import com.crud.demo.model.User;
@@ -25,7 +25,7 @@ public class UserWalletService {
 	
 	public String createWallet(User user) 
 	{
-		User existingUser=userJpaRepository.findOne(user.getId());
+		User existingUser=userJpaRepository.findOne(user.getUserId());
 		
 		Set<UserWallet> setOfUserWallet=existingUser.getUserWallet();
 		String msg=null;
@@ -55,7 +55,7 @@ public class UserWalletService {
 	}
 
 	public String withdrawAmount(UserWallet userWallet) {
-UserWallet existingUserWallet=userWalletJpaRepository.findByIdAndWalletType(userWallet.getWallet_id(), userWallet.getWalletType());
+UserWallet existingUserWallet=userWalletJpaRepository.findByWalletIdAndWalletType(userWallet.getWalletId(), userWallet.getWalletType());
 		if((existingUserWallet!=null) && ( existingUserWallet.getBalance()>=userWallet.getBalance()))
 		{
 		float remainingBalance=existingUserWallet.getBalance()-userWallet.getBalance();
@@ -69,7 +69,7 @@ UserWallet existingUserWallet=userWalletJpaRepository.findByIdAndWalletType(user
 
 	}
 	public String depositAmount(UserWallet userWallet) {
-		UserWallet existingUserWallet=userWalletJpaRepository.findByIdAndWalletType(userWallet.getWallet_id(), userWallet.getWalletType());
+		UserWallet existingUserWallet=userWalletJpaRepository.findByWalletIdAndWalletType(userWallet.getWalletId(), userWallet.getWalletType());
 		System.out.println("::::::::::"+existingUserWallet);
 		if(existingUserWallet!=null)
 		{

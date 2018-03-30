@@ -14,103 +14,106 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
 @Entity
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer u_id;
+	private Integer userId;
 	private String userName;
 	private String password;
 	private String email;
 	private String phoneNumber;
-	private String status;
+	private Boolean status = false;
 	private String country;
 	private Date createdOn;
-	
-	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	private Set<UserWallet> userWallet; 
-	
-	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinTable(name="user_role",joinColumns= {@JoinColumn(name = "user_id")},inverseJoinColumns = { @JoinColumn(name = "role_id") })
-	private List<Role> roles;
-	
-	
-	//constructors
-	public User()
-	{
-      super();
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<UserWallet> userWallet;
+	// here EAGER is required because of security later may change depending on use
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "role_id") })
+	private Set<Role> roles;
+
+	public Integer getUserId() {
+		return userId;
 	}
-	
-	//copy Constructor used in spring security CustomUserDetails class
-	public User(User user) {
-		super();
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
-	
-	
-	
-	
-	
-	public Integer getId() {
-		return u_id;
-	}
-	public void setId(Integer u_id) {
-		this.u_id = u_id;
-	}
+
 	public String getUserName() {
 		return userName;
 	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
+
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	public String getStatus() {
+
+	public Boolean getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
+
 	public String getCountry() {
 		return country;
 	}
+
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
 	public Date getCreatedOn() {
 		return createdOn;
 	}
+
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-	public List<Role> getRoles() {
+
+	public Set<Role> getRoles() {
 		return roles;
 	}
-	public void setRoles(List<Role> roles) {
+
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
 	public Set<UserWallet> getUserWallet() {
 		return userWallet;
 	}
+
 	public void setUserWallet(Set<UserWallet> userWallet) {
 		this.userWallet = userWallet;
 	}
-	
-	
 
 }

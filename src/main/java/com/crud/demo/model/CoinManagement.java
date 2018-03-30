@@ -9,7 +9,7 @@ public class CoinManagement {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer c_id;
-	private String name;
+	private String  coinName;
 	private String symbol;
 	private float initialSupply;
 	private float price;
@@ -19,11 +19,11 @@ public class CoinManagement {
 	public void setC_id(Integer c_id) {
 		this.c_id = c_id;
 	}
-	public String getName() {
-		return name;
+	public String getCoinName() {
+		return coinName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setCoinName(String coinName) {
+		this.coinName = coinName;
 	}
 	public String getSymbol() {
 		return symbol;

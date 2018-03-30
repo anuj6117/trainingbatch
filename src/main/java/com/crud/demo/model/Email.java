@@ -1,12 +1,11 @@
-package com.crud.demo.model;
+/*package com.crud.demo.model;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 
 public class Email {
-	@Value("${spring.mail.username}")
-	private String from;
+	
 	private String to; 
 	private String subject;
     private String message;
@@ -19,11 +18,6 @@ public class Email {
 	public void setFrom(String from) {
 		this.from = from;
 	}
-
-	
-
-	
-
 	public String getSubject() {
 		return subject;
 	}
@@ -51,3 +45,4 @@ public class Email {
 	
 
 }
+*/

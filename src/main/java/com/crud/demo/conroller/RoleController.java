@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.demo.model.Role;
@@ -14,13 +15,16 @@ public class RoleController {
 	@Autowired
 	private RoleService roleService;
 	
-	@RequestMapping(value="/add-role",method=RequestMethod.POST)
-	public void addUser(@RequestBody Role role) {
+	@RequestMapping(value="/createrole",method=RequestMethod.POST)
+	public String createRole(@RequestBody Role role) {
 		System.out.println("controller hit");
-		/*user.getRole().forEach(role->role.setUser(user));  important */
+		return roleService.createRole(role);	
 		
-		roleService.addUserService(role);	
-		
+	}
+	@RequestMapping(value="/assignRole")
+	public void assignRole(@RequestParam Integer userId,@RequestParam String roleType)
+	{System.out.println("controller hit");
+		roleService.assignRole(userId,roleType);
 	}
 
 }

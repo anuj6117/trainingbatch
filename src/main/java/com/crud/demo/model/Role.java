@@ -8,20 +8,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import com.crud.demo.enums.RoleType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	private String roleType;
+	private Integer roleId;
+	private String roleType="user";
 	@ManyToMany(mappedBy="roles",fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<User> users;
 	/*private User user;*/
-	public Integer getId() {
-		return id;
+	public Integer getRoleId() {
+		return roleId;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
 	}
 	public String getRoleType() {
 		return roleType;

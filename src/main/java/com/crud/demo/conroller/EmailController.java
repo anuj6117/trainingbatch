@@ -1,4 +1,4 @@
-package com.crud.demo.conroller;
+/*package com.crud.demo.conroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,3 +26,4 @@ public class EmailController {
 
      }
 }
+*/

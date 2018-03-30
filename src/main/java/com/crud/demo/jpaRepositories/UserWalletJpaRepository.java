@@ -12,6 +12,6 @@ public interface UserWalletJpaRepository extends JpaRepository<UserWallet, Integ
 /*@Query("select u from UserWallet u where u.wallet_id=:id and u.walletType=:walletType")
 UserWallet findByIdAndWalletType(@Param("id") Integer id,@Param("walletType") String walletType);*/
   
-	@Query("select u from UserWallet u where u.wallet_id=:id and u.walletType=:walletType")
-	UserWallet findByIdAndWalletType(@Param("id") Integer id,@Param("walletType") String walletType);	
+	@Query("select u from UserWallet u where u.walletId=:walletId and u.walletType=:walletType")
+	UserWallet findByWalletIdAndWalletType(@Param("walletId") Integer walletId,@Param("walletType") String walletType);	
 }

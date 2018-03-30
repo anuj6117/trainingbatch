@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,20 +18,20 @@ public class CoinManagementController {
 	private CoinManagementService coinManagementService;
 	
 	
-	@RequestMapping("/add-currancy")
+	@RequestMapping(value="/addcurrancy",method=RequestMethod.POST)
 	public String addCurrancy(@RequestBody CoinManagement  coinManagement){
-		return coinManagementService.addCurruncy(coinManagement);
+		return coinManagementService.addCurreuncy(coinManagement);
 	}
 	
-	@RequestMapping("/getAll-currency")
+	@RequestMapping("/getallcurrency")
 	public List<CoinManagement> getAllCurrency() {
 		return coinManagementService.getAllCurrency();
 	}
-	@RequestMapping("/update-currency")
+	@RequestMapping(value="/updatecurrency",method=RequestMethod.POST)
 	public String updateCurrency(@RequestBody CoinManagement  coinManagement) {
 		return coinManagementService.updateCurrency(coinManagement);
 	}
-	@RequestMapping("/delete-currency")
+	@RequestMapping("/deletecurrency")
 	public String deleteCurrency(@RequestParam Integer currency_id) {
 		return coinManagementService.deleteCurrency(currency_id);
 	}

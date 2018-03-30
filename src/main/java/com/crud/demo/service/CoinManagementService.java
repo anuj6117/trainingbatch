@@ -16,7 +16,7 @@ private CoinManagementJpaRepository coinManagementJpaRepository;
 
 
 
-public String addCurruncy(CoinManagement coinManagement) {
+public String addCurreuncy(CoinManagement coinManagement) {
 	coinManagementJpaRepository.save(coinManagement);
 	return "Coin details saved successfully ";
 }
@@ -31,7 +31,7 @@ public String updateCurrency(CoinManagement  coinManagement) {
 	CoinManagement existingCoinManagement=coinManagementJpaRepository.findOne(coinManagement.getC_id());
 	if(existingCoinManagement!=null)
 	{    existingCoinManagement.setInitialSupply(coinManagement.getInitialSupply());
-	existingCoinManagement.setName(coinManagement.getName());
+	existingCoinManagement.setCoinName(coinManagement.getCoinName());
 	existingCoinManagement.setPrice(coinManagement.getPrice());
 	existingCoinManagement.setSymbol(coinManagement.getSymbol());
 		coinManagementJpaRepository.save(existingCoinManagement);

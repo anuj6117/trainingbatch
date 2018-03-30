@@ -2,11 +2,29 @@ package com.crud.demo.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.crud.demo.id.randomgenerator.RandomIDGenerator;
+@Entity
 public class OTPSMS {
-	
-	private String email;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer otpId;
+	private String email="mohitjainrk@gmail.com";
 	private Date date=new Date();
-	private String token;
+	private String tokenOTP;
+	
+	
+	
+	public Integer getOtpId() {
+		return otpId;
+	}
+	public void setOtpId(Integer otpId) {
+		this.otpId = otpId;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -19,11 +37,12 @@ public class OTPSMS {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getToken() {
-		return token;
+	public String getTokenOTP() {
+		return tokenOTP;
 	}
-	public void setToken(String token) {
-		this.token = token;
+	public void setTokenOTP(String tokenOTP) {
+		this.tokenOTP = tokenOTP;
 	}
+	
 
 }

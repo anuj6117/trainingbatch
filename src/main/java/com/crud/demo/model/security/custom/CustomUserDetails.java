@@ -1,21 +1,17 @@
+// we are not using anywhere currently but we can use
 package com.crud.demo.model.security.custom;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.crud.demo.model.Role;
 import com.crud.demo.model.User;
 
 public class CustomUserDetails extends User implements UserDetails{
-
-	public CustomUserDetails(final User user)
-	{
-		super();
-		
-	}
-	
-	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
