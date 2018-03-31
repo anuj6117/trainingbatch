@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 @Entity
 @Table(name="roles")
 public class Rolemodel {
@@ -20,6 +22,7 @@ public class Rolemodel {
 	private String role;
 
 	@ManyToMany(mappedBy="roles")
+
 	private List<Usermodel> user=new ArrayList<>();
 
 	public List<Usermodel> getUser() {

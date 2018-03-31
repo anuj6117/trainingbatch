@@ -16,7 +16,6 @@ import com.example.trainingnew.reprository.RoleRepo;
 import com.example.trainingnew.reprository.UserRepo;
 
 @RestController
-@RequestMapping(value="/trainapi")
 public class RoleController {
 	
 	@Autowired
@@ -48,7 +47,7 @@ public class RoleController {
 	@RequestMapping(value = "/assignrole", method = RequestMethod.POST)
 	public Usermodel insertDataWithRole(@Valid @RequestBody Rolemodel note) {
 		
-		Usermodel up=userrepo.findOneById(note.getId());
+		Usermodel up=userrepo.findOneByUserId(note.getId());
 		
 		Rolemodel rr=rolerepo.findOneByRole(note.getRole());
 		

@@ -7,17 +7,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trainingnew.model.MailModel;
+import com.example.trainingnew.services.EmailServices;
 
 @RestController
-public class SimpleEmailController {
+public class EmailController {
 
 	@Autowired
 	EmailServices service;
 
 	
-	@RequestMapping(value="/sendmail", method=RequestMethod.POST)
-	public String sendSimpleMail(@RequestBody MailModel mail) {
-			return service.sendSimpleMessage(mail);
+	@RequestMapping(value="/sendotp", method=RequestMethod.POST)
+	public boolean SendOtpOnMailAndPhone(@RequestBody String email, int otp) {
+			return service.sendSimpleMessage(email,otp);
 	}
+	
+//	public String validate(long otp) 
+//	{
+//		retrun service.otpValidate();
+//	}
 
 }

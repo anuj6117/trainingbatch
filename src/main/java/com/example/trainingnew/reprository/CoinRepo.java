@@ -6,4 +6,9 @@ import com.example.trainingnew.model.Coinmodel;
 
 public interface CoinRepo extends JpaRepository<Coinmodel, Long>{
 
+	Coinmodel findOneByCoinName(String coinName);
+
+	Coinmodel findOneByCoinId(Long coinid);
+
+
 }

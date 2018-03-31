@@ -12,23 +12,23 @@ public class Coinmodel {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
-	private String name;
-	private String symbol;
-	private int intial_suplly;
-	private double price;
+	private long coinId;
 	
-	public long getId() {
-		return id;
+	private String coinName;
+	private String symbol;
+	private double intialSupply=0.0;
+	private double price=5.0;
+	public long getCoinId() {
+		return coinId;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setCoinId(long coinId) {
+		this.coinId = coinId;
 	}
-	public String getName() {
-		return name;
+	public String getCoinName() {
+		return coinName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setCoinName(String coinName) {
+		this.coinName = coinName;
 	}
 	public String getSymbol() {
 		return symbol;
@@ -36,11 +36,11 @@ public class Coinmodel {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
-	public int getIntial_suplly() {
-		return intial_suplly;
+	public double getIntialSupply() {
+		return intialSupply;
 	}
-	public void setIntial_suplly(int intial_suplly) {
-		this.intial_suplly = intial_suplly;
+	public void setIntialSupply(double intialSupply) {
+		this.intialSupply = intialSupply;
 	}
 	public double getPrice() {
 		return price;
@@ -48,6 +48,7 @@ public class Coinmodel {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	
 	
 	
 }
