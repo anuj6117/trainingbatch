@@ -18,6 +18,7 @@ import {AddCoinComponent} from './add-coin/add-coin.component';
 import {UpdateCoinComponent} from './update-coin/update-coin.component';
 import {AdminSideMenuComponent} from './admin-side-menu/admin-side-menu.component';
 import {AdminNavComponent} from './admin-nav/admin-nav.component';
+import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
 
 import { importExpr } from '@angular/compiler/src/output/output_ast';
 
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
    { path: 'admin-side-menu', component: AdminSideMenuComponent},
    { path: 'update-coin', component: UpdateCoinComponent},
    { path: 'admin-nav', component: AdminNavComponent},
+   { path: 'admin-dashboard', component: AdminDashboardComponent},
    
   { path: '',
     redirectTo: '/login',
@@ -58,6 +60,7 @@ const appRoutes: Routes = [
     AddCoinComponent,
     AdminSideMenuComponent,
     AdminNavComponent,
+    AdminDashboardComponent,
     UpdateCoinComponent,
     
   ],

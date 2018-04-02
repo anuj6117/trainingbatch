@@ -1,3 +1,4 @@
+/*this class use for cointain whole data*/
 .MainContainer{
   width: 100%;
   height: 100%;
@@ -14,7 +15,7 @@
   font-size:17px;
 }
 
-
+/*for input box*/
 .container input[type="text"]{
   width: 300px;
   height: 35px;
@@ -28,31 +29,21 @@ set_button{
 }
 
 .for_button1{
-  width: auto;
-  height: 50px;
+  width: 90px;
+  height: 50pxx;
   color: white;
+  float: right;
   background-color: #BE5E84;
   border-radius: 3px;
   border: 0px;
-  font-size: 13px;
+  font-size: 12px;
   padding: 0px 5px 0px 5px;
   line-height: 50px;
+  margin-left: 5px;
   
 }
 
-.for_button2{
-  width: auto;
-  height: 50px;
-  color: white;
-  background-color: #BE5E84;
-  border-radius: 3px;
-  border: 0px;
-  font-size: 13px;
-  padding: 0px 5px 0px 5px;
-  line-height: 50px;
-}
-
-
+/*this class use for update and delete button*/
 .button_for_update_delete{
   width: 100%;
   height: 50px;
@@ -67,31 +58,25 @@ set_button{
 }
 
 
-
-ul{
-  list-style-type: none;
-}
-
-
 .container{
   z-index: 2;
   width: 83%;
 
   height: 700px;
-  margin-left: 17%;
+  margin-left: 20%;
   margin-top: -50px;
   position: absolute;
-  border: 1px solid rgb(136, 134, 134);
   overflow-x: scroll;
   color: rgb(145, 143, 143);
   
 }
 
-.container ul li{
-  width: 100%;
-  padding: 10px !important;
-  float: none;
+/*for all ul list*/
+
+ul{
+  list-style-type: none;
 }
+/*in this we are target ul list container*/
 .add_currency{
   width: 20%;
   height: 300px;
@@ -99,12 +84,25 @@ ul{
 
 }
 
+/*in this we are target for child of ul*/
+
+.container ul li{
+  width: 100%;
+  height: 50px;
+  padding: 8px !important;
+  float: none;
+}
+
+/*show all coin in table*/
 
 table{
   border:1px solid rgb(87, 86, 86);
   width: 98%;
   position: absolute;
 }
+
+/*target for table head*/
+
 tr > th{
   width: auto;
   min-width: 140px;
@@ -113,20 +111,30 @@ tr > th{
   border:1px solid #999;
   color: rgb(73, 72, 72);
 }
+/*target for table data*/
 tr > td {
   font-size: 13px;
   border:1px solid rgb(90, 89, 89);
   color: rgb(71, 71, 71);
+  text-align: center;
+  line-height: 50px;
+  height: 50px;
 }
 
+/*table row background color for all even number of row*/
+
 tr:nth-child(even){background-color: #d4d4d4;}
+
+/*table row hover effect*/
 
 .container tr:hover {
   background-color: rgb(175, 174, 174);
   border: 1px solid #fff;
   
 }
-.container td:hover{
+
+/*table data hover effect*/
+.container tr td:hover{
   color:white;
 }
 
@@ -135,7 +143,7 @@ tr:nth-child(even){background-color: #d4d4d4;}
 .pagination {
   display: inline-block;
 }
-
+/*pagination link effect*/
 .pagination a {
   color: black;
   float: left;
@@ -143,10 +151,10 @@ tr:nth-child(even){background-color: #d4d4d4;}
   text-decoration: none;
   transition: background-color .3s;
 }
-
+/*pagination active effect*/
 .pagination a.active {
   background-color: #9D9D9D;
   color: white;
 }
-
+/*pagination for hover effect*/
 .pagination a:hover:not(.active) {background-color: #ddd;}

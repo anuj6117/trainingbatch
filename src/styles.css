@@ -12,31 +12,6 @@ a{
 a:link{
     text-decoration: none;
     }
-.navbar, .navbar-inverse{
-    width: 100%;
-    background: linear-gradient(to bottom right, #FF9C00,  #a72615);
-    border-radius: 0;
-    color: #fff;
-    border-top: 0px;
-    border-left: 0px;
-    border-right: 0px;
-    border-bottom: .5px solid white;
-    z-index: 1;
-    box-sizing: border-box;
-}
-
-.navbar-inverse {
-    background-color: #fff;
-    border-color: #fff;
-    color: white;
-}
-
-
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-    color: #BA4010;
-    background-color: #fff;
-    height: 51px;
-}
 
 /*for form and form validation*/
 

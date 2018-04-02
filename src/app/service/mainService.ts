@@ -7,22 +7,11 @@ import 'rxjs/add/operator/map';
 export class MainService  {
 
     constructor(private http:Http) { }
-    // obj={
-    //   id:1,
-    //   userName:'hemant',
-    //   designation:'Front-End Developre'
-    // }
-    // succes()
-    // {
-    //   return "Function Access Successfully"
-    // }
-    // overallDetails() {
-    //     return this.http.get('http://192.168.9.180:8080/signup').map(res => res.json());
-    // }
+
 
     submitSignUp(fromData){
     
-      console.log('fromData',fromData);
+//       console.log('fromData',fromData);
       let data:any = {
               "userName": fromData.userName,
               "email": fromData.email,
@@ -35,7 +24,7 @@ export class MainService  {
 
     submitLogIn(fromData){
     
-      console.log('fromData',fromData);
+//       console.log('fromData',fromData);
       let data:any = {
               
               "email": fromData.email,
@@ -46,5 +35,13 @@ export class MainService  {
          return this.http.post('http://192.168.9.180:8181/userlogin', data);
     }
 
-
+    submitAddCoin(coinData){
+        //     let data:any={
+        //         "coinName": FormData.coinName,
+        //         "symbol":FormData.symbol,
+        //         "supply":FormData.supply,
+        //         "price":price,
+        //     }
+            return this.http.post('http://192.168.9.180:8181/addcurrency', coinData);
+        }
 }

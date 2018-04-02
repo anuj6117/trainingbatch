@@ -7,10 +7,21 @@ import { MainService } from './../service/mainService';
   styleUrls: ['./add-coin.component.css']
 })
 export class AddCoinComponent implements OnInit {
+  public formData: any= {};
+
+  constructor(public mainService: MainService){
+
+  }
 
   ngOnInit() {
  } 
 
- 
+ submitAddCoin() {
+  this.mainService.submitAddCoin(this.formData).subscribe(
+      success=>
+      {
+          console.log("success",success);
+      })
+}
 }
 

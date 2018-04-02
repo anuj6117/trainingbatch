@@ -1,5 +1,7 @@
 /*common css for all page*/
-
+a:hover{
+    color: #009A9A !important;
+}
     /*css for laptop and large screen*/
 
     @media screen and (min-width: 900px) {
@@ -8,7 +10,7 @@
         .main_container{
             height: 1200px;
             width: 100%;
-            background: linear-gradient(to bottom right, #222E68, #9F7986);
+            background: #2D3F57;
             width: 100%;
             position: relative;            
             
@@ -43,7 +45,6 @@
             margin-top: 17.79%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #2D3039;
             border-radius: 2px;
             
         
@@ -54,7 +55,6 @@
             height: auto;
             position: absolute;
             border-radius: 2px;
-            background-color: #2D3039;
         }
         
         
@@ -98,7 +98,8 @@
           }
 
         .for_error{
-            text-align: center;
+            text-align: left;
+            margin-left: 10%;
             color: red;
             font-size: 16px;
         } 
@@ -115,16 +116,15 @@
         .set_button{
             height: 85px;
             width: 100%;
-            background-color: #2D3039;
         }
         .for_button{
-            width: 115px;
+            width: 80%;
             height: 50px;
             position: absolute;
             margin-top: 3%;
-            margin-left: 67%;
+            margin-left: 10%;
             color: white;
-            background-color: #BE5E84;
+            background-color: #009A9A;
             border-radius: 3px;
             border: 0px;
             float: right;
@@ -132,7 +132,7 @@
         }
         
         #for_link_page{
-            font-size: 30px;
+            font-size: 25px;
             margin-top: 0px;
             position: absolute;
             text-align: center;
@@ -199,7 +199,6 @@
             height: auto;
             position: absolute;
             border-radius: 2px;
-            background-color: #2D3039;
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
             
@@ -223,6 +222,7 @@
             text-align-last: center;
             color:rgb(87, 85, 85);
             background-color: aqua;
+            color: black;
         }
         .form1 input, .form1 select {
             width: 80%;
@@ -234,6 +234,7 @@
             font: 16px/1.4 "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
             box-sizing: border-box;
             background-color: white;
+            color: black;
             margin-left: 10%;
         }
 

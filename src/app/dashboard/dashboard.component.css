@@ -1,3 +1,4 @@
+/*this is use for main container*/
 .MainContainer{
   width: 100%;
   height: 100%;
@@ -5,7 +6,50 @@
   margin: 0px;
   position: relative;
 }
+/*continer for routing secrtion */
+.container{
+  z-index: 2;
+  width: 80%;
+  margin-left: 20%;
+  padding: 0px;
+  margin-top: -130px;
+  position: absolute;
+  border: 0px ;
+  overflow-x: scroll;
+  color: rgb(145, 143, 143); 
+}
 
+.sub_container{
+  padding: 5px;
+  margin-top: 100px;
+  
+}
+/*short by email, loction, and number*/
+.short_by_email, .short_by_location, .short_by_number{
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+}
+
+.container input[type="text"], input[type="date"]{
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+  padding-left: 5px;
+}
+
+.search_button2{
+    width: 65px;
+    height: 35px;
+    font-size: 15px;
+    padding-left: 5px;
+    text-align: center;
+    color: black;
+ 
+}
+
+
+/*class for total class*/
 .total_user{
   float: right; 
   margin-top:0%;
@@ -13,33 +57,11 @@
   margin-right: -20%;
   font-size:17px;
 }
-
-.short_by_email, .short_by_location, .short_by_number{
-  width: 200px;
-  height: 35px;
-  font-size: 15px;
-}
-.container input[type="text"], input[type="date"]{
-  width: 200px;
-  height: 35px;
-  font-size: 15px;
-  padding-left: 5px;
-}
+/*class for company logo*/
 .logo_serach_container{
   width: 17%;
 }
-
-logo_container{
-  width: 100%;
-  height: 80px;
-  margin-left: 0px;
-}
-
-.logo{
-  width: 100%;
-  height: 80px;
-}
-
+/*for search*/
 .search_container{
   width: 100%;
   height: 50px;
@@ -53,12 +75,13 @@ logo_container{
   border: 0px;
   text-align: center;
 }
-
-.dropdown li img:nth-child(1) {
-  background: red;
-  height: 66px;
+.search_button{
+  width: 20%;
+  height: 50px;
+  border: 0px;
 }
 
+/*for all input*/
 input[type="text"]:active{
   border: 0px;
   padding: 0px;
@@ -70,15 +93,7 @@ input:focus {
   border: none;
 }
 
-.search_button{
-  width: 20%;
-  height: 50px;
-  border: 0px;
-}
-
-ul{
-  list-style-type: none;
-}
+/*this use for dropdown menu*/
 .dropdown {
   width: 17%;
   position: absolute;
@@ -87,24 +102,33 @@ ul{
   color: rgb(15, 15, 15);
   text-align: center;
 }
-
+/*for all ul*/
+ul{
+  list-style-type: none;
+}
+/*chiled of dropdown*/
 .dropdown li {
   width: 100%;
   height: 45px;
   border-bottom: 1px solid white;
   line-height: 45px;
 }
-
+/*for all link font size*/
 .dropdown li a{
 
   font-size: 15px;
 }
-
+/*all li width*/
+.container ul li{
+  width: 150px;
+  float: left;
+}
+/*hover effect for all li*/
 ul li:hover{
   background-color:  #9d9d9d;
   color:rgb(15, 15, 15);
 }
-
+/*for all dropdown content*/
 .dropdown-content {
   display: none;
   position: absolute;
@@ -116,54 +140,27 @@ ul li:hover{
   z-index: 5;
 }
 
-
+/*dropdown menu hover effect*/
 li:hover .dropdown-content {
   display: block;
   color: white;
   background-color: #9d9d9d;
   border-left: 1px solid white;
 }
-
+/*target for submenu*/
 ul li ul li:hover{
   background-color: rgb(15, 15, 15) #9d9d9d;
   color:#9d9d9d;
 }
 
 
-
-.container{
-  z-index: 2;
-  width: 83%;
-  margin-left: 17%;
-  padding: 0px;
-  margin-top: -130px;
-  position: absolute;
-  border: 1px solid rgb(136, 134, 134);
-  overflow-x: scroll;
-  color: rgb(145, 143, 143);
-  
-}
-
-.sub_container{
-  padding: 5px;
-  
-}
-
-/*for shorting*/
-
-.container ul li{
-  width: 200px;
-  float: left;
-}
-
-
-
-
-
+/*for table*/
 table{
   border:1px solid rgb(87, 86, 86);
   width: 98%;
 }
+/*for table header*/
+
 tr > th{
   width: auto;
   min-width: 140px;
@@ -172,19 +169,24 @@ tr > th{
   border:1px solid #999;
   color: rgb(73, 72, 72);
 }
+
+/*for table data*/
 tr > td {
   font-size: 13px;
   border:1px solid rgb(90, 89, 89);
   color: rgb(71, 71, 71);
 }
 
+/*background color for all even number*/
 tr:nth-child(even){background-color: #d4d4d4;}
 
+/*background color for table row hover effect*/
 .container tr:hover {
   background-color: rgb(175, 174, 174);
   border: 1px solid #fff;
   
 }
+/*table data hover effect*/
 .container td:hover{
   color:white;
 }

@@ -13,14 +13,9 @@ export class LogInComponent implements OnInit {
   private formData: any = {}; 
           constructor(private mainService:MainService) { } 
     
-      ngOnInit() { console.log(this.mainService.submitLogIn); 
+      ngOnInit() { 
       
-        // console.log(this.mainService.succes()); 
-        
-        // this.mainService.overallDetails().subscribe(
-        //    succes=> { console.log('succes',succes
-        //   ) 
-        // }) 
+
      } 
 submitLogIn() {
    console.log(this.formData) 

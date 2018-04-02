@@ -1,219 +1,261 @@
 <div class="MainContainer">
 
-    <app-admin-side-menu></app-admin-side-menu>
+    <app-admin-nav></app-admin-nav>
   
-      <div class="container">
-          <app-admin-nav></app-admin-nav>
-          <div class="sub_container">
-        <div width="100%">
+  <app-admin-side-menu></app-admin-side-menu>
 
-        
+  <div class="container">
+      <div class="sub_container">
+        <div width="100%">
+  
+  
           <span style="font-size:25px;">Registered Users</span>
           <span class="total_user">Total Registered Users: 30</span>
-        </div>    
-
+        </div>
+  
         <ul float="left">
           <li>
             <select class="short_by_email">
-                <option value="all">All</option>
-                <option value="Varified Email">Varified Email</option>
-                <option value="Unvarified Email">Unvarified Email</option>
+              <option value="all">All</option>
+              <option value="Varified Email">Varified Email</option>
+              <option value="Unvarified Email">Unvarified Email</option>
             </select>
           </li>
-
+  
           <li>
             <select class="short_by_location">
-                <option value="India">India</option>
-                <option value="Bangladesh">Bangladesh</option>
-                <option value="Shree Lanka">Shree Lanka</option>
-              </select>
-            </li>
-
-            <li>
-            <select class="short_by_number">
-                <option value="10">Show 10 Per Page</option>
-                <option value="25">Show 25 Per Page</option>
-                <option value="50">Show 50 Per Page</option>
-              </select>
-            </li>
-            <li>
-              <input type="text" name="search" placeholder="search" />
-            </li>
-            <li>
-              <input type="date" name="search" placeholder="start date" />
-            </li>  
-            <span style="height: 35px; line-height: 35px;"> to </span> 
-           
+              <option value="India">India</option>
+              <option value="Bangladesh">Bangladesh</option>
+              <option value="Shree Lanka">Shree Lanka</option>
+            </select>
+          </li>
+  
           <li>
-              <input type="date" name="search" placeholder="end date" />
-            </li>
+            <select class="short_by_number">
+              <option value="10">Show 10 Per Page</option>
+              <option value="25">Show 25 Per Page</option>
+              <option value="50">Show 50 Per Page</option>
+            </select>
+          </li>
+          <li>
+            <input type="text" name="search" placeholder="search" />
+          </li>
+          <li>
+            <input type="date" name="search" placeholder="Start date" />
+          </li>
+  
+          <li>
+            <input type="date" name="search" placeholder="End date" />
+          </li>
+          <button class="search_button2">Search</button>
         </ul>
-
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Username</th>
-                <th>Country</th>
-                <th>Verified By Email</th>
-                <th>Verified By Mobile</th>
-                <th>Registered On</th>
-                <th>Total Transactions</th>
-                <th>Buy BTC</th>
-                <th>Sell BTC</th>
-                <th>Total Traded BTC</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>John</td>
-                <td>Doe</td>
-                <td>India</td>
-                <td>yes</td>
-                <td>yes</td>
-                <td>Date</td>
-                <td>30</td>
-                <td>5</td>
-                <td>4</td>
-                <td>22</td>
-                <td>5</td>
-              </tr>
-              <tr>
-                <td>Mary</td>
-                <td>Moe</td>
-                <td>India</td>
-                <td>yes</td>
-                <td>yes</td>
-                <td>Date</td>
-                <td>30</td>
-                <td>5</td>
-                <td>4</td>
-                <td>22</td>
-                <td>5</td>
-              </tr>
-              <tr>
-                <td>July</td>
-                <td>Dooley</td>
-                <td>India</td>
-                <td>yes</td>
-                <td>yes</td>
-                <td>Date</td>
-                <td>30</td>
-                <td>5</td>
-                <td>4</td>
-                <td>22</td>
-                <td>5</td>
-              </tr>
-              <tr>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>India</td>
-                  <td>yes</td>
-                  <td>yes</td>
-                  <td>Date</td>
-                  <td>30</td>
-                  <td>5</td>
-                  <td>4</td>
-                  <td>22</td>
-                  <td>5</td>
-                </tr>
-                <tr>
-                  <td>Mary</td>
-                  <td>Moe</td>
-                  <td>India</td>
-                  <td>yes</td>
-                  <td>yes</td>
-                  <td>Date</td>
-                  <td>30</td>
-                  <td>5</td>
-                  <td>4</td>
-                  <td>22</td>
-                  <td>5</td>
-                </tr>
-                <tr>
-                  <td>July</td>
-                  <td>Dooley</td>
-                  <td>India</td>
-                  <td>yes</td>
-                  <td>yes</td>
-                  <td>Date</td>
-                  <td>30</td>
-                  <td>5</td>
-                  <td>4</td>
-                  <td>22</td>
-                  <td>5</td>
-                </tr>
-                <tr>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>India</td>
-                    <td>yes</td>
-                    <td>yes</td>
-                    <td>Date</td>
-                    <td>30</td>
-                    <td>5</td>
-                    <td>4</td>
-                    <td>22</td>
-                    <td>5</td>
-                  </tr>
-                  <tr>
-                    <td>Mary</td>
-                    <td>Moe</td>
-                    <td>India</td>
-                    <td>yes</td>
-                    <td>yes</td>
-                    <td>Date</td>
-                    <td>30</td>
-                    <td>5</td>
-                    <td>4</td>
-                    <td>22</td>
-                    <td>5</td>
-                  </tr>
-                  <tr>
-                    <td>July</td>
-                    <td>Dooley</td>
-                    <td>India</td>
-                    <td>yes</td>
-                    <td>yes</td>
-                    <td>Date</td>
-                    <td>30</td>
-                    <td>5</td>
-                    <td>4</td>
-                    <td>22</td>
-                    <td>5</td>
-                  </tr>
-                  <tr>
-                      <td>John</td>
-                      <td>Doe</td>
-                      <td>India</td>
-                      <td>yes</td>
-                      <td>yes</td>
-                      <td>Date</td>
-                      <td>30</td>
-                      <td>5</td>
-                      <td>4</td>
-                      <td>22</td>
-                      <td>5</td>
-                    </tr>
-                                         
-            </tbody>
-          </table>
-
-          <div class="pagination">
-            <a href="#">&laquo;</a>
-            <a href="#">1</a>
-            <a href="#" class="active">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
-            <a href="#">&raquo;</a>
-          </div>
-
-
-
+  
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Username</th>
+              <th>Country</th>
+              <th>Verified By Email</th>
+              <th>Verified By Mobile</th>
+              <th>Registered On</th>
+              <th>Total Transactions</th>
+              <th>Buy BTC</th>
+              <th>Sell BTC</th>
+              <th>Total Traded BTC</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John</td>
+              <td>Doe</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Mary</td>
+              <td>Moe</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>July</td>
+              <td>Dooley</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>John</td>
+              <td>Doe</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Mary</td>
+              <td>Moe</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>July</td>
+              <td>Dooley</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>John</td>
+              <td>Doe</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Mary</td>
+              <td>Moe</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>July</td>
+              <td>Dooley</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>John</td>
+              <td>Doe</td>
+              <td>India</td>
+              <td>yes</td>
+              <td>yes</td>
+              <td>Date</td>
+              <td>30</td>
+              <td>5</td>
+              <td>4</td>
+              <td>22</td>
+              <td>5</td>
+            </tr>
+  
+          </tbody>
+        </table>
+  
+        <div class="pagination">
+          <a href="#">&laquo;</a>
+          <a href="#">1</a>
+          <a href="#" class="active">2</a>
+          <a href="#">3</a>
+          <a href="#">4</a>
+          <a href="#">5</a>
+          <a href="#">6</a>
+          <a href="#">&raquo;</a>
         </div>
-        </div>
-        
-</div>      
+  
+  
+  
+      </div>
+    </div> 
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

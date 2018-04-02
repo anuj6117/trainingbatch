@@ -1,6 +1,6 @@
 
   .logo_serach_container{
-    width: 17%;
+    width: 100%;
   }
   
   logo_container{
@@ -8,11 +8,11 @@
     height: 80px;
     margin-left: 0px;
   }
-  
-  .logo{
-    width: 100%;
-    height: 80px;
-  }
+  .logo
+  {width: 56%;
+  height: 80px;
+  margin-left: 10px;
+  margin-top: 5px;}
   
   .search_container{
     width: 100%;
@@ -54,7 +54,7 @@
     list-style-type: none;
   }
   .dropdown {
-    width: 17%;
+    width: 20%;
     position: absolute;
     display: inline-block;
     background-color: #9d9d9d;

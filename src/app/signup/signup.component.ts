@@ -13,14 +13,6 @@ export class SignUpComponent implements OnInit {
 
     ngOnInit() {
         console.log(this.mainService.submitSignUp);
-
-        // console.log(this.mainService.succes());
-
-        // this.mainService.overallDetails().subscribe
-        //     (
-        //     succes => {
-        //         console.log('succes', succes)
-        //     })
     }
     submitSignUp() {
         console.log(this.formData)
