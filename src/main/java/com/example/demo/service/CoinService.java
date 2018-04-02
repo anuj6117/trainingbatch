@@ -17,8 +17,13 @@ public class CoinService {
 	private CoinRepository coinRepo;
 
 	public Boolean addCoin(CoinModel coinModel) {
-		coinRepo.save(coinModel);
-		return true;
+		if(coinModel.getCoinName().equals(null)) {
+			return false;
+		}
+		else {
+			coinRepo.save(coinModel);
+			return true;
+		}
 	}
 
 	public Object getAllCoinDetail() {
@@ -37,19 +42,28 @@ public class CoinService {
 		if (coinOptionalObject != null) {
 			coinOptionalObject.get().setCoinName(coinModel.getCoinName());
 			coinOptionalObject.get().setCoinSymbol(coinModel.getCoinSymbol());
-			coinOptionalObject.get().setInitialCoinSupply(coinModel.getInitialCoinSupply());
-			coinOptionalObject.get().setCoinPrice(coinModel.getCoinPrice());
+			coinOptionalObject.get().setInitialSupply(coinModel.getInitialSupply());
+			coinOptionalObject.get().setPrice(coinModel.getPrice());
 			coinRepo.save(coinOptionalObject.get());
 			return "success";
 		} else {
 			return "No Coin Exist";
 		}
-
 	}
 
-	public Boolean deleteCoin(CoinModel coinModel) {
-		coinRepo.deleteById(coinModel.getCoinId());
-		return true;
+	public String deleteCoin(CoinModel coinModel) {
+		try { 
+			if(coinModel.getCoinId() > 0){
+				coinRepo.deleteById(coinModel.getCoinId());
+				return "success";
+			}
+			else  {
+				return "Enter the Coin Id first";
+			}
+		}
+		catch(Exception e) {
+			return null;
+		}	
 	}
 
 }

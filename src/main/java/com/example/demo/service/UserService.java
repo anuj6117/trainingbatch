@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,14 +9,13 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.constant.RoleEnum;
@@ -59,6 +56,55 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private JavaMailSender sender1;
+	
+	
+	
+	
+	
+	public List<UserModel> findAllPagination(PageRequest pageRequest){
+		return userRepo.findAll(pageRequest);
+	}
+
+	public List<UserModel> findByName(String userName,PageRequest pageRequest){
+		return userRepo.findByUserName(userName,pageRequest);
+	}
+	
+	public List<UserModel> findByNameContaininy(String userName){
+		return userRepo.findByUserNameContaining(userName);
+	}
+	// ------------------------SIGN UP---------------------------------
+	// Add New User
+	// @Secured({"admin","user"})
+	public String addUser(UserModel userModel) throws Exception {
+
+		UserModel user = userRepo.findByEmail(userModel.getEmail());
+		if (user == null) {
+			if(!(userModel.getPassword().equalsIgnoreCase(""))) {
+				userModel.setCreatedOn(new Date());
+				userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
+				Set<RoleModel> roleModel = addDefaultRole(RoleEnum.ROLE_USER.toString());
+				userModel.setRoleType(roleModel);
+				
+				userRepo.save(userModel);
+				addWallet(userModel);
+				Integer otpNum = Utility.generateId(1000);
+				authService.addAuthToken(userModel.getUserName(), otpNum);
+				System.out.println("-----------------" + sender1.createMimeMessage());
+				// SendEmail.sendEmail(userModel.getEmail(), otpNum,
+				// userModel.getUserName(),sender1);
+				// OTPController.sendSMS(userModel.getMobile().toString(),otpNum.toString());
+				return "success";
+			}
+			else {
+				System.out.println("----------------------azsxdfghjkl");
+				throw new Exception("Password Cannot be null");
+			}
+		
+		} else {
+			throw new Exception("Email cannot be null");
+		}
+
+	}
 
 	// Add Default Wallet For A New User
 	public void addWallet(UserModel userModel) {
@@ -69,31 +115,21 @@ public class UserService implements UserDetailsService {
 		walletRepo.save(walletModel);
 	}
 
-	// Add New User
-	// @Secured({"admin","user"})
-	public String addUser(UserModel userModel) throws Exception {
-
-		UserModel user = userRepo.findByEmail(userModel.getEmail());
-		if (user == null) {
-			userModel.setCreatedOn(new Date());
-			userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
-			Set<RoleModel> roleModel = addDefaultRole(RoleEnum.ROLE_USER.toString());
-			userModel.setRoleType(roleModel);
-			userRepo.save(userModel);
-			addWallet(userModel);
-			Integer otpNum = Utility.generateId(1000);
-			authService.addAuthToken(userModel.getUserName(), otpNum);
-			System.out.println("-----------------" + sender1.createMimeMessage());
-			// SendEmail.sendEmail(userModel.getEmail(), otpNum,
-			// userModel.getUserName(),sender1);
-			// OTPController.sendSMS(userModel.getMobile().toString(),otpNum.toString());
-			return "success";
+	// Add Default Role For A New User
+	public Set<RoleModel> addDefaultRole(String role) {
+		roleService.addRole();
+		RoleModel roleModel = roleRepo.findByRole(role);
+		Set<RoleModel> roleSet = new HashSet<RoleModel>();
+		if (roleModel != null) {
+			roleSet.add(roleModel);
+			return roleSet;
 		} else {
-			return "Email Already Exists";
-		}
 
+			return null;
+		}
 	}
 
+	// -----------VERIFY USER ON SIGNUP------------------
 	// verify user
 	public String verifyUser(UserModel userModel, Integer otp) {
 		Optional<UserModel> userOp = userRepo.findById(userModel.getUserid());
@@ -115,12 +151,16 @@ public class UserService implements UserDetailsService {
 
 	}
 
+	// ----------------FOR USER LOGIN------------------------
 	// For User Login
 	public UserModel getUser(UserModel u) {
+		
 		UserModel userOp = userRepo.findByEmailAndPassword(u.getEmail(), u.getPassword());
+		System.out.println(userOp.getEmail()+"-------------------");
 		return userOp;
 	}
 
+	// ------------ FETCH ROLE AND USER AND VICE VERSA
 	// fetch the roles
 	public Set<RoleModel> fetchRole(UserModel userModel) {
 		Optional<UserModel> userData = userRepo.findById(userModel.getUserid());
@@ -147,6 +187,7 @@ public class UserService implements UserDetailsService {
 		return userModelList;
 	}
 
+	// -------------RESEND OTP----------------------
 	// Re-send the One time Password
 	public void resendOtp(UserModel userModel) throws Exception {
 		Integer otp = Utility.generateId(100);
@@ -154,37 +195,7 @@ public class UserService implements UserDetailsService {
 		OTPController.sendSMS(userModel.getPhoneNumber().toString(), otp.toString());
 	}
 
-	// Add Default Role For A New User
-	public Set<RoleModel> addDefaultRole(String role) {
-		roleService.addRole();
-		RoleModel roleModel = roleRepo.findByRole(role);
-		Set<RoleModel> roleSet = new HashSet<RoleModel>();
-		if (roleModel != null) {
-			roleSet.add(roleModel);
-			return roleSet;
-		} else {
-
-			return null;
-		}
-	}
-
-	// Check Role is Valid or Not.
-	public Boolean isRoleTypeValid(String roleType) {
-		int flag = 0;
-		for (RoleEnum type : RoleEnum.values()) {
-			if (roleType.equalsIgnoreCase(type.toString())) {
-				flag = 1;
-				break;
-			}
-		}
-		if (flag == 1) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
+	// -------------ADD ANOTHER ROLE FOR USER------------------------------
 	public String addAnotherRole(UserModel user, String roleType) {
 
 		RoleModel roleOp = roleRepo.findByRole(roleType);
@@ -209,6 +220,7 @@ public class UserService implements UserDetailsService {
 		}
 	}
 
+	// ------------------ADD ANOTHER WALLET FOR USER----------------------
 	// Check WalletType is Valid or Not.
 	public Boolean isWalletTypeValid(String walletType) {
 		int flag = 0;
@@ -253,6 +265,7 @@ public class UserService implements UserDetailsService {
 
 	}
 
+	// -----------------DEPOSIT AND WITHDRAW AMOUNT FORM USER-----------------------
 	public void addAmountIntoWallet(UserModel userModel, Float amount, String walletType) {
 		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userModel.getUserid());
 		walletModel.setBalance(walletModel.getBalance() + amount);
@@ -269,11 +282,7 @@ public class UserService implements UserDetailsService {
 		}
 	}
 
-	/*
-	 * public List<UserModel> getAllDetails() { List<UserModel> userDetails = new
-	 * ArrayList<UserModel>(); userRepo.findAll().forEach(userDetails::add); return
-	 * userDetails; }
-	 */
+	// ---------------------GET LIST OF ALL USERS----------------------
 	public Object getAllDetails() {
 		List<UserModel> userDetails = new ArrayList<UserModel>();
 		userRepo.findAll().forEach(userDetails::add);
@@ -284,10 +293,13 @@ public class UserService implements UserDetailsService {
 		}
 	}
 
+	// -------------DELETE USER------------------------------
 	public void deleteUser(int id) {
+
 		userRepo.deleteById(id);
 	}
 
+	// ----------------------UPDATE USER-----------------
 	public List<UserModel> updateUser(int userId, UserModel u) {
 		Optional<UserModel> userOp = userRepo.findById(userId);
 		System.out.println(userOp + "---------------------------------------");
@@ -302,6 +314,7 @@ public class UserService implements UserDetailsService {
 		return userDetails;
 	}
 
+	// -----SPRING SECURITY METHOD--------------------------------------
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserModel userModel = userRepo.findByEmail(username);

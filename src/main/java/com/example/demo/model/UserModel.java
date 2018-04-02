@@ -38,6 +38,7 @@ public class UserModel {
 	private String email;
 	
 	private Long phoneNumber;
+	@NotNull
 	private String password;
 	private Boolean status = false;
 

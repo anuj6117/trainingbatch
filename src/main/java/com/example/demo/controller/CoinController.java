@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,44 +22,43 @@ public class CoinController {
 	private CoinService coinService;
 
 	@RequestMapping(value = "/addcurrency", method = RequestMethod.POST)
-	public ResponseEntity<Object> add(@RequestBody CoinModel coinModel) {
+	public ResponseEntity<Object> add(@RequestBody CoinModel coinModel,HttpServletResponse httpResponse) {
 		Boolean res = coinService.addCoin(coinModel);
 
 		if (res) {
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "success", null);
 		} else {
-			return ApiResponse.generateResponse(HttpStatus.NOT_FOUND, false, "No data found", null);
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false,  "failure", null);
 		}
 	}
 
 	@RequestMapping(value = "/getallcurrency", method = RequestMethod.GET)
-	public ResponseEntity<Object> getAllDetail() {
+	public ResponseEntity<Object> getAllDetail(HttpServletResponse httpResponse) {
 		Object obj = coinService.getAllCoinDetail();
 		if (obj != "No data found") {
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "success", obj);
 		} else {
-			return ApiResponse.generateResponse(HttpStatus.NOT_FOUND, false, "No data found", null);
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, "failure", null);
 		}
 	}
 
 	@RequestMapping(value = "/updatecurrency", method = RequestMethod.POST)
-	public ResponseEntity<Object> update(@RequestBody CoinModel coinDetails) {
+	public ResponseEntity<Object> update(@RequestBody CoinModel coinDetails,HttpServletResponse httpResponse) {
 		Object obj = coinService.updateCoin(coinDetails);
 		if (obj == "success") {
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "success", null);
 		} else {
-			return ApiResponse.generateResponse(HttpStatus.NOT_FOUND, false, "No data found", null);
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false,"failure", null);
 		}
-
 	}
 
 	@RequestMapping(value = "/deletecurrency", method = RequestMethod.POST)
-	public ResponseEntity<Object> delete(@RequestBody CoinModel coinDetails) {
-		Boolean obj=coinService.deleteCoin(coinDetails);
-		if (obj) {
+	public ResponseEntity<Object> delete(@RequestBody CoinModel coinDetails,HttpServletResponse httpResponse) {
+		String obj=coinService.deleteCoin(coinDetails);
+		if (obj.equals("success")) {
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "success", null);
 		} else {
-			return ApiResponse.generateResponse(HttpStatus.NOT_FOUND, false, "No data found", null);
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false,"failure", null);
 		}
 	}
 
