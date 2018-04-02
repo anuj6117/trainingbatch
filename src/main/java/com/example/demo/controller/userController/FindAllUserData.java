@@ -19,66 +19,66 @@ import com.example.demo.utils.ResponseHandler;
 
 @RestController
 public class FindAllUserData {
-	
-	@Autowired 
+
+	@Autowired
 	UserServices userData;
-	
-	@RequestMapping(value="/getallusers",method=RequestMethod.GET)
-	public ResponseEntity<Object> getAll(){
-		List<UserModel> result=null;
-		  try
-		  {
-			  result= userData.findAll();
-		  }	
-		  catch(Exception e)
-		  {
-			  return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false,e.getMessage() , result);
-		  }
-		  return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
-	}
-	
-	@RequestMapping(value="/getusersbyid",method=RequestMethod.GET)
-	@ResponseBody
-	public UserModel getAll(@RequestParam("id") Long id){
-		
-		return userData.findById(id);
-			
+
+	@RequestMapping(value = "/getallusers", method = RequestMethod.GET)
+	public ResponseEntity<Object> getAll() {
+		List<UserModel> result = null;
+		try {
+			result = userData.findAll();
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 
-	@RequestMapping(value="/showAllByname",method=RequestMethod.GET)
-	public List<UserModel> findbyusername(@RequestParam("name") String name,@RequestParam("page") int page)
-	{
-		
-		return userData.findbyusername(name,page);
-	}
-	@RequestMapping(value="/showAllByRole",method=RequestMethod.GET)
+	@RequestMapping(value = "/getusersbyid", method = RequestMethod.GET)
 	@ResponseBody
-	public List<RoleModel> getall()
-	{
+	public ResponseEntity<Object> getAll(@RequestParam("id") Long id) {
+		UserModel result = null;
+		try {
+			result = userData.findById(id);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+	}
+
+	@RequestMapping(value = "/showAllByname", method = RequestMethod.GET)
+	public ResponseEntity<Object> findbyusername(@RequestParam("name") String name, @RequestParam("page") int page) {
+		List<UserModel> result = null;
+		try {
+			result = userData.findbyusername(name, page);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+	}
+
+	@RequestMapping(value = "/showAllByRole", method = RequestMethod.GET)
+	@ResponseBody
+	public List<RoleModel> getall() {
 		return userData.findAllUserModel();
 	}
-	
-	@RequestMapping(value="/showRoleByUser",method=RequestMethod.GET)
-	
-	public List<String> getall(@RequestParam("name") String name)
-	{
+
+	@RequestMapping(value = "/showRoleByUser", method = RequestMethod.GET)
+
+	public List<String> getall(@RequestParam("name") String name) {
 		return userData.findRoleByUserName(name);
 	}
-	@RequestMapping(value="/showAllByUserRole",method=RequestMethod.GET)
-	
-	public List<RoleModel> getallUser(@RequestParam("userRole") String userRole)
-	{
+
+	@RequestMapping(value = "/showAllByUserRole", method = RequestMethod.GET)
+
+	public List<RoleModel> getallUser(@RequestParam("userRole") String userRole) {
 		return userData.findAllByUserModel(userRole);
 	}
-	
-	@RequestMapping(value="/showRole" ,method=RequestMethod.GET)
-	public List<RoleDTO> getAllRole()
-	{
+
+	@RequestMapping(value = "/showRole", method = RequestMethod.GET)
+	public List<RoleDTO> getAllRole() {
 		return userData.findAllRole();
-		
+
 	}
-	
-	
-	
 
 }

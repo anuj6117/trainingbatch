@@ -7,7 +7,7 @@ public class UserDTO  {
 	private long id;
 	private String userName;
 	private String email;
-	private String mobileNo;
+	private String phoneNumber;
 	private boolean status;
 	private String country;
 	private String password;
@@ -20,6 +20,12 @@ public class UserDTO  {
 	public String getUserName() {
 		return userName;
 	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
@@ -29,13 +35,7 @@ public class UserDTO  {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getMobileNo() {
-		return mobileNo;
-	}
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-	public boolean isStatus() {
+		public boolean isStatus() {
 		return status;
 	}
 	public void setStatus(boolean status) {

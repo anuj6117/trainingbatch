@@ -36,35 +36,59 @@ public class UserController {
 	}
 
 	@PostMapping("/verifyuser")
-	public String verifyUser(@RequestBody VerifyModel data) {
-		return userservice.verifyUser(data);
+	public ResponseEntity<Object> verifyUser(@RequestBody VerifyModel data) {
+		String result = null;
+		try {
+			result = userservice.verifyUser(data);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
 	}
 
 	@RequestMapping(value = "/addrole", method = RequestMethod.POST)
-	public String addRole(@RequestBody RoleModel data) {
-
-		return userservice.addRole(data);
+	public ResponseEntity<Object> addRole(@RequestBody RoleModel data) {
+		String result = null;
+		try {
+			result = userservice.addRole(data);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
 	}
 
 	@RequestMapping(value = "/removerole", method = RequestMethod.POST)
-	public String removeRole(@RequestBody RoleModel data) {
-
-		return userservice.removeRoleToUser(data);
+	public ResponseEntity<Object> removeRole(@RequestBody RoleModel data) {
+		String result = null;
+		try {
+			result = userservice.removeRoleToUser(data);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
 	}
 
 	@RequestMapping(value = "/assignrole", method = RequestMethod.POST)
-	public String AddRoleToUser(@RequestBody RoleModel data) {
-		return userservice.addRoleToUser(data);
+	public ResponseEntity<Object> AddRoleToUser(@RequestBody RoleModel data) {
+		String result = null;
+		try {
+			result = userservice.addRoleToUser(data);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
 	}
 
-	@RequestMapping(value="/activeuser",method=RequestMethod.POST)
-	public String activeUser(@RequestBody UserModel data)
-	{
-		return userservice.activeDeactiveUser(data);
-		
+	@RequestMapping(value = "/activeuser", method = RequestMethod.POST)
+	public ResponseEntity<Object> activeUser(@RequestBody UserModel data) {
+		String result = null;
+		try {
+			result = userservice.activeDeactiveUser(data);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
 	}
-	
-	
-	
-	
+
 }

@@ -14,29 +14,27 @@ import com.example.demo.utils.ResponseHandler;
 
 @RestController
 public class DeleteController {
-	
-@Autowired
-DeleteService userDelete;
-@Autowired
-RoleRepository roleData;
-	
-@RequestMapping(value="/deleteById",method=RequestMethod.GET)
-public ResponseEntity<Object> deleteById(@RequestParam("id") Long id)
-{
-	String result=null;
-	try {
-	result=userDelete.deleteById(id);
+
+	@Autowired
+	DeleteService userDelete;
+	@Autowired
+	RoleRepository roleData;
+
+	@RequestMapping(value = "/deleteById", method = RequestMethod.GET)
+	public ResponseEntity<Object> deleteById(@RequestParam("id") Long id) {
+		String result = null;
+		try {
+			result = userDelete.deleteById(id);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
 	}
-	catch (Exception e) {
-		return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false,e.getMessage() , result);
+
+	@RequestMapping(value = "/deleteRole", method = RequestMethod.GET)
+	public void deleteRole(@RequestParam("id") Long id) {
+
+		roleData.delete(id);
 	}
-	return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
-}
-@RequestMapping(value="/deleteRole",method=RequestMethod.GET)
-public void deleteRole(@RequestParam("id") Long id)
-{
-	
-	roleData.delete(id);
-}
 
 }
