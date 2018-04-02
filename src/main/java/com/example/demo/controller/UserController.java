@@ -48,7 +48,7 @@ public class UserController {
 	@RequestMapping(value = "/verifyUser/{otp}", method = RequestMethod.POST)
 	public ResponseEntity<Object> verifySignUp(@RequestBody UserModel user, @PathVariable(value = "otp") Integer otp)
 			throws Exception {
-		userService.verifyUser(user, otp);
+		userService.verifyUser(user,otp);
 		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
 	}
 
@@ -192,7 +192,7 @@ public class UserController {
 		List<UserModel> list;
 
 		try {
-			list = userService.findByNameContaininy(userModel.getUserName());
+			list = userService.findByNameContaininy(userModel.getUserName(), PageRequest.of(1, 2, Direction.ASC, "userName"));
 		} catch (Exception e) {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}

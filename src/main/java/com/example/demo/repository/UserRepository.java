@@ -17,6 +17,6 @@ public interface UserRepository extends CrudRepository <UserModel,Integer>{
 	public UserModel findByEmailAndPassword(String email,String password);
 	public List<UserModel> findAll(Pageable	 pageable);
 	public List<UserModel> findByUserName(String userName,Pageable pageable);
-	public List<UserModel> findByUserNameContaining(String userName);
+	public List<UserModel> findByUserNameContaining(String userName,Pageable pageable);
 	
 }

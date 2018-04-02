@@ -308,8 +308,8 @@ public class UserService implements UserDetailsService {
 		return userRepo.findByUserName(userName, pageRequest);
 	}
 
-	public List<UserModel> findByNameContaininy(String userName) {
-		return userRepo.findByUserNameContaining(userName);
+	public List<UserModel> findByNameContaininy(String userName,PageRequest pageRequest) {
+		return userRepo.findByUserNameContaining(userName,pageRequest);
 	}
 
 	// -----SPRING SECURITY METHOD--------------------------------------
