@@ -25,9 +25,6 @@ public class MyAppUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		
 		 UserModel user = userData.findByUserName(userName);
-		 if (user == null) {
-	            
-	        }
 	        return new org.springframework.security.core.userdetails.User(
 	          user.getUserName(), user.getPassword(),getAuthorities(user.getRole()));
 	    }
@@ -60,26 +57,3 @@ private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
 
 
 
-//UserModel data=userData.findByUserName(userName);
-//GrantedAuthority authority = new SimpleGrantedAuthority("user");
-//UserDetails userDetails = (UserDetails)new User(data.getUserName(),
-//data.getPassword(),Arrays.asList(authority));
-//
-//UserModel data=userData.findByUserName(userName);
-//List<GrantedAuthority> roles1 = new ArrayList<>();
-// List<String> getrole = new ArrayList<>();
-// for (RoleModel role : data.getRole()) {
-//	 getrole.add(role.getUserRole());
-//	 }
-// for(String checkrole:getrole)
-// {
-//	 roles1.add(new SimpleGrantedAuthority(checkrole));
-// }
-// for(GrantedAuthority demo:roles1)
-// {
-//	 System.out.println(demo);
-// }
-//UserDetails userDetails= (UserDetails)new User(data.getUserName(),
-//data.getPassword(),roles1);
-//return userDetails;
-//roles1.add(new SimpleGrantedAuthority(role.getUserRole()));

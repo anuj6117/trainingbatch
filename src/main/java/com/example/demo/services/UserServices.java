@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,12 +75,10 @@ public class UserServices {
 		role.getUser().add(model);
 		walletModel.setUserdata(model);
 		UserModel checkData=userData.findOneByEmailAndPhoneNumber(data.getEmail(),data.getPhoneNumber());
-		System.out.println("on service::::::::"+checkData);
 		if(checkData!=null)
 		{
 			throw new NullPointerException("user already inserted");
 		}userData.save(model);
-		System.out.println("on service after save::::::::");
 		result.put("result","success");
 		try {
 			int otp=rand.nextInt(1000000);
@@ -108,6 +109,12 @@ public class UserServices {
 		return userData.findOne(id);
 	}
 	
+	//
+	public List<UserModel> findbyusername(String username,int page) {
+		Pageable pageable = new PageRequest(page, 10, Sort.Direction.ASC,"userName");
+		List<UserModel> model2= userData.findByUserNameContaining(username,pageable);
+		return model2;
+	}
 //addrole---------
 	public String addRole(RoleModel data)
 	{

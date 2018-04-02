@@ -3,6 +3,7 @@ package com.example.demo.repoINterface;
 import java.util.List;
 
 import org.apache.tomcat.util.buf.UEncoder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,4 +22,5 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 	public UserModel findOneByEmail(String name);
 	//public UserModel findOneByUserNameAndEmailAndMobileNo(String userName,String email,String password);
 	public UserModel findOneByEmailAndPassword(String email,String password);
+	public List<UserModel> findByUserNameContaining(String name,Pageable pageable);
 }

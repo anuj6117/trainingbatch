@@ -44,7 +44,13 @@ public class FindAllUserData {
 		return userData.findById(id);
 			
 	}
-	
+
+	@RequestMapping(value="/showAllByname",method=RequestMethod.GET)
+	public List<UserModel> findbyusername(@RequestParam("name") String name,@RequestParam("page") int page)
+	{
+		
+		return userData.findbyusername(name,page);
+	}
 	@RequestMapping(value="/showAllByRole",method=RequestMethod.GET)
 	@ResponseBody
 	public List<RoleModel> getall()
@@ -53,13 +59,13 @@ public class FindAllUserData {
 	}
 	
 	@RequestMapping(value="/showRoleByUser",method=RequestMethod.GET)
-	@ResponseBody
+	
 	public List<String> getall(@RequestParam("name") String name)
 	{
 		return userData.findRoleByUserName(name);
 	}
 	@RequestMapping(value="/showAllByUserRole",method=RequestMethod.GET)
-	@ResponseBody
+	
 	public List<RoleModel> getallUser(@RequestParam("userRole") String userRole)
 	{
 		return userData.findAllByUserModel(userRole);

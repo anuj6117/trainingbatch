@@ -37,7 +37,7 @@ CoinManagementServices coinData;
 		catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false,e.getMessage() , result);
 		}
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("message").toString(), result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("result").toString(), result);
 		}
 	
 		
@@ -53,7 +53,7 @@ CoinManagementServices coinData;
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false,e.getMessage() , result);
 		}
 		System.out.println(result.get("message").toString());
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("message").toString(), result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("result").toString(), result);
 		
 	}
 	@RequestMapping(value="/deletecurrency",method=RequestMethod.GET)
@@ -68,11 +68,11 @@ CoinManagementServices coinData;
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false,e.getMessage() , result);
 		}
 		System.out.println(result.get("message").toString());
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("message").toString(), result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("result").toString(), result);
 	
 	}
-	@RequestMapping(value="/getallcurrency",method=RequestMethod.POST)
-	private ResponseEntity<Object> getAllCoin(@RequestBody CoinManagementModel data)
+	@RequestMapping(value="/getallcurrency",method=RequestMethod.GET)
+	private ResponseEntity<Object> getAllCoin()
 	{
 	List<CoinManagementModel> result=null;
 		try
