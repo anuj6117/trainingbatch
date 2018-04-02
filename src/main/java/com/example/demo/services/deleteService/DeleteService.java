@@ -25,23 +25,12 @@ public class DeleteService {
 	RoleRepository roalData;
 	public String deleteById(Long id)
 	{
-		UserModel findWallet=userData.findOne(id);
-		if(findWallet==null)
-			return "error";
-		List<WalletModel> findWalletType=findWallet.getWalletModel();
-	for(WalletModel wallet:findWalletType)
-		{
-			walletData.delete(wallet.getId());
+		UserModel record=userData.findOne(id);
+		if(record==null){
+			throw new NullPointerException("id not found");
 		}
-//		List<RoleModel> findRoal=findWallet.getRole();
-//		for(RoleModel role:findRoal)
-//		{
-//			System.out.println(role.getUserRole());
-//		findWallet.getRole().remove(role.getUserRole());
-//		role.getUser().remove(role.getId());
-//		}
 		
-		//userData.delete(id);
+		userData.delete(record.getId());	
 		return "success";
 		
 		}

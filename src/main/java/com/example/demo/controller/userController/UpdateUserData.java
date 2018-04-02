@@ -22,7 +22,7 @@ public String updateUserData(@RequestBody UserDTO data)
 	UserModel model=new UserModel();
 	model.setId(data.getId());
 	model.setUserName(data.getUserName());
-	model.setMobileNo(data.getMobileNo());
+	model.setPhoneNumber(data.getUserName());
 	return update.updateUserData(model);
 	
 }

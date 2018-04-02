@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.example.demo.constant.WalletEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,7 +23,8 @@ private String walletType=WalletEnum.fiat.toString();
 private long randemId;
 @ManyToOne
 @JoinColumn(name = "User_id")
-@JsonIgnore
+//@JsonIgnore
+@JsonBackReference
 private UserModel userdata;
 public long getId() {
 	return id;

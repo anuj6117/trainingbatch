@@ -1,6 +1,9 @@
 package com.example.demo.security;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+import com.example.demo.model.userModel.RoleModel;
 import com.example.demo.model.userModel.UserModel;
 import com.example.demo.repoINterface.UserRepository;
 @Service
@@ -21,19 +24,62 @@ public class MyAppUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		
-		UserModel data=userData.findByUserName(userName);
-		GrantedAuthority authority = new SimpleGrantedAuthority("user");
-		UserDetails userDetails = (UserDetails)new User(data.getUserName(),
-		data.getPassword(),Arrays.asList(authority));
-		return userDetails;
-		/*UserModel data=userData.findByUserName(userName);
-		List<GrantedAuthority> roles = new ArrayList<>();
-		 for (RoleModel role : data.getRole()) {
-			 roles.add(new SimpleGrantedAuthority(role.getUserRole()));
-			 }
-		UserDetails userDetails = (UserDetails)new User(data.getUserName(),
-		data.getPassword(),roles);*/
-	}	
+		 UserModel user = userData.findByUserName(userName);
+		 if (user == null) {
+	            
+	        }
+	        return new org.springframework.security.core.userdetails.User(
+	          user.getUserName(), user.getPassword(),getAuthorities(user.getRole()));
+	    }
+	private Collection<? extends GrantedAuthority> getAuthorities(
+	      Collection<RoleModel> roles) {
+	        return getGrantedAuthorities(getPrivileges(roles));
+	    }
 	
-
+private List<String> getPrivileges(Collection<RoleModel> roles) {
+	  
+    List<String> privileges = new ArrayList<>();
+    for (RoleModel role : roles) {
+    	  privileges.add(role.getUserRole());
+       // System.out.println(role.getUserRole());
+    }
+    return privileges;
 }
+private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    for (String privilege : privileges) {
+    	//System.out.println(privilege);
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+privilege));
+    }
+    return authorities;
+}
+}
+
+
+
+
+
+
+//UserModel data=userData.findByUserName(userName);
+//GrantedAuthority authority = new SimpleGrantedAuthority("user");
+//UserDetails userDetails = (UserDetails)new User(data.getUserName(),
+//data.getPassword(),Arrays.asList(authority));
+//
+//UserModel data=userData.findByUserName(userName);
+//List<GrantedAuthority> roles1 = new ArrayList<>();
+// List<String> getrole = new ArrayList<>();
+// for (RoleModel role : data.getRole()) {
+//	 getrole.add(role.getUserRole());
+//	 }
+// for(String checkrole:getrole)
+// {
+//	 roles1.add(new SimpleGrantedAuthority(checkrole));
+// }
+// for(GrantedAuthority demo:roles1)
+// {
+//	 System.out.println(demo);
+// }
+//UserDetails userDetails= (UserDetails)new User(data.getUserName(),
+//data.getPassword(),roles1);
+//return userDetails;
+//roles1.add(new SimpleGrantedAuthority(role.getUserRole()));

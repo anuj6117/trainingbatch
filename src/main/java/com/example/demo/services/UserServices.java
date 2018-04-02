@@ -1,17 +1,14 @@
 package com.example.demo.services;
 
-import static org.mockito.Mockito.never;
-
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-
-import javax.management.relation.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,7 +43,8 @@ public class UserServices {
 	
 	@Autowired
 	VerifyRepository verifyData;
-	public String saveUserData(UserModel data) {
+	public Map<String,Object> saveUserData(UserModel data) {
+		Map<String,Object> result= new HashMap();
 		Random rand = new Random();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		WalletModel walletModel=new WalletModel();
@@ -57,23 +55,30 @@ public class UserServices {
 	  	Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date today = Calendar.getInstance().getTime(); 
 		String date = formatter.format(today);
+		
 		UserModel model=new UserModel();
 		model.setCountry(data.getCountry());
 		model.setEmail(data.getEmail());
-		model.setMobileNo(data.getMobileNo());
+		model.setPhoneNumber(data.getPhoneNumber());
 		model.setId(data.getId());
-		model.setPassword(passwordEncoder.encode(data.getPassword()));
+		//model.setPassword(passwordEncoder.encode(data.getPassword()));
+		model.setPassword(data.getPassword());
 		model.setUserName(data.getUserName());
-		model.setStatus(data.isStatus());
+		model.setStatus(false);
 		model.setCreatedOn(date);
 		model.getWalletModel().add(walletModel);
 		RoleModel role=roleData.findOneByUserRole("user");
 		model.getRole().add(role);
+		role.getUser().add(model);
 		walletModel.setUserdata(model);
-		UserModel checkData=userData.findOneByEmailAndMobileNo(data.getEmail(),data.getMobileNo());
+		UserModel checkData=userData.findOneByEmailAndPhoneNumber(data.getEmail(),data.getPhoneNumber());
+		System.out.println("on service::::::::"+checkData);
 		if(checkData!=null)
-			return "error";
-		userData.save(model);
+		{
+			throw new NullPointerException("user already inserted");
+		}userData.save(model);
+		System.out.println("on service after save::::::::");
+		result.put("result","success");
 		try {
 			int otp=rand.nextInt(1000000);
 			VerifyModel verify=new VerifyModel();
@@ -81,22 +86,29 @@ public class UserServices {
 			verify.setUserName(model.getUserName());
 			verify.setDate(date);
 			verifyData.save(verify);
-			mailServices.sendMail(data.getEmail(),otp);
+			//mailServices.sendMail(data.getEmail(),otp);
 			//smsServieces.sendSMS(otp);
 		} catch (Exception e) {
 		
 			e.printStackTrace();
 		}
-		return "success";
+		return result;
 	}
 	
 	public List<UserModel> findAll()
 	{
+		List<UserModel> data=userData.findAll();
+		if(data.isEmpty())
+			throw new NullPointerException("data not fond");
 		return userData.findAll();
 		
 	}
+	public UserModel findById(Long id)
+	{
+		return userData.findOne(id);
+	}
 	
-
+//addrole---------
 	public String addRole(RoleModel data)
 	{
 		
@@ -109,14 +121,67 @@ public class UserServices {
 	return "error";
 		}
 	
-	public String addRoleToUser(RoleModel model) {
+	
+//remove user role----------
+	public String removeRoleToUser(RoleModel model) {
+		boolean result=false;
 		UserModel user=userData.findOne(model.getId());
 		RoleModel role=roleData.findOneByUserRole(model.getUserRole());
 		if(user!=null&&role!=null)
 		{
-		user.getRole().add(role);
-		userData.save(user);
-		return "success";
+			List<RoleModel> rolecheck=user.getRole();
+			for(RoleModel role1:rolecheck)
+			{
+				if((role1.getUserRole().equals(role.getUserRole())))
+				{
+					user.getRole().remove(role);
+					result=true;
+				break ;
+				}
+					
+			}
+			if(result)
+			{
+				//user.getRole().add(role);
+				userData.save(user);
+				return "success";
+			}
+//		user.getRole().add(role);
+//		userData.save(user);
+		
+		}
+		return "error";
+		
+				
+	}
+
+	
+//addroletouser---------	
+	public String addRoleToUser(RoleModel model) {
+		boolean result=true;
+		UserModel user=userData.findOne(model.getId());
+		RoleModel role=roleData.findOneByUserRole(model.getUserRole());
+		if(user!=null&&role!=null)
+		{
+			List<RoleModel> rolecheck=user.getRole();
+			for(RoleModel role1:rolecheck)
+			{
+				if((role1.getUserRole().equals(role.getUserRole())))
+				{
+					result=false;
+				break ;
+				}
+					
+			}
+			if(result)
+			{
+				user.getRole().add(role);
+				userData.save(user);
+				return "success";
+			}
+//		user.getRole().add(role);
+//		userData.save(user);
+		
 		}
 		return "error";
 		
@@ -163,6 +228,18 @@ public class UserServices {
 		return user;
 		
 	}
+	//get user Role----
+	public List<String> findRoleByUserName(String name)
+	{
+	UserModel role=userData.findByUserName(name);
+	List<RoleModel> roletype=role.getRole();
+	List<String> roleget=new ArrayList<>();
+	for(RoleModel role1:roletype)
+	{
+		roleget.add(role1.getUserRole());
+	}
+		return roleget;
+	}
 	//-verifyuser-----
 	public String verifyUser(VerifyModel data)
 	{
@@ -173,6 +250,17 @@ public class UserServices {
 		return "success";
 		}
 		return "error";
+	}
+	
+	//avtive and seactive user
+	public String activeDeactiveUser(UserModel data)
+	{
+		UserModel user=userData.findOne(data.getId());
+		if(user==null)
+			return "error";
+		user.setStatus(data.isStatus());
+		userData.save(user);
+		return "sucess";
 	}
 }
 

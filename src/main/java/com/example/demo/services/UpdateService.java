@@ -15,7 +15,7 @@ public class UpdateService {
 	{
 		UserModel model=new UserModel();
 		model=userData.findOne(data.getId());
-		model.setMobileNo(data.getMobileNo());
+		model.setPhoneNumber(data.getPhoneNumber());
 		model=userData.save(model);
 		if(model!=null)
 		return "success";

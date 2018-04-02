@@ -26,18 +26,10 @@ public String addWalletToUser(WalletModel data)
     boolean check=true;
     long randemId = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
 	UserModel userModel=userData.findOne(data.getId());
-	WalletModel walletModel=new WalletModel();
-	walletModel.setBalance(data.getBalance());
-	walletModel.setWalletType(data.getWalletType());
-	walletModel.setShadoBalance(data.getBalance());
-	walletModel.setUserdata(userModel);
-	walletModel.setRandemId(randemId);
-	userModel.getWalletModel().add(walletModel);
 	List<WalletModel> walletTypeOfuser=userModel.getWalletModel();
 	for(WalletModel getwallrttype:walletTypeOfuser)
 	{
-		String walletType=getwallrttype.getWalletType();
-		if(data.getWalletType()==walletType)
+		if(data.getWalletType().equals(getwallrttype.getWalletType()))
 			{
 			check=false;
 		break;
@@ -45,6 +37,13 @@ public String addWalletToUser(WalletModel data)
 	}
 	if(check)
 	{
+		WalletModel walletModel=new WalletModel();
+		walletModel.setBalance(data.getBalance());
+		walletModel.setWalletType(data.getWalletType());
+		walletModel.setShadoBalance(data.getBalance());
+		walletModel.setUserdata(userModel);
+		walletModel.setRandemId(randemId);
+		userModel.getWalletModel().add(walletModel);
 		UserModel result=userData.save(userModel);
 		if(result!=null)
 			return "success";

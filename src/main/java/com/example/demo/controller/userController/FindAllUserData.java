@@ -3,7 +3,8 @@ package com.example.demo.controller.userController;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,17 +15,34 @@ import com.example.demo.dto.roleDTO.RoleDTO;
 import com.example.demo.model.userModel.RoleModel;
 import com.example.demo.model.userModel.UserModel;
 import com.example.demo.services.UserServices;
+import com.example.demo.utils.ResponseHandler;
 
 @RestController
 public class FindAllUserData {
-
+	
 	@Autowired 
 	UserServices userData;
 	
-	@RequestMapping(value="/showAll",method=RequestMethod.GET)
+	@RequestMapping(value="/getallusers",method=RequestMethod.GET)
+	public ResponseEntity<Object> getAll(){
+		List<UserModel> result=null;
+		  try
+		  {
+			  result= userData.findAll();
+		  }	
+		  catch(Exception e)
+		  {
+			  return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false,e.getMessage() , result);
+		  }
+		  return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+	}
+	
+	@RequestMapping(value="/getusersbyid",method=RequestMethod.GET)
 	@ResponseBody
-	public List<UserModel> getAll(){
-		return userData.findAll();
+	public UserModel getAll(@RequestParam("id") Long id){
+		
+		return userData.findById(id);
+			
 	}
 	
 	@RequestMapping(value="/showAllByRole",method=RequestMethod.GET)
@@ -34,6 +52,12 @@ public class FindAllUserData {
 		return userData.findAllUserModel();
 	}
 	
+	@RequestMapping(value="/showRoleByUser",method=RequestMethod.GET)
+	@ResponseBody
+	public List<String> getall(@RequestParam("name") String name)
+	{
+		return userData.findRoleByUserName(name);
+	}
 	@RequestMapping(value="/showAllByUserRole",method=RequestMethod.GET)
 	@ResponseBody
 	public List<RoleModel> getallUser(@RequestParam("userRole") String userRole)
@@ -47,5 +71,8 @@ public class FindAllUserData {
 		return userData.findAllRole();
 		
 	}
+	
+	
+	
 
 }

@@ -1,10 +1,8 @@
 package com.example.demo.model.userModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,11 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -28,18 +22,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 //@Table(name="user")
-public class UserModel  {
+//@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class)
+public class UserModel implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(unique = true)
+	//@Column(unique = true)
 	private String userName;
 	@Column(unique = true)
 	private String email;
 	@Column(unique = true)
-	private String mobileNo;
+	private String phoneNumber;
 	private boolean status;
 	private String country;
 	private String password;
@@ -52,21 +47,25 @@ public class UserModel  {
 	public void setWalletModel(List<WalletModel> walletModel) {
 		WalletModel = walletModel;
 	}
-	@ManyToMany(
-            cascade = {
-                    CascadeType.ALL
-                })
+//	@ManyToMany(
+//            cascade = {
+//                    CascadeType.ALL
+//                })
+	
+	@ManyToMany(cascade = CascadeType.MERGE,fetch=FetchType.EAGER)
 	@JoinTable(
 			name="user_role",
 			joinColumns= {@JoinColumn(name="user_id")},
 			inverseJoinColumns= {@JoinColumn(name="role_id")}
 			)
-	@JsonIgnore
+	
 	private List<RoleModel> role=new ArrayList<>();
+	
 
 	public List<RoleModel> getRole() {
 		return role;
 	}
+	//@JsonIgnore
 	public void setRole(List<RoleModel> role) {
 		this.role = role;
 	}
@@ -95,11 +94,12 @@ public class UserModel  {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getMobileNo() {
-		return mobileNo;
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 	public boolean isStatus() {
 		return status;

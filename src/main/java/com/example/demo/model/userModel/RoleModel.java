@@ -1,26 +1,24 @@
 package com.example.demo.model.userModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
 @Table(name="role")
-public class RoleModel {
+//@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class)
+public class RoleModel implements Serializable{
 
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -45,10 +43,12 @@ public void setId(long id) {
 	this.id = id;
 }
 
+@JsonIgnore
 public List<UserModel> getUser() {
 	return user;
 }
 
+//@JsonIgnore
 public void setUser(List<UserModel> user) {
 	this.user = user;
 }

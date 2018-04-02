@@ -21,13 +21,13 @@ public class WalletController {
 		
 	}
 	
-	@RequestMapping(value="/addMonetInWallet",method=RequestMethod.POST)
+	@RequestMapping(value="/addMoneyInWallet",method=RequestMethod.POST)
 	public String addMoneyInWallet(@RequestBody WalletModel data)
 	{
 		return walletData.AddMoneyInWallet(data);
 	}
 	
-	@RequestMapping(value="/withdrawMonetInWallet",method=RequestMethod.POST)
+	@RequestMapping(value="/withdrawMoneyInWallet",method=RequestMethod.POST)
 	public String withdrawMoneyInWallet(@RequestBody WalletModel data)
 	{
 		return walletData.withdrawMoneyInWallet(data);
