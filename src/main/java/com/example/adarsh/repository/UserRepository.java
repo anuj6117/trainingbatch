@@ -8,4 +8,6 @@ import com.example.adarsh.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Serializable> {
 
+	public User findByEmail(String email);
+
 }

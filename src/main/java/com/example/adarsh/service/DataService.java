@@ -30,17 +30,17 @@ public class DataService {
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date today = Calendar.getInstance().getTime();
 		String date = formatter.format(today);
+		
 		User user1 = new User();
 		user1.setUserName(user.getUserName());
 		user1.setCountry(user.getCountry());
 		user1.setPhoneNumber(user.getPhoneNumber());
 		user1.setEmail(user.getEmail());
 		user1.setPassword(user.getPassword());
-		user1.setIsActive(user.getIsActive());
 		user1.setPassword(user.getPassword());
 		user1.setDate(date);
 		return userRepository.save(user1);
-
+		
 	}
 
 	public List<User> getAllUsers() {
