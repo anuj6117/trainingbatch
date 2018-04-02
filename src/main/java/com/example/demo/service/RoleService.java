@@ -12,16 +12,17 @@ import com.example.demo.repository.RoleRepository;
 
 @Service
 public class RoleService {
-	
+
 	@Autowired
 	private RoleRepository roleRepo;
-	
-	public List<RoleModel> getAllDetails(){
+
+	public List<RoleModel> getAllDetails() {
 		List<RoleModel> roleDetails = new ArrayList<RoleModel>();
 		roleRepo.findAll().forEach(roleDetails::add);
 		return roleDetails;
 	}
-	public void addRole() { 
+
+	public void addRole() {
 		int i = 1;
 		RoleModel roleModel = new RoleModel();
 		for (RoleEnum type : RoleEnum.values()) {
@@ -31,11 +32,13 @@ public class RoleService {
 			roleRepo.save(roleModel);
 			i++;
 		}
-		
+
 	}
+
 	public void deleteUser(int id) {
 		roleRepo.deleteById(id);
 	}
+
 	public void updateUser(String id, RoleModel model) {
 		roleRepo.save(model);
 	}

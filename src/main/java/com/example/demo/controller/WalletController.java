@@ -13,22 +13,23 @@ import com.example.demo.service.WalletService;
 @RestController
 @RequestMapping("/wallet")
 public class WalletController {
-	
+
 	@Autowired
 	private WalletService walletService;
-	
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public void add(@RequestBody WalletModel walletModel) {
 		walletService.addWallet(walletModel);
 	}
+
 	@RequestMapping(value = "/withdraw/{id}/{amount}", method = RequestMethod.POST)
-	public void withdraw(@PathVariable(value = "id") int walletId,@PathVariable(value = "amount") float amount) {
-		walletService.withdrawWallet(walletId,amount);
+	public void withdraw(@PathVariable(value = "id") int walletId, @PathVariable(value = "amount") float amount) {
+		walletService.withdrawWallet(walletId, amount);
 	}
-	
+
 	@RequestMapping(value = "/deposit/{id}/{amount}", method = RequestMethod.POST)
-	public void deposit(@PathVariable(value = "id") int walletId,@PathVariable(value = "amount") float amount) {
-		walletService.depositWallet(walletId,amount);
+	public void deposit(@PathVariable(value = "id") int walletId, @PathVariable(value = "amount") float amount) {
+		walletService.depositWallet(walletId, amount);
 	}
 
 }

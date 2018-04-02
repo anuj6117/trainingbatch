@@ -14,24 +14,23 @@ import com.example.demo.service.RoleService;
 @RestController
 @RequestMapping("/role")
 public class RoleController {
-	
+
 	@Autowired
 	private RoleService roleService;
-	
+
 	@RequestMapping(value = "/getAllDetail", method = RequestMethod.GET)
-	public List<RoleModel> getAllDetail(){
+	public List<RoleModel> getAllDetail() {
 		return roleService.getAllDetails();
 	}
-	
-	@RequestMapping(value ="/addrole", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/addrole", method = RequestMethod.POST)
 	public void add() {
 		roleService.addRole();
 	}
-	 
-	
+
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public void delete(Integer id) {
 		roleService.deleteUser(id);
 	}
-	
+
 }

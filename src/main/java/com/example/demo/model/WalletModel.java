@@ -24,7 +24,6 @@ public class WalletModel {
 	private float shadowBalance=0;
 	private String walletType = WalletEnum.Fiate.toString();
 	private int walletHash;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
 	@JsonIgnore

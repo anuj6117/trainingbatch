@@ -56,22 +56,7 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private JavaMailSender sender1;
-	
-	
-	
-	
-	
-	public List<UserModel> findAllPagination(PageRequest pageRequest){
-		return userRepo.findAll(pageRequest);
-	}
 
-	public List<UserModel> findByName(String userName,PageRequest pageRequest){
-		return userRepo.findByUserName(userName,pageRequest);
-	}
-	
-	public List<UserModel> findByNameContaininy(String userName){
-		return userRepo.findByUserNameContaining(userName);
-	}
 	// ------------------------SIGN UP---------------------------------
 	// Add New User
 	// @Secured({"admin","user"})
@@ -79,12 +64,12 @@ public class UserService implements UserDetailsService {
 
 		UserModel user = userRepo.findByEmail(userModel.getEmail());
 		if (user == null) {
-			if(!(userModel.getPassword().equalsIgnoreCase(""))) {
+			if (!(userModel.getPassword().equalsIgnoreCase(""))) {
 				userModel.setCreatedOn(new Date());
 				userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
 				Set<RoleModel> roleModel = addDefaultRole(RoleEnum.ROLE_USER.toString());
 				userModel.setRoleType(roleModel);
-				
+
 				userRepo.save(userModel);
 				addWallet(userModel);
 				Integer otpNum = Utility.generateId(1000);
@@ -94,12 +79,11 @@ public class UserService implements UserDetailsService {
 				// userModel.getUserName(),sender1);
 				// OTPController.sendSMS(userModel.getMobile().toString(),otpNum.toString());
 				return "success";
-			}
-			else {
+			} else {
 				System.out.println("----------------------azsxdfghjkl");
 				throw new Exception("Password Cannot be null");
 			}
-		
+
 		} else {
 			throw new Exception("Email cannot be null");
 		}
@@ -154,9 +138,9 @@ public class UserService implements UserDetailsService {
 	// ----------------FOR USER LOGIN------------------------
 	// For User Login
 	public UserModel getUser(UserModel u) {
-		
+
 		UserModel userOp = userRepo.findByEmailAndPassword(u.getEmail(), u.getPassword());
-		System.out.println(userOp.getEmail()+"-------------------");
+		System.out.println(userOp.getEmail() + "-------------------");
 		return userOp;
 	}
 
@@ -312,6 +296,20 @@ public class UserService implements UserDetailsService {
 		List<UserModel> userDetails = new ArrayList<UserModel>();
 		userRepo.findAll().forEach(userDetails::add);
 		return userDetails;
+	}
+
+	// --------------------PAGINATION METHODS/LIKE METHODS----------------
+
+	public List<UserModel> findAllPagination(PageRequest pageRequest) {
+		return userRepo.findAll(pageRequest);
+	}
+
+	public List<UserModel> findByName(String userName, PageRequest pageRequest) {
+		return userRepo.findByUserName(userName, pageRequest);
+	}
+
+	public List<UserModel> findByNameContaininy(String userName) {
+		return userRepo.findByUserNameContaining(userName);
 	}
 
 	// -----SPRING SECURITY METHOD--------------------------------------

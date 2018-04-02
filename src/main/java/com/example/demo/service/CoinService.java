@@ -17,10 +17,9 @@ public class CoinService {
 	private CoinRepository coinRepo;
 
 	public Boolean addCoin(CoinModel coinModel) {
-		if(coinModel.getCoinName().equals(null)) {
+		if (coinModel.getCoinName().equals(null)) {
 			return false;
-		}
-		else {
+		} else {
 			coinRepo.save(coinModel);
 			return true;
 		}
@@ -52,18 +51,16 @@ public class CoinService {
 	}
 
 	public String deleteCoin(CoinModel coinModel) {
-		try { 
-			if(coinModel.getCoinId() > 0){
+		try {
+			if (coinModel.getCoinId() > 0) {
 				coinRepo.deleteById(coinModel.getCoinId());
 				return "success";
-			}
-			else  {
+			} else {
 				return "Enter the Coin Id first";
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			return null;
-		}	
+		}
 	}
 
 }
