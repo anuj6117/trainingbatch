@@ -70,12 +70,14 @@ public class UserServices {
 		model.setCreatedOn(date);
 		model.getWalletModel().add(walletModel);
 		RoleModel role = roleData.findOneByUserRole("user");
+		if(role==null)
+			throw new RuntimeException("role not found");
 		model.getRole().add(role);
 		role.getUser().add(model);
 		walletModel.setUserdata(model);
 		UserModel checkData = userData.findOneByEmailAndPhoneNumber(data.getEmail(), data.getPhoneNumber());
 		if (checkData != null) {
-			throw new NullPointerException("user already inserted");
+			throw new NullPointerException("user already inserted Email and PhoneNumber change ");
 		}
 		userData.save(model);
 		result.put("result", "success");

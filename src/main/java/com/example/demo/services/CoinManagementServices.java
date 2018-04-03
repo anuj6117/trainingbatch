@@ -45,6 +45,7 @@ public class CoinManagementServices {
 		if (model == null)
 			throw new NullPointerException("currency not matched");
 		model.setPrice(data.getPrice());
+		model.setInitialSupply(data.getInitialSupply());
 		CoinManagementModel coinresult = coinDate.save(model);
 
 		result.put("result", "success");

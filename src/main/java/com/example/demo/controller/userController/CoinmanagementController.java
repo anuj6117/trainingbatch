@@ -44,7 +44,6 @@ public class CoinmanagementController {
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
-		System.out.println(result.get("message").toString());
 		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("result").toString(), result);
 
 	}
@@ -57,8 +56,7 @@ public class CoinmanagementController {
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
-		System.out.println(result.get("message").toString());
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("result").toString(), result);
+	return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 
 	}
 
