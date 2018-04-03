@@ -9,6 +9,7 @@ import {MainService} from './../service/mainService'
 export class UserviewComponent implements OnInit {
    public isShowMenu: string = "";
    public userDetail: any = [];
+   public isActiveMenu: any;
    
   constructor(private mainService:MainService) { }
 
@@ -36,6 +37,10 @@ export class UserviewComponent implements OnInit {
       //  console.log("succes",succes);
       //  this.toasterService.pop('success', 'Success!', "You have successfully created your account!")
       })
+  }
+
+  getCurrentValue(value){
+    this.isActiveMenu = value;
   }
 
   myAccFunc(type){

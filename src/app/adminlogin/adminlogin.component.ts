@@ -12,12 +12,9 @@ export class AdminloginComponent implements OnInit {
   constructor(private mainService:MainService) { }
 
   ngOnInit() {
-    console.log(this.mainService.obj);
-    console.log(this.mainService.succes());
     this.mainService.overallDetails().subscribe(
       succes=>
       {
-        console.log('succes',succes)
       })
   }
 

@@ -1,84 +1,99 @@
-
 <nav class="navbar navbar-inverse navbar-new">
-    <div class="container">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand logo-padding" href="#"><img src="./assets/images/logo.png"/></a>
+  <div class="container">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand logo-padding" href="#">
+          <img src="./assets/images/logo.png" />
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a routerLink="/signup">
+            <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+        </li>
+        <li>
+          <a routerLink="/login">
+            <span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+        </li>
+        <li>
+          <a routerLink="/adminlogin">
+            <span class="glyphicon glyphicon-user"></span>Admin</a>
+        </li>
+      </ul>
     </div>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
-      <li><a routerLink="/adminlogin"><span class="glyphicon glyphicon-user"></span>Admin</a></li>
-    </ul>
   </div>
-</div>
 </nav>
 
 
 
 <div class="row">
-<div class="col-sm-12" id="banner">
-	
-	<div id="background"><div class="banner-image"></div></div>
-	
-	<section class="dark center">
-	<div class="header ">
-	
-	
-            <form  (ngSubmit)="submitSignin()" #loginForm="ngForm" method="post" name="Login_Form" class="form-signin">       
-                    <h3 class="form-signin-heading">Welcome Back! Please Sign In</h3>
-                      <hr class="colorgraph"><br>
-                      
-       <input [(ngModel)]="SignInData.email"  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" 
-        #username="ngModel" type="email" required
-                        name="em" placeholder="Email" [ngClass]="{'error':username.errors && username.touched}" class="form-control placeholder-padding" id="inputEmail3" required="" autofocus="">
-                       
-                        <div *ngIf="username.errors && username.touched" class="red error">
-                              <div *ngIf="username.errors.required">This is required field.</div>
-                              <div *ngIf="username.errors.pattern">Email is invalid</div> 
-                            </div>
-  
-                      
-                            
+  <div class="col-sm-12" id="banner">
 
-                      <input [(ngModel)]="SignInData.password" #pwd="ngModel" name="pwd"
-                      [ngClass]="{'errors':pwd.errors && pwd.touched}" class="form-control placeholder-padding" type="password" placeholder="Password" required>     		  
-           
-                      <div *ngIf="pwd.errors && pwd.touched" class="red error">
-                            <div *ngIf="pwd.errors.required">This is required field.</div>
-                              
-                            </div>
-                            
-                      <br>
-                      <div class="form-group">
-                          <div class="col-sm-6" style="padding-left:0px;">
-                            <div class="checkbox" style="margin-top: 0px;">
-                              <label>
-                                <input type="checkbox"> Remember me
-                              </label>
-                            </div>
-                          </div>
-                          <div class="col-sm-6" style="text-align:right;">
-                        
-                                  <label>
-                                <a style="cursor: pointer;color:#a74242;text-decoration: none;" routerLink="/forgetPassword"> Forget Password?</a>
-                                  </label>
-                              </div>
-                       
-                            </div>
-                      
+    <div id="background">
+      <div class="banner-image"></div>
+    </div>
 
-                      <button type="submit" [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit">Login</button>  			
-                      <div class="col-sm-12 margin-top form-group">
-                                                    <label>
-                           Not a member? <a routerLink="/signup" style="color:blue;cursor: pointer;">Sign Up</a> here
-                            </label>
-                        </div>
-                    </form>
-            
+    <section class="dark center">
+      <div class="header ">
+
+
+        <form (ngSubmit)="submitSignin()" #loginForm="ngForm" method="post" name="Login_Form" class="form-signin">
+          <h3 class="form-signin-heading">Welcome Back! Please Sign In</h3>
+          <hr class="colorgraph">
+          <br>
+
+          <input [(ngModel)]="SignInData.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #username="ngModel" type="email"
+            required name="em" placeholder="Email" [ngClass]="{'error':username.errors && username.touched}" class="form-control placeholder-padding"
+            id="inputEmail3" required="" autofocus="">
+
+          <div *ngIf="username.errors && username.touched" class="red error">
+            <div *ngIf="username.errors.required">This is required field.</div>
+            <div *ngIf="username.errors.pattern">Email is invalid</div>
+          </div>
+
+
+
+
+          <input [(ngModel)]="SignInData.password" #pwd="ngModel" name="pwd" [ngClass]="{'errors':pwd.errors && pwd.touched}" class="form-control placeholder-padding"
+            type="password" placeholder="Password" required>
+
+          <div *ngIf="pwd.errors && pwd.touched" class="red error">
+            <div *ngIf="pwd.errors.required">This is required field.</div>
+
+          </div>
+
+          <br>
+          <div class="form-group">
+            <div class="col-sm-6" style="padding-left:0px;">
+              <div class="checkbox" style="margin-top: 0px;">
+                <label>
+                  <input type="checkbox"> Remember me
+                </label>
+              </div>
             </div>
-	
-	</section>
-	
-	</div>
+            <div class="col-sm-6" style="text-align:right;">
+
+              <label>
+                <a style="cursor: pointer;color:#a74242;text-decoration: none;" routerLink="/forgetPassword"> Forget Password?</a>
+              </label>
+            </div>
+
+          </div>
+
+
+          <button type="submit" [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block" name="Submit" value="Login"
+            type="Submit">Login</button>
+          <div class="col-sm-12 margin-top form-group">
+            <label>
+              Not a member?
+              <a routerLink="/signup" style="color:blue;cursor: pointer;">Sign Up</a> here
+            </label>
+          </div>
+        </form>
+
+      </div>
+
+    </section>
+
+  </div>
 </div>

@@ -25,6 +25,8 @@ import { UserviewComponent } from './userview/userview.component';
 import { UserdashboardComponent } from './userdashboard/userdashboard.component';
 import { AddcoinComponent } from './addcoin/addcoin.component';
 import { ViewcoinComponent } from './viewcoin/viewcoin.component';
+import { EditcoinComponent } from './editcoin/editcoin.component';
+
 
 const appRoutes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -43,6 +45,7 @@ const appRoutes: Routes = [
    { path: 'addcoin', component: AddcoinComponent },
  { path: 'userdashboard', component: UserdashboardComponent },
  { path: 'viewcoin', component: ViewcoinComponent },
+ { path: 'editcoin', component: EditcoinComponent },
    { path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full'

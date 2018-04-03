@@ -1,140 +1,146 @@
-
 <nav class="navbar navbar-inverse navbar-new">
-        <div class="container">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand logo-padding" href="#"><img src="./assets/images/logo.png"/></a>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-          <li><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
-          <li><a routerLink="/adminlogin"><span class="glyphicon glyphicon-user"></span>Admin</a></li>
-        </ul>
+  <div class="container">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand logo-padding" href="#">
+          <img src="./assets/images/logo.png" />
+        </a>
       </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a routerLink="/signup">
+            <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+        </li>
+        <li>
+          <a routerLink="/login">
+            <span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+        </li>
+        <li>
+          <a routerLink="/adminlogin">
+            <span class="glyphicon glyphicon-user"></span>Admin</a>
+        </li>
+      </ul>
     </div>
-    </nav>
-    
-    
+  </div>
+</nav>
 
-<div class="row"><div class="col-sm-12" id="banner">
-	
-      <div id="background"><div class="banner-image"></div></div>
-      
-      <section class="dark center">
+
+
+<div class="row">
+  <div class="col-sm-12" id="banner">
+
+    <div id="background">
+      <div class="banner-image"></div>
+    </div>
+
+    <section class="dark center">
       <div class="header ">
-      
-      
-                <form (ngSubmit)="submitSignup()" #loginForm="ngForm" class="form-signin">       
-                        <h3 class="form-signin-heading">Welcome! Sign Up To Continue</h3>
-                          <hr class="colorgraph"><br>
-                          
-                         
-                          <input [(ngModel)]="signUpData.userName" #flname="ngModel" type="text"
-                          name="flname" placeholder="Full Name" maxlength="25" 
-                          [ngClass]="{'error':flname.errors && flname.touched}" 
-                          class="form-control placeholder-padding" id="fl3" 
-                          required>
-                         
-                          <div *ngIf="flname.errors && flname.touched" class="red error">
-                                <div *ngIf="flname.errors.required">This is required field.</div>
-                                <div *ngIf="flname.errors.maxlength">maximum 25 characters should be allowed</div>
-                                </div>
-                          
-                          
-                          
-                          
-                                
-                          <input [(ngModel)]="signUpData.email" #email="ngModel" type="email"
-                          name="email" placeholder="Email" 
-                          [ngClass]="{'error':email.errors && email.touched}" 
-                          class="form-control placeholder-padding" id="inputEmail3" required="" 
-                          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-                         
-                          <div *ngIf="email.errors && email.touched" class="red error">
-                                <div *ngIf="email.errors.required">This is required field.</div>
-                                
-                            
-                                <div *ngIf="email.errors.pattern">Email is invalid</div>
-                              </div>
-    
-                        
-                              
 
-                              <input [(ngModel)]="signUpData.mobileNo" #number="ngModel" type="text"
-                              name="number" placeholder="Contact Number" 
-                              [ngClass]="{'error':number.errors && number.touched}" maxlength="10" 
-                              class="form-control placeholder-padding" id="inputNumber" required="" 
-                              pattern="(7|8|9)\d{9}">
-                             
-                              <div *ngIf="number.errors && number.touched" class="red error">
-                                    <div *ngIf="number.errors.required">This is required jjjjj field.</div>
-                                   
-                                    <div *ngIf="number.errors.pattern">invalid contact Number</div>
-                                   
-                                  </div>
-        
+
+        <form (ngSubmit)="submitSignup()" #loginForm="ngForm" class="form-signin">
+          <h3 class="form-signin-heading">Welcome! Sign Up To Continue</h3>
+          <hr class="colorgraph">
+          <br>
+
+
+          <input [(ngModel)]="signUpData.userName" #flname="ngModel" type="text" name="flname" placeholder="Full Name" maxlength="25"
+            [ngClass]="{'error':flname.errors && flname.touched}" class="form-control placeholder-padding" id="fl3" required>
+
+          <div *ngIf="flname.errors && flname.touched" class="red error">
+            <div *ngIf="flname.errors.required">This is required field.</div>
+            <div *ngIf="flname.errors.maxlength">maximum 25 characters should be allowed</div>
+          </div>
 
 
 
 
 
-                                
-                                
-                              <select style="padding-left: 3px;margin-bottom:10px;" #country="ngModel" [ngClass]="{'error':country.errors && country.touched}" required class="form-control" name="country" [(ngModel)]="signUpData.country">
-                                          <option value="" selected>Please select country.</option>
-                                           <option value="india">India</option>
-                                            <option value="usa">USA</option>   
-                                          </select>
-                                          <div *ngIf="country.errors && country.touched" class="red error">
-                                                      <div *ngIf="country.errors.required">This is required field.</div>
-                                                      
-                                                    </div>
+          <input [(ngModel)]="signUpData.email" #email="ngModel" type="email" name="email" placeholder="Email" [ngClass]="{'error':email.errors && email.touched}"
+            class="form-control placeholder-padding" id="inputEmail3" required="" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
 
-                                          <input type="password" [ngClass]="{'error':password.errors && password.touched}" validateEqual="confirmPassword" reverse="true" title="Please enter a password containing at-least one capital letter, number, and special character (The only special characters allowed are @#$%^)"
-                                          pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^])[A-Za-z\d@#$%^]{4,}$" minlength="6" name="password"
-                                          #password="ngModel" [(ngModel)]="signUpData.password" class="form-control placeholder-padding" placeholder="Password" required>
-                                         
-                                          <div *ngIf="password.errors && password.touched" class="red error">
-                                                      <div [hidden]="!password.errors.required">Please enter password</div>
-                                                      <div [hidden]="!password.errors.pattern">
-                                                          Please enter valid password
-                                                      </div>
-                                                      <div [hidden]="!password.errors.minlength || password.errors.pattern">
-                                                          Password length should be atleast 6 characters long
-                                                      </div>
-                                                </div>
-                                    
-                              
-                                                    <input [ngClass]="{'error':confirmPassword.errors && confirmPassword.touched}" type="password" autocomplete="off" validateEqual="password" reverse="false" name="confirmPassword" #confirmPassword="ngModel"
-                                                        [(ngModel)]="confirmPasswords" class="form-control placeholder-padding" placeholder="Confirm Password" required>
-                                                
-                                                    <div class="red error" [hidden]="(confirmPassword.valid || (confirmPassword.pristine && !loginForm.submitted))">confirm password does not match with password.</div>
-                                                                                  
-                        
+          <div *ngIf="email.errors && email.touched" class="red error">
+            <div *ngIf="email.errors.required">This is required field.</div>
+
+
+            <div *ngIf="email.errors.pattern">Email is invalid</div>
+          </div>
+
+
+
+
+          <input [(ngModel)]="signUpData.mobileNo" #number="ngModel" type="text" name="number" placeholder="Contact Number" [ngClass]="{'error':number.errors && number.touched}"
+            maxlength="10" class="form-control placeholder-padding" id="inputNumber" required="" pattern="(7|8|9)\d{9}">
+
+          <div *ngIf="number.errors && number.touched" class="red error">
+            <div *ngIf="number.errors.required">This is required jjjjj field.</div>
+
+            <div *ngIf="number.errors.pattern">invalid contact Number</div>
+
+          </div>
 
 
 
 
 
-                                    
-  
-  <br>
-  
-                          <button type="submit" [disabled]="submitSignup.invalid"
-                           class="btn btn-lg btn-primary btn-block" name="Submit" 
-                           value="Login" type="Submit">Sign Up</button>  			
-                          <div class="col-sm-12 margin-top form-group">
-                                                        <label>
-                               Already a member? <a routerLink="/login" style="color:blue;cursor: pointer;">Sign In</a> here
-                                </label>
-                            </div>
-                        </form>
-                
-                </div>
-      
-      </section>
-      
-      </div>
+
+
+
+          <select style="padding-left: 3px;margin-bottom:10px;" #country="ngModel" [ngClass]="{'error':country.errors && country.touched}"
+            required class="form-control" name="country" [(ngModel)]="signUpData.country">
+            <option value="" selected>Please select country.</option>
+            <option value="india">India</option>
+            <option value="usa">USA</option>
+          </select>
+          <div *ngIf="country.errors && country.touched" class="red error">
+            <div *ngIf="country.errors.required">This is required field.</div>
+
+          </div>
+
+          <input type="password" [ngClass]="{'error':password.errors && password.touched}" validateEqual="confirmPassword" reverse="true"
+            title="Please enter a password containing at-least one capital letter, number, and special character (The only special characters allowed are @#$%^)"
+            pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^])[A-Za-z\d@#$%^]{4,}$" minlength="6" name="password" #password="ngModel"
+            [(ngModel)]="signUpData.password" class="form-control placeholder-padding" placeholder="Password" required>
+
+          <div *ngIf="password.errors && password.touched" class="red error">
+            <div [hidden]="!password.errors.required">Please enter password</div>
+            <div [hidden]="!password.errors.pattern">
+              Please enter valid password
+            </div>
+            <div [hidden]="!password.errors.minlength || password.errors.pattern">
+              Password length should be atleast 6 characters long
+            </div>
+          </div>
+
+
+          <input [ngClass]="{'error':confirmPassword.errors && confirmPassword.touched}" type="password" autocomplete="off" validateEqual="password"
+            reverse="false" name="confirmPassword" #confirmPassword="ngModel" [(ngModel)]="confirmPasswords" class="form-control placeholder-padding"
+            placeholder="Confirm Password" required>
+
+          <div class="red error" [hidden]="(confirmPassword.valid || (confirmPassword.pristine && !loginForm.submitted))">confirm password does not match with password.</div>
+
+
+
+
+
+
+
+
+
+          <br>
+
+          <button type="submit" [disabled]="submitSignup.invalid" class="btn btn-lg btn-primary btn-block" name="Submit" value="Login"
+            type="Submit">Sign Up</button>
+          <div class="col-sm-12 margin-top form-group">
+            <label>
+              Already a member?
+              <a routerLink="/login" style="color:blue;cursor: pointer;">Sign In</a> here
+            </label>
+          </div>
+        </form>
+
       </div>
 
-      
+    </section>
+
+  </div>
+</div>

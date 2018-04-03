@@ -4,46 +4,34 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 @Injectable()
-export class MainService  {
+export class MainService {
 
-    constructor(private http:Http) { }
-    obj={
-      id:1,
-      userName:'Shambhavi',
-      designation:'Front-End Developre'
-    }
-    succes()
-    {
-      return "Function Access Successfully"
-    }
-    overallDetails() {
-		return this.http.get('https://jsonplaceholder.typicode.com/posts').map(res => res.json());
+  constructor(private http: Http) { 
   }
-  submitSignup(signUpData){
-    
-      // console.log('fromData',fromData);
-      // let data:any = {
-      //         "userName": fromData.fullName,
-      //         "email": fromData.email,
-      //         "password":fromData.password,
-      //         "country":fromData.country,
-      //         "mobileNo" :fromData.number
-      // }
-         return this.http.post('http://192.168.9.180:8181/signup', signUpData);
-    
-        }
-        submitSignin(SignInData){
-    
-          // console.log('fromData',fromData);
-          // let data:any = {
-          //         "userName": fromData.fullName,
-          //         "email": fromData.email,
-                  
-          // }
-             return this.http.post('http://192.168.9.180:8080/userlogin', SignInData);
-        }
+  succes() {
+    return "Function Access Successfully"
+  }
+  overallDetails() {
+    return this.http.get('https://jsonplaceholder.typicode.com/posts').map(res => res.json());
+  }
+  submitSignup(signUpData) {
 
-        getViewUser(){
-          return this.http.get('http://192.168.9.200:8080/getallusers');
-        }
+
+    return this.http.post('http://192.168.9.180:8181/signup', signUpData).map(res => res.json());
+
   }
+  submitNewCurrency(AddCoinData) {
+
+
+    return this.http.post('http://192.168.9.180:8181/addcurrency', AddCoinData).map(res => res.json());
+
+  }
+  submitSignin(SignInData) {
+
+    return this.http.post('http://192.168.9.180:8080/userlogin', SignInData).map(res => res.json());
+  }
+
+  getViewUser() {
+    return this.http.get('http://192.168.9.200:8080/getallusers').map(res => res.json());
+  }
+}

@@ -10,15 +10,15 @@
     </div>
     </nav>
 
-<div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:200px;position: absolute !important;background-color:#007b5e !important;">
-  <a href="#" class="w3-bar-item w3-button">Payment</a>
+<div class="manu-margin w3-sidebar w3-bar-block w3-light-grey w3-card">
+  <a href="#" class="w3-bar-item w3-button" [class.active-menu]="isActiveMenu == 'userManagement'">Payment</a>
   <button class="w3-button w3-block w3-left-align" (click)="myAccFunc('coinManagement')">
         Coin Management <i class="fa fa-caret-down"></i>
         </button>
         <div id="demoAcc" class="w3-hide w3-white w3-card" style="
-        background-color: #007b5e !important;" [class.show-menu]="isShowMenu == 'coinManagement'" >
+        background-color:#dcd1d1 !important;" [class.show-menu]="isShowMenu == 'coinManagement'" >
       
-          <a href="#" class="w3-bar-item w3-button">View Currency</a>
+          <a  (click)="getCurrentValue('userManagement')" class="w3-bar-item w3-button" [class.active-menu]="isActiveMenu == 'coinManagement'">View Currency</a>
         </div>
   
   
@@ -26,20 +26,20 @@
   User Management <i class="fa fa-caret-down"></i>
   </button>
   <div id="demoAcc" style="
-  background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'userManagement'">
+  background-color:#dcd1d1 !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'userManagement'">
 
 
-    <a href="#" class="w3-bar-item w3-button">View User</a>
+    <a  class="w3-bar-item w3-button" [class.active-menu]="isActiveMenu == 'userManagement'">View User</a>
   </div>
 
   <button class="w3-button w3-block w3-left-align" (click)="myAccFunc('transactionManagement')">
     Transaction Management <i class="fa fa-caret-down"></i>
     </button>
     <div id="demoAcc" style="
-    background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'transactionManagement'">
+    background-color:#dcd1d1 !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'transactionManagement'">
   
   
-      <a href="#" class="w3-bar-item w3-button">View Transaction</a>
+      <a  class="w3-bar-item w3-button" (click)="getCurrentValue('transactionManagement')" [class.active-menu]="isActiveMenu == 'transactionManagement'">View Transaction</a>
     </div>
  
 
@@ -49,9 +49,9 @@
         Trading <i class="fa fa-caret-down"></i>
         </button>
         <div id="demoAcc" style="
-        background-color: #007b5e !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'trading'">
+        background-color:#dcd1d1 !important;" class="w3-hide w3-white w3-card" [class.show-menu]="isShowMenu == 'trading'">
       
-          <a href="#" class="w3-bar-item w3-button">Orders</a>
+          <a  class="w3-bar-item w3-button" (click)="getCurrentValue('trading')" [class.active-menu]="isActiveMenu == 'trading'">Orders</a>
         </div>
   
  
@@ -81,7 +81,7 @@
                 <option value="INACTIVE">Inactive</option>
             </select>
         </div>
-        <div class="col-md-2 pull-right">
+        <div class="col-md-2 pull-right" style="margin-right:-120px;">
             <!-- <span class="pull-left">Count Per Page: {{(users
                 |filter:statusFilter | filter:userFilter|
                 orderBy:predicate:!reverse | startFrom:(currentPage-1)*pageSize
@@ -109,6 +109,11 @@
                   <td>{{user.createdOn | date}}</td>
                   <td>{{user.userName}}</td>
                   <td><a href="javascript:void(0)" class="action-act red">Inactive </a> | <a href="javascript:void(0)" class="action-act red">Message </a></td>
+               
+               
+               
+               
+               
                 </tr>
                 <tr class="alt">
                   <td>User 2</td>
@@ -174,19 +179,21 @@
             </div>
 </div>
 
-<div class="modal fade" id="myModal" role="dialog">
-  <div class="modal-dialog">
+<div class="modal col-sm-offset-4" id="myModal" role="">
+  <div class="modal-dialog model-bg">
   
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <h4 class="modal-title">Send Message to the users</h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <p><textarea rows="4" cols="100" name="Message" >
+          Enter message here...</textarea></p>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Send Message</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

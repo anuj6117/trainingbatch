@@ -60,7 +60,7 @@
 <ul class="breadcrumb breadcrumb-page  header-body">
   <li class="breadcrumb-label text-light-gray">You are here: </li>
   <li>Coin Management</li>
-  <li>Add Coin</li>
+  <li>Update Coin</li>
 </ul>
 
 <div class="w3-container" style="margin-left:217px">
@@ -68,7 +68,7 @@
 <div class="col-sm-3"></div>
 <div class="col-sm-6">
 	<form  (ngSubmit)="submitNewCurrency()" #AddCoin="ngForm" method="post" name="Add_Coin" class="form-signin">       
-		<h3 class="form-signin-heading">ADD NEW CURRENCY</h3>
+		<h3 class="form-signin-heading">Update CURRENCY</h3>
 			<hr class="colorgraph"><br>
 			
 <input [(ngModel)]="AddCoinData.Cname" 
@@ -111,9 +111,9 @@
 						
 			
 
-			<button type="submit" [disabled]="AddCoin.invalid" class="btn btn-lg btn-primary btn-block" name="Submit" value="Add New Currency" type="Submit">Add New Currency</button>  			
+			<button type="submit" routerLink="/viewcoin" [disabled]="AddCoin.invalid" class="btn btn-lg btn-primary btn-block" name="Submit" value="Add New Currency" type="Submit">Update Currency</button>  			
 		
-			<button type="Button" class="btn btn-lg btn-danger btn-block" name="Submit" value="Not Now" type="button">Not Now</button>  
+			<button type="Button" class="btn btn-lg btn-danger btn-block" name="Submit" value="Not Now" type="button">Close</button>  
 		
 		
 		</form>
