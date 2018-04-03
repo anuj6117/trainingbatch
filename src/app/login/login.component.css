@@ -8,7 +8,7 @@ a:hover{
 
     
         .main_container{
-            height: 1200px;
+            height: 40px;
             width: 100%;
             background-color: #2D3F57;
             width: 100%;
@@ -152,7 +152,7 @@ a:hover{
 
     
         .main_container{
-            height: 1100px;
+            height: 40px;
             width: 100%;
             background: #2D3F57;
             width: 100%;
@@ -308,7 +308,7 @@ a:hover{
 
     
         .main_container{
-            height: 1000px;
+            height: 40px;
             width: 100%;
             background:#2D3F57;
             width: 100%;
@@ -460,7 +460,7 @@ a:hover{
 
     
         .main_container{
-            height: 700px;
+            height: 40px;   
             width: 100%;
             background: #2D3F57;
             width: 100%;
@@ -605,3 +605,10 @@ a:hover{
     
     }
     
+    .btn-primary {
+        color: #fff;
+        background-color: #2D3F57;
+        border-color: #2D3F57;
+        line-height: 40px;
+        height: 40px;
+    }

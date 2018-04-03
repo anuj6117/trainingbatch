@@ -1,53 +1,64 @@
 <div class="main_container">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#LoginModalCenter">
+        Log In
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="LoginModalCenter" tabindex="-1" role="dialog" aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
 
 
-    <div class="form_container">
-        <h3 class="for_h1">Log In Here</h3>
-        <form class="form1"  (ngSubmit)="submitLogIn()" #logInForm="ngForm" name="SignUp">
+                <div class="form_container">
+                    <h3 class="for_h1">Log In Here</h3>
+                    <form class="form1" (ngSubmit)="submitLogIn()" #logInForm="ngForm" name="SignUp">
 
 
-            <input [(ngModel)]="formData.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel" type="email"
-                name="email" placeholder="email@example.com" minlength="10" [ngClass]="{'error':email.errors && email.touched}"
-                required="" autofocus="">
+                        <input [(ngModel)]="formData.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel" type="email"
+                            name="email" placeholder="email@example.com" minlength="10" [ngClass]="{'error':email.errors && email.touched}"
+                            required="" autofocus="">
 
-            <div *ngIf="email.errors && email.touched" class="red error">
+                        <div *ngIf="email.errors && email.touched" class="red error">
 
-                <div *ngIf="email.errors.required" class="for_error">This is required field.</div>
-                <br>
+                            <div *ngIf="email.errors.required" class="for_error">This is required field.</div>
+                            <br>
 
-                <div *ngIf="email.errors.pattern" class="for_error">Enter Valid Email ID</div>
+                            <div *ngIf="email.errors.pattern" class="for_error">Enter Valid Email ID</div>
 
+                        </div>
+
+
+
+
+
+                        <input [(ngModel)]="formData.password" #pwd="ngModel" name="password" minlength="8" maxlength="32" [ngClass]="{'errors':pwd.errors && pwd.touched}"
+                            type="password" placeholder="Password" required="">
+                        <div *ngIf="pwd.errors && pwd.touched" class="red error">
+                            <div *ngIf="pwd.errors.required" class="for_error">This is required field.</div>
+                        </div>
+
+
+
+
+                        <div class="set_button">
+                            <button class="for_button" type="submit" name="submit" [disabled]="logInForm.invalid" name="logInForm" value="SignUp">Log In</button>
+                        </div>
+
+                        <h3 id="for_link_page">
+                            <a href="../signup">Sign Up</a> |
+                            <a href="../forget-password">Lost Your Password</a>
+                        </h3>
+
+                    </form>
+
+
+
+
+
+
+                </div>
             </div>
-
-
-
-
-
-            <input [(ngModel)]="formData.password" #pwd="ngModel" name="password" minlength="8" maxlength="32" [ngClass]="{'errors':pwd.errors && pwd.touched}"
-                type="password" placeholder="Password" required="">
-            <div *ngIf="pwd.errors && pwd.touched" class="red error">
-                <div *ngIf="pwd.errors.required" class="for_error">This is required field.</div>
-            </div>
-
-
-
-
-            <div class="set_button">
-                <button class="for_button" type="submit" name="submit" [disabled]="logInForm.invalid" name="logInForm" value="SignUp">Log In</button>
-            </div>
-
-            <h3 id="for_link_page">
-                <a href="../signup">Sign Up</a> |
-                <a href="../forget-password">Lost Your Password</a>
-            </h3>
-
-        </form>
-
-
-
-
-
-
+        </div>
     </div>
 
 </div>
