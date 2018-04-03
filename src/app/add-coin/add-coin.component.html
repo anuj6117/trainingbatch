@@ -6,7 +6,7 @@
   <!--this is use for containt container-->
   <div class="container">
     <!--this is use for add coin input field-->
-    <div width="100%">
+    <div>
       <span class="total_coin">Total Currency: 3</span>
     </div>
     <form (ngSubmit)="submitAddCoin()" #AddCoinForm="ngForm" method="get" name="AddCoin">
@@ -15,31 +15,23 @@
           <span style="font-size:25px;">Add Currency</span>
         </li>
         <li>
-          <input name="coinName" placeholder="Coin Name" type="text"
-          [(ngModel)]="formData.coinName" #coinName="ngModel"
-                placeholder="coinName" minlength="3" maxlength="25" 
-                required="" autofocus="">
+          <input name="coinName" placeholder="Coin Name" type="text" [(ngModel)]="formData.coinName" #coinName="ngModel" placeholder="Coin Name"
+            minlength="3" maxlength="25">
         </li>
         <li>
-          <input name="symbol" placeholder="Symbol" type="text" [(ngModel)]="formData.symbol" #coinName="ngModel"
-          placeholder="symbol" minlength="3" maxlength="25" 
-          required="" autofocus="">
+          <input name="symbol" placeholder="Symbol" type="text" [(ngModel)]="formData.symbol" #symbol="ngModel" placeholder="Symbol"
+            minlength="3" maxlength="25">
         </li>
         <li>
-          <input name="supply" placeholder="Supply" type="text"
-          [(ngModel)]="formData.supply" #supply="ngModel"
-                placeholder="supply" minlength="3" maxlength="25" 
-                required="" autofocus="">
+          <input name="supply" placeholder="Supply" type="text" value="$" [(ngModel)]="formData.supply" #supply="ngModel" placeholder="Supply"
+            minlength="3" maxlength="25">
         </li>
         <li>
-          <input name="price" placeholder="Price" type="text"
-          [(ngModel)]="formData.price" pattern="[0-9]*" #price="ngModel" type="text" name="price" placeholder="Price"
-                minlength="1" maxlength="14" required="" autofocus="">
+          <input name="price" placeholder="Price" type="text" [(ngModel)]="formData.price" #price="ngModel" minlength="1" maxlength="14">
         </li>
-        <li class="set_button">
+        <div class="set_button">
           <button class="for_button1" value="Submit" name="AddCurrency" type="submit">Add Currnecy</button>
-          <button class="for_button1" value="cancel" name="cancel" type=""> Cancel</button>
-        </li>
+        </div>
       </ul>
     </form>
     <br>
@@ -62,7 +54,7 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td>BTC</td>
+          <td>{{coinName}}</td>
           <td>$</td>
           <td>20</td>
           <td>8000</td>

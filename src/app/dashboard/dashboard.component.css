@@ -6,160 +6,99 @@
   margin: 0px;
   position: relative;
 }
-/*continer for routing secrtion */
-.container{
-  z-index: 2;
-  width: 80%;
-  margin-left: 20%;
-  padding: 0px;
-  margin-top: -130px;
+
+  .total_coin {
+    float: right;
+    margin-top: 40px;
+    width: 150px;
+    margin-right: 10%;
+    font-size: 17px;
+}
+
+/*for input box*/
+set_button{
+  width: 100%;
   position: absolute;
-  border: 0px ;
-  overflow-x: scroll;
-  color: rgb(145, 143, 143); 
 }
 
-.sub_container{
-  padding: 5px;
-  margin-top: 100px;
-  
-}
-/*short by email, loction, and number*/
-.short_by_email, .short_by_location, .short_by_number{
-  width: 150px;
-  height: 35px;
-  font-size: 15px;
-}
-
-.container input[type="text"], input[type="date"]{
-  width: 150px;
-  height: 35px;
-  font-size: 15px;
-  padding-left: 5px;
+.for_button1{
+  width: 90px;
+  height: 40px;
+  color: white;
+  float: left;
+  background-color: #2D3F57;
+  border-radius: 3px;
+  border: 1px solid white;
+  font-size: 12px;
+  padding: 0px 1px 0px 1px;
+  line-height: 40px;
+  margin-left: 8px;
+  margin-top: 4px;
 }
 
-.search_button2{
-    width: 65px;
-    height: 35px;
-    font-size: 15px;
-    padding-left: 5px;
-    text-align: center;
-    color: black;
- 
-}
-
-
-/*class for total class*/
-.total_user{
-  float: right; 
-  margin-top:0%;
-  width:50%;
-  margin-right: -20%;
-  font-size:17px;
-}
-/*class for company logo*/
-.logo_serach_container{
-  width: 17%;
-}
-/*for search*/
-.search_container{
+/*this class use for update and delete button*/
+.button_for_update_delete{
   width: 100%;
   height: 50px;
-}
-
-.search_container input[type="text"]{
-  width: 80%;
-  height: 50px;
-  float: left;
-  padding: 0;
+  color: white;
+  background-color: #2D3F57;
+  border-radius: 3px;
   border: 0px;
-  text-align: center;
-}
-.search_button{
-  width: 20%;
-  height: 50px;
-  border: 0px;
+  font-size: 13px;
+  padding: 0px 5px 0px 5px;
+  line-height: 50px;
+  
 }
 
-/*for all input*/
-input[type="text"]:active{
-  border: 0px;
-  padding: 0px;
-  margin: 0px;
-}
 
-input:focus {
-  background-color: #eee;
-  border: none;
-}
-
-/*this use for dropdown menu*/
-.dropdown {
-  width: 17%;
+.container{
+  z-index: 2;
+  width: 83%;
+  height: 700px;
+  margin-left: 20%;
   position: absolute;
-  display: inline-block;
-  background-color: #9d9d9d;
-  color: rgb(15, 15, 15);
-  text-align: center;
+  overflow-x: scroll;
+  color: rgb(145, 143, 143);
+  
+  
 }
-/*for all ul*/
+
+/*for all ul list*/
+
 ul{
   list-style-type: none;
 }
-/*chiled of dropdown*/
-.dropdown li {
-  width: 100%;
-  height: 45px;
-  border-bottom: 1px solid white;
-  line-height: 45px;
-}
-/*for all link font size*/
-.dropdown li a{
+/*in this we are target ul list container*/
+.add_currency{
+  width: 316px;
+  height: 312px;
+  margin-left: 40%;
+  background-color: #2D3F57;
+  margin-top: 40px;
+  border-radius: 2px;
+  box-shadow:0 3px 6px 0 rgba(11, 35, 78, 0.24), 0 4px 43px 0 rgba(2, 5, 29, 0.35);
+  
 
-  font-size: 15px;
 }
-/*all li width*/
+
+/*in this we are target for child of ul*/
+
 .container ul li{
-  width: 150px;
-  float: left;
-}
-/*hover effect for all li*/
-ul li:hover{
-  background-color:  #9d9d9d;
-  color:rgb(15, 15, 15);
-}
-/*for all dropdown content*/
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #9d9d9d;
-  color:rgb(15, 15, 15);
   width: 100%;
-  margin-left: 100%;
-  margin-top: -45px;
-  z-index: 5;
+  height: 50px;
+  padding: 8px !important;
+  float: none;
 }
 
-/*dropdown menu hover effect*/
-li:hover .dropdown-content {
-  display: block;
-  color: white;
-  background-color: #9d9d9d;
-  border-left: 1px solid white;
-}
-/*target for submenu*/
-ul li ul li:hover{
-  background-color: rgb(15, 15, 15) #9d9d9d;
-  color:#9d9d9d;
-}
+/*show all coin in table*/
 
-
-/*for table*/
 table{
   border:1px solid rgb(87, 86, 86);
   width: 98%;
+  position: absolute;
 }
-/*for table header*/
+
+/*target for table head*/
 
 tr > th{
   width: auto;
@@ -169,25 +108,30 @@ tr > th{
   border:1px solid #999;
   color: rgb(73, 72, 72);
 }
-
-/*for table data*/
+/*target for table data*/
 tr > td {
   font-size: 13px;
   border:1px solid rgb(90, 89, 89);
   color: rgb(71, 71, 71);
+  text-align: center;
+  line-height: 50px;
+  height: 50px;
 }
 
-/*background color for all even number*/
+/*table row background color for all even number of row*/
+
 tr:nth-child(even){background-color: #d4d4d4;}
 
-/*background color for table row hover effect*/
+/*table row hover effect*/
+
 .container tr:hover {
   background-color: rgb(175, 174, 174);
   border: 1px solid #fff;
   
 }
+
 /*table data hover effect*/
-.container td:hover{
+.container tr td:hover{
   color:white;
 }
 
@@ -196,7 +140,7 @@ tr:nth-child(even){background-color: #d4d4d4;}
 .pagination {
   display: inline-block;
 }
-
+/*pagination link effect*/
 .pagination a {
   color: black;
   float: left;
@@ -204,10 +148,10 @@ tr:nth-child(even){background-color: #d4d4d4;}
   text-decoration: none;
   transition: background-color .3s;
 }
-
+/*pagination active effect*/
 .pagination a.active {
   background-color: #9D9D9D;
   color: white;
 }
-
+/*pagination for hover effect*/
 .pagination a:hover:not(.active) {background-color: #ddd;}

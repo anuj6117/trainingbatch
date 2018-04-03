@@ -20,7 +20,7 @@ export class AddCoinComponent implements OnInit {
   this.mainService.submitAddCoin(this.formData).subscribe(
       success=>
       {
-          console.log("success",success);
+        
       })
 }
 }

@@ -19,7 +19,7 @@ export class MainService  {
               "country":fromData.country,
               "phoneNumber" :fromData.mobileNumber
       }
-         return this.http.post('http://192.168.9.180:8181/signup', data);
+         return this.http.post('http://180.151.84.102/trainingbatch/signup', data);
     }
 
     submitLogIn(fromData){
@@ -35,13 +35,14 @@ export class MainService  {
          return this.http.post('http://192.168.9.180:8181/userlogin', data);
     }
 
-    submitAddCoin(coinData){
-        //     let data:any={
-        //         "coinName": FormData.coinName,
-        //         "symbol":FormData.symbol,
-        //         "supply":FormData.supply,
-        //         "price":price,
-        //     }
-            return this.http.post('http://192.168.9.180:8181/addcurrency', coinData);
+    submitAddCoin(formData){
+        let data:any =
+        {
+            "coinName":formData.coinName,
+            "symble":formData.symbol,
+            "initialSupply":formData.supply,
+            "price":formData.price
+            }
+            return this.http.post('http://180.151.84.102/trainingbatch/addcurrency', formData);
         }
 }

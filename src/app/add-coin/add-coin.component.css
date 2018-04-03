@@ -7,12 +7,13 @@
   position: relative;
 }
 
-.total_coin{
-  float: right; 
-  margin-top:0%;
-  width:50%;
-  margin-right: -20%;
-  font-size:17px;
+
+  .total_coin {
+    float: right;
+    margin-top: 40px;
+    width: 150px;
+    margin-right: 10%;
+    font-size: 17px;
 }
 
 /*for input box*/
@@ -21,8 +22,17 @@
   height: 35px;
   font-size: 13px;
   padding-left: 5px;
+  border: none;
+  border-bottom: 2px solid white;
+  background-color: #2D3F57;
+  color: white;
 }
-
+.container input[type=text]:focus {
+  background-color: #2D3F57;
+  border: 3px solid white;
+  color: white;
+  border-radius: 2px;
+}
 set_button{
   width: 100%;
   position: absolute;
@@ -30,17 +40,17 @@ set_button{
 
 .for_button1{
   width: 90px;
-  height: 50pxx;
+  height: 40px;
   color: white;
-  float: right;
-  background-color: #BE5E84;
+  float: left;
+  background-color: #2D3F57;
   border-radius: 3px;
-  border: 0px;
+  border: 1px solid white;
   font-size: 12px;
-  padding: 0px 5px 0px 5px;
-  line-height: 50px;
-  margin-left: 5px;
-  
+  padding: 0px 1px 0px 1px;
+  line-height: 40px;
+  margin-left: 8px;
+  margin-top: 4px;
 }
 
 /*this class use for update and delete button*/
@@ -48,7 +58,7 @@ set_button{
   width: 100%;
   height: 50px;
   color: white;
-  background-color: #BE5E84;
+  background-color: #2D3F57;
   border-radius: 3px;
   border: 0px;
   font-size: 13px;
@@ -61,13 +71,12 @@ set_button{
 .container{
   z-index: 2;
   width: 83%;
-
   height: 700px;
   margin-left: 20%;
-  margin-top: -50px;
   position: absolute;
   overflow-x: scroll;
   color: rgb(145, 143, 143);
+  
   
 }
 
@@ -78,9 +87,14 @@ ul{
 }
 /*in this we are target ul list container*/
 .add_currency{
-  width: 20%;
-  height: 300px;
+  width: 316px;
+  height: 312px;
   margin-left: 40%;
+  background-color: #2D3F57;
+  margin-top: 40px;
+  border-radius: 2px;
+  box-shadow:0 3px 6px 0 rgba(11, 35, 78, 0.24), 0 4px 43px 0 rgba(2, 5, 29, 0.35);
+  
 
 }
 

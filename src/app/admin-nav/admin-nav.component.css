@@ -1,84 +1,28 @@
-  ul{
-    list-style-type: none;
-  }
-  .dropdown {
-    width: 17%;
-    position: absolute;
-    display: inline-block;
-    background-color: #9d9d9d;
-    color: rgb(15, 15, 15);
-    text-align: center;
-  }
-  
-  .dropdown li {
-    width: 100%;
-    height: 45px;
-    border-bottom: 1px solid white;
-    line-height: 45px;
-  }
-  
-  .dropdown li a{
-  
-    font-size: 15px;
-  }
-  
-  ul li:hover{
-    background-color:  #9d9d9d;
-    color:rgb(15, 15, 15);
-  }
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #9d9d9d;
-    color:rgb(15, 15, 15);
-    width: 100%;
-    margin-left: 100%;
-    margin-top: -45px;
-    z-index: 5;
-  }
-  
-
-  
-  li:hover .dropdown-content {
-    display: block;
-    color: white;
-    background-color: #9d9d9d;
-    border-left: 1px solid white;
-  }
-  
-  ul li ul li:hover{
-    background-color: rgb(15, 15, 15) #9d9d9d;
-    color:#9d9d9d;
-  }
-
-.navbar, .navbar-inverse{
-    width: 100%;
-    background: #FFFFFF;
-    border-bottom: 2px solid green;
-    border-radius: 0;
-    color: #fff;
-    border-top: 0px;
-    border-left: 0px;
-    border-right: 0px;
-    border-bottom: .5px solid white;
-    z-index: 1;
-    box-sizing: border-box;
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form{
+  border-radius: 0px;
+  border: 0px;
 }
 
-.navbar-inverse {
-    background-color: #fff;
-    border-color: #fff;
-    color: white;
+.navbar-inverse{
+  background-color: #2D3F57;
+  border-radius: 0px;
+  border-top: 0px;
+  border-left: 0px;
+  border-bottom: 1px solid #c0e9fd;
+  border-right: 0px;
 }
 
-
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-    color: #BA4010;
-    background-color: #fff;
-    height: 51px;
+div ul li a img{
+  width: 100px;
+  height: 60px;
 }
 
-  
-  
-  
+.container-fluid{
+  padding: 0px;
+}
+.navbar-nav>li>a{
+  padding: 0px;
+  line-height: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
