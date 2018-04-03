@@ -26,14 +26,15 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
 		 * .and().httpBasic().realmName("User Security")
 		 * .authenticationEntryPoint(userAuthenticationEntryPoint);
 		 */
+		http.csrf().disable().authorizeRequests().antMatchers("/*").permitAll();
 
 		http.csrf().disable().authorizeRequests().antMatchers("/userdata/signup").permitAll();
 
-		http.csrf().disable().authorizeRequests().antMatchers("/userdata/getallusers")
+		/*http.csrf().disable().authorizeRequests().antMatchers("/userdata/getallusers")
 				.hasAnyRole("ADMIN", "MANAGER", "USER").and().formLogin();
 
 		http.csrf().disable().authorizeRequests().antMatchers("/coin/getallcurrency").hasAnyRole("ADMIN").and()
-				.formLogin();
+				.formLogin();*/
 
 	}
 

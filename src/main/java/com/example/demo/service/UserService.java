@@ -56,6 +56,61 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private JavaMailSender sender1;
+	
+	
+	
+	
+	
+	/*public Object searchType() {
+		Session session = Hibernate.getHibernateSession();
+		Criteria cr = session.createCriteria(UserModel.class);
+		long startTimeCriteria = System.nanoTime();
+		cr.add(Restrictions.like("itemName", "%item One%"));
+		 
+		List results = cr.list();
+
+	}*/
+	
+	
+	
+	
+	/*
+	  public SearchResults<UserModel> search(UserSearchCriteria searchCriteria)
+	    {
+	        UserSearchType searchType = searchCriteria.getSearchType();
+	        String sortOrder = searchCriteria.getSortOrder();
+	        System.out.println(searchType+":"+sortOrder);
+	        List<UserModel> results = null;
+	        if(searchType == UserSearchType.BY_NAME)
+	        {
+	        	
+	        }
+	        else if(searchType == UserSearchType.BY_ID)
+	        {
+	           //Use hibernate Criteria API to get and sort results based on USER_ID field in sortOrder
+	             results = UserDAO.searchUsers(...);
+	        }
+	        
+	        UserSearchResults<UserModel> searchResults = new UserSearchResults<UserModel>();
+	        searchResults.setPageSize(searchCriteria.getPageSize());
+	        searchResults.setResults(results);
+	        return searchResults;
+	    }
+	
+	
+	  public Map<String, Object> search(Map<String, Object> searchCriteriaMap)
+	    {
+	        return UserDAO.search(searchCriteriaMap);
+	    }
+	
+	*/
+	
+	
+	
+	
+	
+	
+	
 
 	// ------------------------SIGN UP---------------------------------
 	// Add New User
@@ -75,9 +130,9 @@ public class UserService implements UserDetailsService {
 				Integer otpNum = Utility.generateId(1000);
 				authService.addAuthToken(userModel.getUserName(), otpNum);
 				System.out.println("-----------------" + sender1.createMimeMessage());
-				// SendEmail.sendEmail(userModel.getEmail(), otpNum,
-				// userModel.getUserName(),sender1);
-				// OTPController.sendSMS(userModel.getMobile().toString(),otpNum.toString());
+				 SendEmail.sendEmail(userModel.getEmail(), otpNum,
+				 userModel.getUserName(),sender1);
+				 OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
 				return "success";
 			} else {
 				System.out.println("----------------------azsxdfghjkl");
@@ -139,7 +194,7 @@ public class UserService implements UserDetailsService {
 	// For User Login
 	public UserModel getUser(UserModel u) {
 
-		UserModel userOp = userRepo.findByEmailAndPassword(u.getEmail(), u.getPassword());
+		UserModel userOp = userRepo.findByEmailAndPassword(u.getEmail(), BcryptPasswordGenerator.passwordGenerator(u.getPassword()));
 		System.out.println(userOp.getEmail() + "-------------------");
 		return userOp;
 	}
@@ -262,7 +317,7 @@ public class UserService implements UserDetailsService {
 		if (amount < walletModel.getBalance()) {
 			walletModel.setBalance(walletModel.getBalance() - amount);
 			walletModel.setShadowBalance(walletModel.getBalance() - amount);
-			walletRepo.save(walletModel);
+			walletRepo.save(walletModel);//testing 
 		}
 	}
 

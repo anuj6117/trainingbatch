@@ -15,7 +15,7 @@ import com.example.demo.service.CoinService;
 import com.example.demo.utils.ApiResponse;
 
 @RestController
-@RequestMapping("/coin")
+//@RequestMapping("/coin")
 public class CoinController {
 
 	@Autowired

@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class CoinModel {
@@ -16,6 +19,9 @@ public class CoinModel {
 	private String coinSymbol="nill";
 	private long initialSupply = 0;
 	private float price = 0;
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "orderId", nullable = false)
+    private OrderModel orderModel;
 	
 	
 	public long getInitialSupply() {

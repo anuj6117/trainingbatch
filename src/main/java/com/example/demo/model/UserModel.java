@@ -14,26 +14,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.OneToOne;
 
 @Entity
 public class UserModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull
+	
 	private int userid;
-	@NotNull
-	@Size(min = 3, message = "Name should have atleast 2 characters")
 	private String userName;
-	@NotNull
-	@Size(min = 4, message = "Name should have atleast 4 characters")
 	private String country;
 	private Date createdOn;
 	private String email;
 	private Long phoneNumber;
-	@NotNull
 	private String password;
 	private Boolean status = false;
 
@@ -44,6 +38,18 @@ public class UserModel {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userModel")
 	private Set<WalletModel> userWallet = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userModel")
+	private Set<OrderModel> userOrder = new HashSet<>();
+  
+
+	public Set<OrderModel> getUserOrder() {
+		return userOrder;
+	}
+
+	public void setUserOrder(Set<OrderModel> userOrder) {
+		this.userOrder = userOrder;
+	}
 
 	public int getUserid() {
 		return userid;

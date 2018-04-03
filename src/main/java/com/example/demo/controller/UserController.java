@@ -23,7 +23,7 @@ import com.example.demo.service.UserService;
 import com.example.demo.utils.ApiResponse;
 
 @RestController
-@RequestMapping("/userdata")
+//@RequestMapping("/userdata")
 public class UserController {
 
 	@Autowired
@@ -71,9 +71,9 @@ public class UserController {
 	// ------------UPDATE USER DATA & ADD WALLET AND ROLE--------------------------
 
 	// To update user data
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-	public List<UserModel> update(@PathVariable(value = "id") Integer userId, @RequestBody UserModel userDetails) {
-		return userService.updateUser(userId, userDetails);
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public List<UserModel> update( @RequestBody UserModel userDetails) {
+		return userService.updateUser(userDetails.getUserid(), userDetails);
 	}
 
 	// Add another role for user
@@ -129,9 +129,9 @@ public class UserController {
 	@RequestMapping(value = "/userlogin", method = RequestMethod.POST)
 	public ResponseEntity<Object> getUser(@RequestBody UserModel userDetails, @RequestHeader("token") String ll) {
 		try {
-			System.out.println("-------------------");
-			System.out.println(userDetails.getEmail() + "-------------------");
-			System.out.println(userDetails.getPassword() + "-------------------");
+//			System.out.println("-------------------");
+//			System.out.println(userDetails.getEmail() + "-------------------");
+//			System.out.println(userDetails.getPassword() + "-------------------");
 			if (userDetails.getEmail().equals("") || userDetails.getPassword().equals("")) {
 				System.out.println("--------aaaa-----------");
 				return ApiResponse.generateResponse(HttpStatus.OK, true, "Failure", null);
@@ -151,7 +151,7 @@ public class UserController {
 	// ----------------TO DELETE A USER
 
 	// To delete amount into user wallet
-	@RequestMapping(value = "/deleteuser", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
 	public ResponseEntity<Object> delete(@RequestBody UserModel userDetails, HttpServletResponse httpResponse) {
 		if (userDetails.getUserid() != 0) {
 			userService.deleteUser(userDetails.getUserid());
