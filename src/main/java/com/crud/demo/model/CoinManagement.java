@@ -7,17 +7,17 @@ import javax.persistence.Id;
 @Entity
 public class CoinManagement {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer c_id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer coinId;
 	private String  coinName;
-	private String symbol;
-	private float initialSupply;
+	private String symbol;//not usable
+	private float initialSupply;// no primitive types
 	private float price;
-	public Integer getC_id() {
-		return c_id;
+	public Integer getCoinId() {
+		return coinId;
 	}
-	public void setC_id(Integer c_id) {
-		this.c_id = c_id;
+	public void setCoinId(Integer coinId) {
+		this.coinId = coinId;
 	}
 	public String getCoinName() {
 		return coinName;

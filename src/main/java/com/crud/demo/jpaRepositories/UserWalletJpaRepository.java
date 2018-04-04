@@ -14,4 +14,9 @@ UserWallet findByIdAndWalletType(@Param("id") Integer id,@Param("walletType") St
   
 	@Query("select u from UserWallet u where u.walletId=:walletId and u.walletType=:walletType")
 	UserWallet findByWalletIdAndWalletType(@Param("walletId") Integer walletId,@Param("walletType") String walletType);	
+
+
+
+UserWallet findByWalletType(String walletType);
+
 }

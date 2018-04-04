@@ -22,7 +22,7 @@ public class UserWallet {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer walletId;
 	private Integer wallet_random_id=RandomIDGenerator.randomIdGenerator().nextInt(100);
-	private float balance;
+	private float balance;//never use primitive types
 	private float shadowBalance;
 	private String walletType = WalletType.fiate.toString();
 	

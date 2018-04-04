@@ -1,12 +1,15 @@
 package com.crud.demo.service;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Random;
+import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.crud.demo.dto.UserWalletDTO;
 import com.crud.demo.enums.WalletType;
 import com.crud.demo.jpaRepositories.UserJpaRepository;
 import com.crud.demo.jpaRepositories.UserWalletJpaRepository;
@@ -15,70 +18,162 @@ import com.crud.demo.model.UserWallet;
 
 @Service
 public class UserWalletService {
-	int counter=0;
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserWalletService.class);
+	
 	@Autowired
 	private UserWalletJpaRepository userWalletJpaRepository;
 	@Autowired
 	private UserJpaRepository userJpaRepository;
-	
-	
-	
-	public String createWallet(User user) 
-	{
-		User existingUser=userJpaRepository.findOne(user.getUserId());
+	 Boolean walletTypeExistInEnumOrNot;//default
+	  Boolean walletTypeAlreadyAddedOrNot;//default
+
+	public Map<String, Object> createWallet(UserWalletDTO userWalletDTO) throws InterruptedException {
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = false;
+		User user=userJpaRepository.findOne(userWalletDTO.getUserId());
 		
-		Set<UserWallet> setOfUserWallet=existingUser.getUserWallet();
-		String msg=null;
-		
-		for (UserWallet userWalletObject:user.getUserWallet())
+		Runnable runnableThread1=new Runnable(){
+			@Override
+			public void run() {
+				 walletTypeExistInEnumOrNot=isPresentInEnum(userWalletDTO.getWalletType());
+				
+			}};
+			Runnable runnableThread2=new Runnable(){
+				@Override
+				public void run() {
+					 walletTypeAlreadyAddedOrNot=walletTypeAlreadyAddedOrNot(userWalletDTO.getWalletType(),user.getUserWallet());
+					
+				}};
+				
+				Thread t1=new Thread(runnableThread1);
+				Thread t2=new Thread(runnableThread2);
+				t1.start();
+				t1.join();
+				t2.start();
+			    t2.join();
+		if((walletTypeExistInEnumOrNot) && (!walletTypeAlreadyAddedOrNot))
 		{
+			Set<UserWallet> setOfUserWallets=new HashSet<>();
+			UserWallet userWallet=new UserWallet();
+			userWallet.setWalletType(userWalletDTO.getWalletType());
+			setOfUserWallets.add(userWallet);
+			user.setUserWallet(setOfUserWallets);
+			userWallet.setUser(user);//reverse association
+			userJpaRepository.save(user);
 			
-			//wallet existing or not
-			for (WalletType wall : WalletType.values()) 
-			{  String wallstr=wall.toString();
-				 if(wallstr.equalsIgnoreCase(userWalletObject.getWalletType())){
-			     setOfUserWallet.add(userWalletObject);
-				  counter++;
-				  
-				 }
-				 
-				}	
-		}
-		if(counter>0)
-		{
-		    existingUser.setUserWallet(setOfUserWallet);
-		    existingUser.getUserWallet().forEach(wallet->wallet.setUser(user));//important
-		    userJpaRepository.save(existingUser);
-		    msg="Your wallet created successfully";
-		}
-		return msg;
-	}
-
-	public String withdrawAmount(UserWallet userWallet) {
-UserWallet existingUserWallet=userWalletJpaRepository.findByWalletIdAndWalletType(userWallet.getWalletId(), userWallet.getWalletType());
-		if((existingUserWallet!=null) && ( existingUserWallet.getBalance()>=userWallet.getBalance()))
-		{
-		float remainingBalance=existingUserWallet.getBalance()-userWallet.getBalance();
-		existingUserWallet.setBalance(remainingBalance);
-		userWalletJpaRepository.save(existingUserWallet);
-		return "You have withdrawl successfully"+"Your remaing balance is"+remainingBalance;
+			map.put("Result", "wallet successfully assigned or added");
+			map.put("isSuccess", true);
 		}
 		else
-		{ return "You don't have sufficient balance to withdraw or this type of wallet doesn't exist";}
+		{
+			map.put("Result", "wallet already assigned or user doesnot exist or wallettype not present");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("Message on service ::::::::::::::::wallet already assigned or user doesnot exist");	
+		}
+		
+			
+		return map;
+	}
+	
+	private Boolean walletTypeAlreadyAddedOrNot(String walletType, Set<UserWallet> userWallet) {
+		Boolean walletTypeExistInEnumOrNot=false;
+		Integer objectPopulateounter=0;
+		for(UserWallet existingUserWallet:userWallet)
+		{	LOGGER.info("walletTypeExistInEnumOrNot:::::::::"+existingUserWallet.getWalletType());
+		  if(walletType.equalsIgnoreCase(existingUserWallet.getWalletType()))
+		   { walletTypeExistInEnumOrNot=true;
+			     break;
+		   }
+		  else
+		  {
+			  walletTypeExistInEnumOrNot=false;
+		  }
+		
+		}
+		LOGGER.info("inside wallet thread db type::::::::{}",walletTypeExistInEnumOrNot);
+		return walletTypeExistInEnumOrNot;
+	}
+
 	
 
-	}
-	public String depositAmount(UserWallet userWallet) {
-		UserWallet existingUserWallet=userWalletJpaRepository.findByWalletIdAndWalletType(userWallet.getWalletId(), userWallet.getWalletType());
-		System.out.println("::::::::::"+existingUserWallet);
-		if(existingUserWallet!=null)
-		{
-		float newBalance=existingUserWallet.getBalance()+userWallet.getBalance();
-		existingUserWallet.setBalance(newBalance);
-		userWalletJpaRepository.save(existingUserWallet);
-		return "Your amount is successfully added"+"Your updated amount is"+newBalance;
+	public Boolean isPresentInEnum(String walletType)
+	{ Boolean flagExistOrNot=false;
+		for (WalletType walletTypeInEnum:WalletType.values())
+		{ LOGGER.info("walletTypeInEnum:::::::::;{}"+walletTypeInEnum.toString());
+			if(walletType.equals(walletTypeInEnum.toString()))
+			{
+				flagExistOrNot=true;
+				break;
+			}
+			
 		}
-		else
-		{return "This wallet does not exist";}	
+		LOGGER.info("inside wallet thread enum type",flagExistOrNot);
+		return flagExistOrNot;
 	}
+
+	/****************************************************************************************************/
+	public Map<String, Object> withdrawAmount(UserWalletDTO userWalletDTO) {
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = false;
+		Integer flagWalletType = 0;
+		UserWallet existingUserWallet = null;
+		User user = userJpaRepository.findOne(userWalletDTO.getUserId());// to get all wallets of user
+		LOGGER.info("Message on service ::::::::::::::::before flag=1.{}",user);
+		for (UserWallet testUserWallet : user.getUserWallet())// to check coming wallet exist or not
+		{
+			if (userWalletDTO.getWalletType().equals(testUserWallet.getWalletType())) {
+				flagWalletType = 1;
+				existingUserWallet = userWalletJpaRepository.findByWalletIdAndWalletType(testUserWallet.getWalletId(),testUserWallet.getWalletType());
+			}
+		}
+		LOGGER.info("Message on service ::::::::::::::::after flag=1.{}",existingUserWallet);
+		
+		  if ((flagWalletType == 1) && (existingUserWallet.getBalance() >= userWalletDTO.getAmount())) 
+		  {
+			LOGGER.info("Message on service ::::::::::::::::inside if");
+			float remainingBalance = existingUserWallet.getBalance() - userWalletDTO.getAmount();
+			existingUserWallet.setBalance(remainingBalance);
+			userWalletJpaRepository.save(existingUserWallet);
+			map.put("Result", "Amount wihdraw successfully");
+			map.put("isSuccess", true);
+			LOGGER.info("Message on service ::::::::::::::::Amount wihdraw successfully");
+		} 
+		  else {
+			map.put("Result", "Unsuccessfull to wihdraw amount");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("Message on service ::::::::::::::::Unsuccessfull to wihdraw amount");
+		}
+
+		return map;
 	}
+
+	/****************************************************************************************************/
+	public Map<String, Object> depositAmount(UserWalletDTO userWalletDTO) {
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = false;
+		Integer flagWalletType = 0;
+		UserWallet existingUserWallet = null;
+		User user = userJpaRepository.findOne(userWalletDTO.getUserId());// to get all wallets of user
+		for (UserWallet testUserWallet : user.getUserWallet())// to check coming wallet exist or not
+		{
+			if (userWalletDTO.getWalletType().equals(testUserWallet.getWalletType())) {
+				flagWalletType = 1;
+				existingUserWallet = userWalletJpaRepository.findByWalletIdAndWalletType(testUserWallet.getWalletId(),testUserWallet.getWalletType());
+			}
+		}
+		System.out.println("::::::::::" + existingUserWallet);
+		if ((existingUserWallet != null) && (flagWalletType == 1)) {
+			float newBalance = existingUserWallet.getBalance() + userWalletDTO.getAmount();
+			existingUserWallet.setBalance(newBalance);
+			userWalletJpaRepository.save(existingUserWallet);
+			map.put("Result", "Amount saved successfully");
+			map.put("isSuccess", true);
+			LOGGER.info("Message on service ::::::::::::::::Amount saved successfully");
+		} else {
+			map.put("Result", "Unsuccessfull to deposit amount");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("Message on service ::::::::::::::::Unsuccessfull to deposit amount");
+		}
+		return map;
+	}
+}

@@ -2,6 +2,8 @@ package com.crud.demo.conroller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +22,21 @@ import com.crud.demo.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<Object> addUser(@RequestBody User user, @RequestHeader("host") String hostName) {
 		System.out.println("Request header information is:::::::" + hostName);
+		LOGGER.info("Message on usercontroller (adduser):::::::::::::::::controller hit");
 		Map<String, Object> map = null;
 		System.out.println("controller hit");
 		/* user.getRole().forEach(role->role.setUser(user)); important */
 		try {
-			map = userService.addUserService(user);
+			map = userService.addUser(user);
 			if (map.get("isSuccess").equals(true)) {
 				map.remove("isSuccess", true);
 				return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
 			} else
-
 			{
 				return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
 			}
@@ -53,14 +56,11 @@ public class UserController {
 			if (map.get("isSuccess").equals(true)) {
 				map.remove("isSuccess", true);
 				return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
-			} else
-
-			{
+			} else {
 				return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
 			}
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
-
 		}
 	}
 
@@ -72,26 +72,44 @@ public class UserController {
 			if (map.get("isSuccess").equals(true)) {
 				map.remove("isSuccess", true);
 				return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
-			} else
-
-			{
+			} else {
 				return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
 			}
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
-
 		}
 	}
 
 	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
-	public void updateUserById(@RequestBody User user) {
-
-		userService.updateUser(user);
+	public ResponseEntity<Object> updateUserById(@RequestBody User user) {
+		Map<String, Object> map = null;
+		try {
+		map=userService.updateUser(user);
+		if (map.get("isSuccess").equals(true)) {
+			map.remove("isSuccess", true);
+			return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
+		} else {
+			return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
+		}
+	} catch (Exception e) {
+		return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
+	}
 	}
 
 	@RequestMapping("/deleteuser")
-	public void deleteUserById(@RequestParam Integer id) {
-
-		userService.deleteUser(id);
+	public ResponseEntity<Object> deleteUserById(@RequestParam Integer userId) {
+		Map<String, Object> map = null;
+		try
+		{
+		map=userService.deleteUser(userId);
+		if (map.get("isSuccess").equals(true)) {
+			map.remove("isSuccess", true);
+			return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
+		} else {
+			return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
+		}
+	} catch (Exception e) {
+		return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
+	}
 	}
 }

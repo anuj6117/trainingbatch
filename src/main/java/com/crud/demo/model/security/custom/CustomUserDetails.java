@@ -1,4 +1,4 @@
-// we are not using anywhere currently but we can use
+/*// we are not using anywhere currently but we can use
 package com.crud.demo.model.security.custom;
 
 import java.util.Collection;
@@ -55,3 +55,4 @@ public class CustomUserDetails extends User implements UserDetails{
 	}
 
 }
+*/
