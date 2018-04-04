@@ -11,7 +11,6 @@ export class MainService  {
 
     submitSignUp(fromData){
     
-//       console.log('fromData',fromData);
       let data:any = {
               "userName": fromData.userName,
               "email": fromData.email,
@@ -24,7 +23,6 @@ export class MainService  {
 
     submitLogIn(fromData){
     
-//       console.log('fromData',fromData);
       let data:any = {
               
               "email": fromData.email,
@@ -35,14 +33,14 @@ export class MainService  {
          return this.http.post('http://192.168.9.180:8181/userlogin', data);
     }
 
-    submitAddCoin(formData){
+    submitAddCoin(fromData){
         let data:any =
         {
-            "coinName":formData.coinName,
-            "symble":formData.symbol,
-            "initialSupply":formData.supply,
-            "price":formData.price
+            "coinName":fromData.coinName,
+            "symble":fromData.symbol,
+            "initialSupply":fromData.supply,
+            "price":fromData.price
             }
-            return this.http.post('http://180.151.84.102/trainingbatch/addcurrency', formData);
+            return this.http.post('http://180.151.84.102/trainingbatch/addcurrency', data);
         }
 }
