@@ -12,58 +12,22 @@
             <thead>
                 <tr>
                     <th>S.No</th>
-                    <th>Coin Name</th>
-                    <th>Symbol</th>
-                    <th>Initial Supply</th>
-                    <th>Price</th>
-                    <th>Date</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Country</th>
+                    <th>Registered On</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>{{coinName}}</td>
-                    <td>$</td>
-                    <td>20</td>
-                    <td>8000</td>
-                    <td>25/03/2018</td>
+                <tr *ngFor="let AllUser of AllUser; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{AllUser.userName}}</td>
+                    <td>{{AllUser.email}}</td>
+                    <td>{{AllUser.phoneNumber}}</td>
+                    <td>{{AllUser.country}}</td>
+                    <td>{{AllUser.createdOn}}</td>
                     <td>
-                        <button class="button_for_update_delete">Update</button>
-                    </td>
-                    <td>
-                        <button class="button_for_update_delete">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>BTC</td>
-                    <td>$</td>
-                    <td>30</td>
-                    <td>8000</td>
-                    <td>25/03/2018</td>
-                    <td>
-                        <button class="button_for_update_delete">Update</button>
-                    </td>
-                    <td>
-                        <button class="button_for_update_delete">Delete</button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>3</td>
-                    <td>BTC</td>
-                    <td>$</td>
-                    <td>40</td>
-                    <td>8000</td>
-                    <td>25/03/2018</td>
-                    <td>
-                        <button class="button_for_update_delete">Update</button>
-                    </td>
-                    <td>
-                        <button class="button_for_update_delete">Delete</button>
-                    </td>
                 </tr>
 
 

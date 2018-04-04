@@ -5,7 +5,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 @Injectable()
 export class MainService  {
-
+    
     constructor(private http:Http) { }
 
 
@@ -43,4 +43,21 @@ export class MainService  {
             }
             return this.http.post('http://180.151.84.102/trainingbatch/addcurrency', data);
         }
+
+getAllCurrency(): Observable<any>{
+    return this.http.get('http://180.151.84.102/trainingbatch/getallcurrency')
+    .map((res:Response) => res.json())
+    .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
+}
+
+
+getAllUser(): Observable<any>{
+    return this.http.get('http://180.151.84.102/trainingbatch/getallusers')
+    .map((res:Response) => res.json())
+    .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
+}
+
+
+
+
 }

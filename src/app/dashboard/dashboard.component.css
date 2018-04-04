@@ -55,6 +55,7 @@ set_button{
   z-index: 2;
   width: 83%;
   height: 700px;
+  margin-top: -700px;
   margin-left: 20%;
   position: absolute;
   overflow-x: scroll;

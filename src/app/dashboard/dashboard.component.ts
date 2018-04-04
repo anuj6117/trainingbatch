@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MainService } from '../service/mainService';
 
 @Component({
   selector: 'app-dashbord',
@@ -6,10 +7,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  public AllUser = [];
+  public formData: any= {};
 
-  constructor() { }
+  constructor(public mainService: MainService){
 
-  ngOnInit() {
   }
 
+  ngOnInit() {
+    this.getAllUser()
+ } 
+
+
+
+ getAllUser(){
+  this.mainService.getAllUser().subscribe(
+    success=>
+    {
+      this.AllUser = success.data;
+    })
+}
 }

@@ -1,0 +1,21 @@
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MainService } from './../service/mainService';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+
+  constructor(){
+
+  }
+
+  ngOnInit() {
+ } 
+
+}
+

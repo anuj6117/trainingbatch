@@ -8,6 +8,8 @@ import { MainService } from './../service/mainService';
   styleUrls: ['./add-coin.component.css']
 })
 export class AddCoinComponent implements OnInit {
+
+  public AllCurrency = [];
   public formData: any= {};
 
   constructor(public mainService: MainService){
@@ -15,14 +17,23 @@ export class AddCoinComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getAllCurrency()
  } 
 
  submitAddCoin() {
   this.mainService.submitAddCoin(this.formData).subscribe(
       success=>
       {
-        
+        this.getAllCurrency()
       })
+}
+
+getAllCurrency(){
+  this.mainService.getAllCurrency().subscribe(
+    success=>
+    {
+      this.AllCurrency = success.data;
+    })
 }
 }
 

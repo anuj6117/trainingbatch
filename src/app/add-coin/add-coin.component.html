@@ -20,11 +20,11 @@
         </li>
         <li>
           <input name="symbol" placeholder="Symbol" type="text" [(ngModel)]="formData.symbol" #symbol="ngModel" placeholder="Symbol"
-            minlength="3" maxlength="25">
+            minlength="1" maxlength="1">
         </li>
         <li>
           <input name="supply" placeholder="Supply" type="text" value="$" [(ngModel)]="formData.supply" #supply="ngModel" placeholder="Supply"
-            minlength="3" maxlength="25">
+            minlength="1" maxlength="10">
         </li>
         <li>
           <input name="price" placeholder="Price" type="text" [(ngModel)]="formData.price" #price="ngModel" minlength="1" maxlength="14">
@@ -52,27 +52,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>{{coinName}}</td>
-          <td>$</td>
-          <td>20</td>
-          <td>8000</td>
-          <td>25/03/2018</td>
-          <td>
-            <button class="button_for_update_delete">Update</button>
-          </td>
-          <td>
-            <button class="button_for_update_delete">Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>BTC</td>
-          <td>$</td>
-          <td>30</td>
-          <td>8000</td>
-          <td>25/03/2018</td>
+        <tr  *ngFor="let AllCurrency of AllCurrency; let i = index" >
+            <td>{{i+1}}</td>
+          
+          <td>{{AllCurrency.coinName}}</td>
+          <td>{{AllCurrency.symble}}</td>
+          <td>{{AllCurrency.initialSupply}}</td>
+          <td>{{AllCurrency.price}}</td>
+          <td>22</td>
           <td>
             <button class="button_for_update_delete">Update</button>
           </td>
@@ -81,20 +68,6 @@
           </td>
         </tr>
 
-        <tr>
-          <td>3</td>
-          <td>BTC</td>
-          <td>$</td>
-          <td>40</td>
-          <td>8000</td>
-          <td>25/03/2018</td>
-          <td>
-            <button class="button_for_update_delete">Update</button>
-          </td>
-          <td>
-            <button class="button_for_update_delete">Delete</button>
-          </td>
-        </tr>
 
 
       </tbody>

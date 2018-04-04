@@ -13,18 +13,24 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { SettingComponent } from './setting/setting.component';
 import { BuyComponent } from './buy/buy.component';
 import { SellComponent } from './sell/sell.component';
-import {MainService} from './service/mainService';
-import {AddCoinComponent} from './add-coin/add-coin.component';
-import {UpdateCoinComponent} from './update-coin/update-coin.component';
-import {AdminSideMenuComponent} from './admin-side-menu/admin-side-menu.component';
-import {AdminNavComponent} from './admin-nav/admin-nav.component';
-import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
-import {UserNavComponent} from './user-nav/user-nav.component';
+import { MainService} from './service/mainService';
+import { AddCoinComponent} from './add-coin/add-coin.component';
+import { UpdateCoinComponent} from './update-coin/update-coin.component';
+import { AdminSideMenuComponent} from './admin-side-menu/admin-side-menu.component';
+import { AdminNavComponent} from './admin-nav/admin-nav.component';
+import { AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
+import { UserNavComponent} from './user-nav/user-nav.component';
+import { FooterComponent} from './footer/footer.component';
+import { HomeComponent} from './home/home.component'
 
 import { importExpr } from '@angular/compiler/src/output/output_ast';
 
 
 const appRoutes: Routes = [
+  { path: '',
+  redirectTo: '/home',
+  pathMatch: 'full'
+},
   { path: 'signup', component: SignUpComponent },
    { path: 'login', component: LogInComponent },
    { path: 'dashboard', component: DashboardComponent },
@@ -39,12 +45,11 @@ const appRoutes: Routes = [
    { path: 'admin-nav', component: AdminNavComponent},
    { path: 'admin-dashboard', component: AdminDashboardComponent},
    { path: 'user-nav', component: UserNavComponent},
+   { path: 'footer', component: FooterComponent},
+   { path: 'home', component: HomeComponent },
    
-  { path: '',
-    redirectTo: '/login',
-    pathMatch: 'full'
-  },
-  { path: '**', component: LogInComponent }
+ 
+  { path: '**', component: HomeComponent }
 ];
 
 
@@ -65,6 +70,8 @@ const appRoutes: Routes = [
     AdminDashboardComponent,
     UpdateCoinComponent,
     UserNavComponent,
+    FooterComponent,
+    HomeComponent,
     
   ],
   

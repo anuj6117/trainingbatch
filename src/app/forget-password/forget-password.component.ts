@@ -12,12 +12,9 @@ export class ForgetPasswordComponent implements OnInit {
       constructor(private mainService:MainService) { } 
 
   ngOnInit() { console.log(this.mainService.submitLogIn); 
-  
-    console.log(this.mainService.submitLogIn )
      
  } 
  ForgetPasswordComponent() {
-console.log(this.formData) 
 } 
 }
 
