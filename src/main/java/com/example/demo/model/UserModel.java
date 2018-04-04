@@ -41,7 +41,18 @@ public class UserModel {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userModel")
 	private Set<OrderModel> userOrder = new HashSet<>();
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userModel")
+	private Set<TransactionModel> userTransaction = new HashSet<>();
   
+
+	public Set<TransactionModel> getUserTransaction() {
+		return userTransaction;
+	}
+
+	public void setUserTransaction(Set<TransactionModel> userTransaction) {
+		this.userTransaction = userTransaction;
+	}
 
 	public Set<OrderModel> getUserOrder() {
 		return userOrder;

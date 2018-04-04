@@ -68,7 +68,6 @@
 			<artifactId>twilio-java-sdk</artifactId>
 			<version>3.4.5</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

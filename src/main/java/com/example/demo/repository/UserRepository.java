@@ -14,6 +14,8 @@ import com.example.demo.model.UserModel;
 public interface UserRepository extends CrudRepository <UserModel,Integer>{
 
 	public UserModel findByEmail(String email);
+	public UserModel findByUserName(String userName);
+	public UserModel findByPhoneNumber(Long phoneNumber);
 	public UserModel findByEmailAndPassword(String email,String password);
 	public List<UserModel> findAll(Pageable	 pageable);
 	public List<UserModel> findByUserName(String userName,Pageable pageable);

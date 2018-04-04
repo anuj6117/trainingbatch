@@ -23,6 +23,7 @@ import com.example.demo.constant.WalletEnum;
 import com.example.demo.controller.OTPController;
 import com.example.demo.generate.password.BcryptPasswordGenerator;
 import com.example.demo.model.AuthToken;
+import com.example.demo.model.OrderModel;
 import com.example.demo.model.RoleModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.WalletModel;
@@ -116,10 +117,8 @@ public class UserService implements UserDetailsService {
 	// Add New User
 	// @Secured({"admin","user"})
 	public String addUser(UserModel userModel) throws Exception {
-
-		UserModel user = userRepo.findByEmail(userModel.getEmail());
-		if (user == null) {
-			if (!(userModel.getPassword().equalsIgnoreCase(""))) {
+        if(userModel.getUserid()==1) {
+        	if (!(userModel.getPassword().equalsIgnoreCase(""))) {
 				userModel.setCreatedOn(new Date());
 				userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
 				Set<RoleModel> roleModel = addDefaultRole(RoleEnum.ROLE_USER.toString());
@@ -132,17 +131,63 @@ public class UserService implements UserDetailsService {
 				System.out.println("-----------------" + sender1.createMimeMessage());
 				 SendEmail.sendEmail(userModel.getEmail(), otpNum,
 				 userModel.getUserName(),sender1);
-				 OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
+				// OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
+				 OTPController.sendSMS("9873020277",otpNum.toString());
 				return "success";
 			} else {
 				System.out.println("----------------------azsxdfghjkl");
 				throw new Exception("Password Cannot be null");
 			}
+        }
+        else
+        {
+        	UserModel user = userRepo.findByEmail(userModel.getEmail());
+    		System.out.println(userModel.getUserName()+"--------------------");
+    		UserModel username = userRepo.findByUserName(userModel.getUserName());
+    		System.out.println(username+"--------------------");
+    		UserModel userphone = userRepo.findByPhoneNumber(userModel.getPhoneNumber());
+    		if(userModel.getCountry()==""&&userModel.getEmail()==""&&userModel.getPhoneNumber()==null&&userModel.getUserName()=="") {
+    			throw new Exception("Field cannot be null");
+    			
+    		}
+    		else {
+    			if(userphone == null) {
+    				if(username == null) {
+    					if (user == null) {
+    						if (!(userModel.getPassword().equalsIgnoreCase(""))) {
+    							userModel.setCreatedOn(new Date());
+    							userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
+    							Set<RoleModel> roleModel = addDefaultRole(RoleEnum.ROLE_USER.toString());
+    							userModel.setRoleType(roleModel);
 
-		} else {
-			throw new Exception("Email cannot be null");
-		}
+    							userRepo.save(userModel);
+    							addWallet(userModel);
+    							Integer otpNum = Utility.generateId(1000);
+    							authService.addAuthToken(userModel.getUserName(), otpNum);
+    							System.out.println("-----------------" + sender1.createMimeMessage());
+    							 SendEmail.sendEmail(userModel.getEmail(), otpNum,
+    							 userModel.getUserName(),sender1);
+    							// OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
+    							 OTPController.sendSMS("9873020277",otpNum.toString());
+    							return "success";
+    						} else {
+    							System.out.println("----------------------azsxdfghjkl");
+    							throw new Exception("Password Cannot be null");
+    						}
 
+    					} else {
+    						throw new Exception("Email Already Exists");
+    					}
+    				}
+    				else {
+    					throw new Exception("UserName Already Exists");
+    				}
+    			}else {
+    				throw new Exception("PhoneNumber Already Exists");
+    			}
+    		}
+        }
+		
 	}
 
 	// Add Default Wallet For A New User
@@ -154,6 +199,9 @@ public class UserService implements UserDetailsService {
 		walletRepo.save(walletModel);
 	}
 
+	
+	
+	
 	// Add Default Role For A New User
 	public Set<RoleModel> addDefaultRole(String role) {
 		roleService.addRole();
@@ -198,6 +246,14 @@ public class UserService implements UserDetailsService {
 		System.out.println(userOp.getEmail() + "-------------------");
 		return userOp;
 	}
+	
+	public UserModel getUserById(UserModel u) {
+
+		Optional<UserModel> userOp = userRepo.findById(u.getUserid());
+		
+		return userOp.get();
+	}
+	
 
 	// ------------ FETCH ROLE AND USER AND VICE VERSA
 	// fetch the roles
@@ -278,7 +334,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	// Add Another For a Existing User wallet
-	public void addAnotherWallet(UserModel userModel, String walletType) {
+	public Object addAnotherWallet(UserModel userModel, String walletType) throws Exception{
 		Boolean check = isWalletTypeValid(walletType);
 		if (check) {
 
@@ -299,7 +355,13 @@ public class UserService implements UserDetailsService {
 				walletModel.setWalletType(walletType);
 				walletRepo.save(walletModel);
 			}
+			else {
+				throw new Exception("Wallet already detected");
+			}
 
+		}
+		else {
+			throw new Exception("Walletype is invalid");
 		}
 
 	}
@@ -342,12 +404,16 @@ public class UserService implements UserDetailsService {
 	public List<UserModel> updateUser(int userId, UserModel u) {
 		Optional<UserModel> userOp = userRepo.findById(userId);
 		System.out.println(userOp + "---------------------------------------");
-		userOp.get().setUserName(u.getUserName());
-		userOp.get().setCountry(u.getCountry());
-		userOp.get().setEmail(u.getEmail());
-		userOp.get().setPhoneNumber(u.getPhoneNumber());
-		userOp.get().setPassword(u.getPassword());
-		userRepo.save(userOp.get());
+		if(!(userOp.get().equals(null))) {
+			userOp.get().setUserName(u.getUserName());
+			userOp.get().setCountry(u.getCountry());
+			userOp.get().setEmail(u.getEmail());
+			userOp.get().setPhoneNumber(u.getPhoneNumber());
+			userOp.get().setPassword(u.getPassword());
+			userRepo.save(userOp.get());
+		}
+		
+	
 		List<UserModel> userDetails = new ArrayList<UserModel>();
 		userRepo.findAll().forEach(userDetails::add);
 		return userDetails;

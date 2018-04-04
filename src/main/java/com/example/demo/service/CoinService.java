@@ -16,13 +16,27 @@ public class CoinService {
 	@Autowired
 	private CoinRepository coinRepo;
 
-	public Boolean addCoin(CoinModel coinModel) {
-		if (coinModel.getCoinName().equals(null)) {
-			return false;
-		} else {
-			coinRepo.save(coinModel);
-			return true;
+	public Object addCoin(CoinModel coinModel)throws Exception {
+		if(coinModel.getCoinName().equals("")&&coinModel.getCoinSymbol().equals("")) {
+			return "invalid input";
+		}else {
+			CoinModel coin = coinRepo.findByCoinName(coinModel.getCoinName());
+			CoinModel coinsymbol = coinRepo.findByCoinSymbol(coinModel.getCoinSymbol());
+			if(coin==null) {
+				if(coinsymbol==null) {
+					coinRepo.save(coinModel);
+				}
+				else {
+					throw new Exception("Symbol cannot be same");
+				}
+			}
+			else {
+				throw new Exception("Coin Already exists");
+			}
+			return "success";
 		}
+	
+			
 	}
 
 	public Object getAllCoinDetail() {
@@ -61,6 +75,27 @@ public class CoinService {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public Object getCoinById(CoinModel coinModel) {
+		int flag=0;
+		Optional<CoinModel> coinData;
+			if (coinModel.getCoinId() > 0) {
+				coinData=coinRepo.findById(coinModel.getCoinId());
+				if(coinData.get()!=null) {
+					flag=1;
+				}
+			} else {
+				return "Enter valid Coin Id first";
+			}
+			if(flag==1) {
+				return coinData.get();
+			}
+			else {
+				return "Coin Id does not exist";
+			}
+		
+		
 	}
 
 }

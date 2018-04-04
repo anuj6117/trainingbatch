@@ -19,11 +19,6 @@ public class CoinModel {
 	private String coinSymbol="nill";
 	private long initialSupply = 0;
 	private float price = 0;
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderId", nullable = false)
-    private OrderModel orderModel;
-	
-	
 	public long getInitialSupply() {
 		return initialSupply;
 	}

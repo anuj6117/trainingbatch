@@ -71,7 +71,7 @@ public class UserController {
 	// ------------UPDATE USER DATA & ADD WALLET AND ROLE--------------------------
 
 	// To update user data
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
 	public List<UserModel> update( @RequestBody UserModel userDetails) {
 		return userService.updateUser(userDetails.getUserid(), userDetails);
 	}
@@ -87,8 +87,16 @@ public class UserController {
 	@RequestMapping(value = "/addwallet/{name}", method = RequestMethod.POST)
 	public ResponseEntity<Object> addingAnotherWallet(@PathVariable(value = "name") String walletType,
 			@RequestBody UserModel user) {
-		userService.addAnotherWallet(user, walletType);
-		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
+	
+		Object obj;
+		try {
+			obj = userService.addAnotherWallet(user, walletType);
+		} catch (Exception e) {
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
+		}
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "Data Loaded", obj);
+		
+		
 	}
 
 	// To add amount into user wallet
@@ -198,5 +206,22 @@ public class UserController {
 		}
 		return ApiResponse.generateResponse(HttpStatus.OK, true, "success", list);
 	}
+	
+	
+	// For user login
+		@RequestMapping(value = "/getbyuserid", method = RequestMethod.POST)
+		public ResponseEntity<Object> getUserByid(@RequestBody UserModel userDetails) {
+			UserModel user = new UserModel();
+			try {
+
+				if (userDetails.getUserid()>0) {
+					 user = userService.getUserById(userDetails);
+					
+				}
+			} catch (Exception e) {
+				return ApiResponse.generateResponse(HttpStatus.OK, true, "Enter Valid Id", null);
+			}
+			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", user);
+		}
 
 }
