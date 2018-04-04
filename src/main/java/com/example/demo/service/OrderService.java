@@ -30,7 +30,7 @@ public class OrderService {
 		for(WalletModel type : walletType) {
 			if(type.getWalletType().equals(orderModel.getCoinName())){
 				
-				if(orderModel.getAmount()<=type.getBalance()) {
+				if(orderModel.getTradingAmount()<=type.getBalance()) {
 					orderModel.setUserModel(userDetail.get());
 					orderModel.setOrderCreatedOn(new Date());
 					orderRepo.save(orderModel);

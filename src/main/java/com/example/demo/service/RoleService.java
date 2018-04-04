@@ -20,9 +20,10 @@ public class RoleService {
 		List<RoleModel> roleDetails = new ArrayList<RoleModel>();
 		roleRepo.findAll().forEach(roleDetails::add);
 		return roleDetails;
+
 	}
 
-	public void addRole() {
+	public Object addRole() {
 		int i = 1;
 		RoleModel roleModel = new RoleModel();
 		for (RoleEnum type : RoleEnum.values()) {
@@ -32,6 +33,18 @@ public class RoleService {
 			roleRepo.save(roleModel);
 			i++;
 		}
+
+		return "success";
+
+	}
+
+	public Object addRole1(RoleModel roleModel) throws Exception {
+		if (roleModel.getRole().equals("")) {
+			throw new Exception("Role type Cannot be null");
+		} else {
+			roleRepo.save(roleModel);
+		}
+		return "success";
 
 	}
 

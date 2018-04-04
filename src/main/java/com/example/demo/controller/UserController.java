@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UserOrderDTO;
+import com.example.demo.dto.UserRoledto;
 import com.example.demo.model.RoleModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.UserService;
@@ -77,10 +79,15 @@ public class UserController {
 	}
 
 	// Add another role for user
-	@RequestMapping(value = "/addrole/{role}", method = RequestMethod.POST)
-	public ResponseEntity<Object> addRoles(@PathVariable(value = "role") String roleType, @RequestBody UserModel user) {
-		userService.addAnotherRole(user, roleType);
-		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
+	@RequestMapping(value = "/assignrole", method = RequestMethod.POST)
+	public ResponseEntity<Object> addRoles(@RequestBody UserRoledto user) {
+		Object obj;
+		try {
+			obj = userService.addAnotherRole(user.getUserId(), user.getRoleType());
+		} catch (Exception e) {
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
+		}
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "Data Loaded", obj);
 	}
 
 	// To add another wallet for user
@@ -100,21 +107,26 @@ public class UserController {
 	}
 
 	// To add amount into user wallet
-	@RequestMapping(value = "/addamount/{amount}/{walletType}", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/addamount/{amount}/{walletType}", method = RequestMethod.POST)
 	public ResponseEntity<Object> addAmount(@PathVariable(value = "amount") Float amount,
 			@PathVariable(value = "walletType") String walletType, @RequestBody UserModel userDetails) {
 		userService.addAmountIntoWallet(userDetails, amount, walletType);
 		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
-	}
+	}*/
+	// To add amount into user wallet
+		@RequestMapping(value = "/depositamount", method = RequestMethod.POST)
+		public ResponseEntity<Object> addAmount1( @RequestBody UserOrderDTO userdto) {
+			userService.addAmountIntoWallet1(userdto.getUserId(), userdto.getAmount(),userdto.getWalletType());
+			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
+		}
+		
+		// To add amount into user wallet
+		@RequestMapping(value = "/withdrawamount", method = RequestMethod.POST)
+		public ResponseEntity<Object> withdrawAmount( @RequestBody UserOrderDTO userdto) {
+			userService.withdrawAmountFromWallet(userdto.getUserId(), userdto.getAmount(),userdto.getWalletType());
+			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
+		}
 
-	// To withdraw amount into user wallet
-	@RequestMapping(value = "/withdrawamount/{amount}/{walletType}", method = RequestMethod.POST)
-	public ResponseEntity<Object> withdrawAmount(@PathVariable(value = "amount") Float amount,
-			@PathVariable(value = "walletType") String walletType, @RequestBody UserModel userDetails) {
-		userService.withdrawAmountFromWallet(userDetails, amount, walletType);
-		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
-
-	}
 
 	// ------------ FETCH ROLE AND USER AND VICE VERSA
 	// To fetch role

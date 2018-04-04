@@ -17,13 +17,26 @@ public class OrderModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer orderId;
-	private Float amount;
+	private Float tradingAmount;
 	private Float fee;
 	private String orderType;
 	private Date orderCreatedOn;
 	private String status="pending";
 	private String coinName;
+	private Float quoteValue;
 	
+	public Float getTradingAmount() {
+		return tradingAmount;
+	}
+	public void setTradingAmount(Float tradingAmount) {
+		this.tradingAmount = tradingAmount;
+	}
+	public Float getQuoteValue() {
+		return quoteValue;
+	}
+	public void setQuoteValue(Float quoteValue) {
+		this.quoteValue = quoteValue;
+	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userid")
 	@JsonIgnore
@@ -49,12 +62,7 @@ public class OrderModel {
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
 	}
-	public Float getAmount() {
-		return amount;
-	}
-	public void setAmount(Float amount) {
-		this.amount = amount;
-	}
+	
 	public Float getFee() {
 		return fee;
 	}

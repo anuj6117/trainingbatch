@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class TransactionModel {
 	@Id
 	private Integer transactionId;
-	private String type;
+	private String currencyType;
+	
 	private String status;
-	private String userName;
 	private Date transactionCreatedOn;
 	private Float netAmount;
 	private Float exchangeRate;
@@ -23,36 +23,24 @@ public class TransactionModel {
 	private Integer buyerId;
 	private Integer sellerId;
 	private Float grossAmount;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
-	@JsonIgnore
-	 private UserModel userModel;
-	
-	
-	
+
+	public String getCurrencyType() {
+		return currencyType;
+	}
+	public void setCurrencyType(String currencyType) {
+		this.currencyType = currencyType;
+	}
 	public Integer getTransactionId() {
 		return transactionId;
 	}
 	public void setTransactionId(Integer transactionId) {
 		this.transactionId = transactionId;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 	public Date getTransactionCreatedOn() {
 		return transactionCreatedOn;

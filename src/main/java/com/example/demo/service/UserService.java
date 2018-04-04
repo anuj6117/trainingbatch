@@ -291,10 +291,10 @@ public class UserService implements UserDetailsService {
 	}
 
 	// -------------ADD ANOTHER ROLE FOR USER------------------------------
-	public String addAnotherRole(UserModel user, String roleType) {
+	public String addAnotherRole(Integer userid, String roleType)throws Exception {
 
 		RoleModel roleOp = roleRepo.findByRole(roleType);
-		Optional<UserModel> userData = userRepo.findById(user.getUserid());
+		Optional<UserModel> userData = userRepo.findById(userid);
 		UserModel userModel = userData.get();
 
 		if (roleOp != null) {
@@ -311,7 +311,7 @@ public class UserService implements UserDetailsService {
 			userRepo.save(userModel);
 			return "success";
 		} else {
-			return "unsuccessssfukl";
+			throw new Exception("Role Does Not Exist");
 		}
 	}
 
@@ -356,8 +356,10 @@ public class UserService implements UserDetailsService {
 				walletRepo.save(walletModel);
 			}
 			else {
-				throw new Exception("Wallet already detected");
+				throw new Exception("Wallet already present");
 			}
+			
+			return "Wallet Added Successfully";
 
 		}
 		else {
@@ -367,18 +369,24 @@ public class UserService implements UserDetailsService {
 	}
 
 	// -----------------DEPOSIT AND WITHDRAW AMOUNT FORM USER-----------------------
-	public void addAmountIntoWallet(UserModel userModel, Float amount, String walletType) {
+	/*public void addAmountIntoWallet(UserModel userModel, Float amount, String walletType) {
 		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userModel.getUserid());
 		walletModel.setBalance(walletModel.getBalance() + amount);
 		walletModel.setShadowBalance(walletModel.getBalance() + amount);
 		walletRepo.save(walletModel);
+	}*/
+	public void addAmountIntoWallet1(Integer userid, Float amount, String walletType) {
+		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
+		walletModel.setBalance(walletModel.getBalance() + amount);
+		walletModel.setShadowBalance(walletModel.getBalance());
+		walletRepo.save(walletModel);
 	}
 
-	public void withdrawAmountFromWallet(UserModel userModel, Float amount, String walletType) {
-		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userModel.getUserid());
+	public void withdrawAmountFromWallet(Integer userid, Float amount, String walletType) {
+		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType,userid);
 		if (amount < walletModel.getBalance()) {
 			walletModel.setBalance(walletModel.getBalance() - amount);
-			walletModel.setShadowBalance(walletModel.getBalance() - amount);
+			walletModel.setShadowBalance(walletModel.getBalance());
 			walletRepo.save(walletModel);//testing 
 		}
 	}
