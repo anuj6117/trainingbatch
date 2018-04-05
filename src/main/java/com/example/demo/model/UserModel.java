@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class UserModel {
@@ -30,6 +31,10 @@ public class UserModel {
 	private Long phoneNumber;
 	private String password;
 	private Boolean status = false;
+	@Transient
+	private String walletType;
+
+	
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
 	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = {
@@ -42,18 +47,10 @@ public class UserModel {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userModel")
 	private Set<OrderModel> userOrder = new HashSet<>();
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userModel")
-	private Set<TransactionModel> userTransaction = new HashSet<>();
+
   
 
-	public Set<TransactionModel> getUserTransaction() {
-		return userTransaction;
-	}
-
-	public void setUserTransaction(Set<TransactionModel> userTransaction) {
-		this.userTransaction = userTransaction;
-	}
-
+	
 	public Set<OrderModel> getUserOrder() {
 		return userOrder;
 	}
@@ -140,6 +137,13 @@ public class UserModel {
 
 	public void setUserWallet(Set<WalletModel> userWallet) {
 		this.userWallet = userWallet;
+	}
+	public String getWalletType() {
+		return walletType;
+	}
+
+	public void setWalletType(String walletType) {
+		this.walletType = walletType;
 	}
 
 }

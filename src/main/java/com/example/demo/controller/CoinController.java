@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.CoinModel;
@@ -35,7 +36,7 @@ public class CoinController {
 	}
 
 	@RequestMapping(value = "/getallcurrency", method = RequestMethod.GET)
-	public ResponseEntity<Object> getAllDetail(HttpServletResponse httpResponse) {
+	public ResponseEntity<Object> getAllDetail() {
 		 
 		
 		Object response ;
@@ -59,8 +60,8 @@ public class CoinController {
 	}
 
 	@RequestMapping(value = "/deletecurrency", method = RequestMethod.POST)
-	public ResponseEntity<Object> delete(@RequestBody CoinModel coinDetails) {
-		String obj=coinService.deleteCoin(coinDetails);
+	public ResponseEntity<Object> delete(@RequestParam(value = "coinId") Integer coinId) {
+		String obj=coinService.deleteCoin(coinId);
 		if (obj.equals("success")) {
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "success", null);
 		} else {
@@ -69,10 +70,10 @@ public class CoinController {
 	}
 	
 	@RequestMapping(value = "/getcurrencybyid", method = RequestMethod.POST, produces = { "application/JSON" })
-	public ResponseEntity<Object> add1(@RequestBody CoinModel coin) throws Exception {
+	public ResponseEntity<Object> add1(@RequestParam(value = "coinId") Integer coinId) throws Exception {
 		Object response = "";
 		try {
-			response = coinService.getCoinById(coin);
+			response = coinService.getCoinById(coinId);
 		} catch (Exception e) {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false,"false", null);
 		}

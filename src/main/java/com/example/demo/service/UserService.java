@@ -121,7 +121,7 @@ public class UserService implements UserDetailsService {
         	if (!(userModel.getPassword().equalsIgnoreCase(""))) {
 				userModel.setCreatedOn(new Date());
 				userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
-				Set<RoleModel> roleModel = addDefaultRole(RoleEnum.ROLE_USER.toString());
+				Set<RoleModel> roleModel = addDefaultRole(RoleEnum.USER.toString());
 				userModel.setRoleType(roleModel);
 
 				userRepo.save(userModel);
@@ -157,7 +157,7 @@ public class UserService implements UserDetailsService {
     						if (!(userModel.getPassword().equalsIgnoreCase(""))) {
     							userModel.setCreatedOn(new Date());
     							userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
-    							Set<RoleModel> roleModel = addDefaultRole(RoleEnum.ROLE_USER.toString());
+    							Set<RoleModel> roleModel = addDefaultRole(RoleEnum.USER.toString());
     							userModel.setRoleType(roleModel);
 
     							userRepo.save(userModel);
@@ -167,7 +167,7 @@ public class UserService implements UserDetailsService {
     							System.out.println("-----------------" + sender1.createMimeMessage());
     							 SendEmail.sendEmail(userModel.getEmail(), otpNum,
     							 userModel.getUserName(),sender1);
-    							// OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
+    							// OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
     							 OTPController.sendSMS("9873020277",otpNum.toString());
     							return "success";
     						} else {
@@ -247,9 +247,9 @@ public class UserService implements UserDetailsService {
 		return userOp;
 	}
 	
-	public UserModel getUserById(UserModel u) {
+	public UserModel getUserById(Integer userId) {
 
-		Optional<UserModel> userOp = userRepo.findById(u.getUserid());
+		Optional<UserModel> userOp = userRepo.findById(userId);
 		
 		return userOp.get();
 	}
@@ -335,13 +335,12 @@ public class UserService implements UserDetailsService {
 
 	// Add Another For a Existing User wallet
 	public Object addAnotherWallet(UserModel userModel, String walletType) throws Exception{
-		Boolean check = isWalletTypeValid(walletType);
+		Boolean check = isWalletTypeValid(userModel.getWalletType());
 		if (check) {
-
 			int flag = 0;
 			List<WalletModel> walletOp = walletRepo.findAllByUserIdW(userModel.getUserid());
 			for (WalletModel type : walletOp) {
-				if (type.getWalletType().equalsIgnoreCase(walletType)) {
+				if (type.getWalletType().equalsIgnoreCase(userModel.getWalletType())) {
 					System.out.println(type.getWalletType());
 					flag = 1;
 					break;
@@ -352,15 +351,13 @@ public class UserService implements UserDetailsService {
 				walletModel.setUserIdW(userModel.getUserid());
 				walletModel.setUserModel(userModel);
 				walletModel.setWalletHash(Utility.generateId(100));
-				walletModel.setWalletType(walletType);
+				walletModel.setWalletType(userModel.getWalletType());
 				walletRepo.save(walletModel);
 			}
 			else {
 				throw new Exception("Wallet already present");
 			}
-			
 			return "Wallet Added Successfully";
-
 		}
 		else {
 			throw new Exception("Walletype is invalid");
@@ -369,12 +366,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	// -----------------DEPOSIT AND WITHDRAW AMOUNT FORM USER-----------------------
-	/*public void addAmountIntoWallet(UserModel userModel, Float amount, String walletType) {
-		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userModel.getUserid());
-		walletModel.setBalance(walletModel.getBalance() + amount);
-		walletModel.setShadowBalance(walletModel.getBalance() + amount);
-		walletRepo.save(walletModel);
-	}*/
+
 	public void addAmountIntoWallet1(Integer userid, Float amount, String walletType) {
 		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
 		walletModel.setBalance(walletModel.getBalance() + amount);
@@ -454,7 +446,7 @@ public class UserService implements UserDetailsService {
 			Set<RoleModel> role = userModel.getRoleType();
 			String[] authStrings = new String[role.size()];
 			for (RoleModel type : role) {
-				authStrings[i] = type.getRole();
+				authStrings[i] = "ROLE_"+type.getRole();
 				i++;
 			}
 			for (String authString : authStrings) {

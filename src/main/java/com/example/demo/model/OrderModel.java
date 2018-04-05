@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
@@ -24,6 +25,13 @@ public class OrderModel {
 	private String status="pending";
 	private String coinName;
 	private Float quoteValue;
+	@Transient
+	private Integer userId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid")
+	@JsonIgnore
+	 private UserModel userModel;
 	
 	public Float getTradingAmount() {
 		return tradingAmount;
@@ -37,10 +45,7 @@ public class OrderModel {
 	public void setQuoteValue(Float quoteValue) {
 		this.quoteValue = quoteValue;
 	}
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userid")
-	@JsonIgnore
-	 private UserModel userModel;
+	
 	
 	
     public UserModel getUserModel() {
@@ -88,5 +93,10 @@ public class OrderModel {
 		this.status = status;
 	}
 
-
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 }

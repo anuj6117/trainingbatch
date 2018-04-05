@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class TransactionModel {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer transactionId;
 	private String currencyType;
 	
@@ -19,11 +22,19 @@ public class TransactionModel {
 	private Date transactionCreatedOn;
 	private Float netAmount;
 	private Float exchangeRate;
+	private Float transactionFee;
+	
 	private String description;
 	private Integer buyerId;
 	private Integer sellerId;
 	private Float grossAmount;
-
+	
+	public Float getTransactionFee() {
+		return transactionFee;
+	}
+	public void setTransactionFee(Float transactionFee) {
+		this.transactionFee = transactionFee;
+	}
 	public String getCurrencyType() {
 		return currencyType;
 	}

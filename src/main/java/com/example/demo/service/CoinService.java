@@ -64,10 +64,10 @@ public class CoinService {
 		}
 	}
 
-	public String deleteCoin(CoinModel coinModel) {
+	public String deleteCoin(Integer coinId) {
 		try {
-			if (coinModel.getCoinId() > 0) {
-				coinRepo.deleteById(coinModel.getCoinId());
+			if (coinId > 0) {
+				coinRepo.deleteById(coinId);
 				return "success";
 			} else {
 				return "Enter the Coin Id first";
@@ -77,11 +77,11 @@ public class CoinService {
 		}
 	}
 	
-	public Object getCoinById(CoinModel coinModel) {
+	public Object getCoinById(Integer coinId) {
 		int flag=0;
 		Optional<CoinModel> coinData;
-			if (coinModel.getCoinId() > 0) {
-				coinData=coinRepo.findById(coinModel.getCoinId());
+			if (coinId > 0) {
+				coinData=coinRepo.findById(coinId);
 				if(coinData.get()!=null) {
 					flag=1;
 				}

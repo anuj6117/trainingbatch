@@ -21,16 +21,53 @@ public class OrderService {
 	@Autowired
 	private UserRepository userRepo;
 	
+	public Object createbuyOrder(OrderModel orderModel) {
+		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
+		if(userDetail!=null) {
+			orderModel.setOrderType("buy");
+			orderModel.setStatus("Pending");
+			orderModel.setUserModel(userDetail.get());
+			orderModel.setOrderCreatedOn(new Date());
+			orderRepo.save(orderModel);	
+		}
+		else {
+			return "User Does Not exist";
+		}
+		return "success";
+	}
 	
+	public Object createsellOrder(OrderModel orderModel) {
+		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
+		if(userDetail!=null) {
+			orderModel.setOrderType("sell");
+			orderModel.setStatus("Pending");
+			orderModel.setUserModel(userDetail.get());
+			orderModel.setOrderCreatedOn(new Date());
+			orderRepo.save(orderModel);	
+		}
+		else {
+			return "User Does Not exist";
+		}
+		return "success";
+	}
 	
-	
-	public Object createOrder(Integer userId,OrderModel orderModel) {
-		Optional<UserModel> userDetail = userRepo.findById(userId);
+	public Object getallordersbyId(Integer userId) {
+		Optional<UserModel> user = userRepo.findById(userId);
+		Set <OrderModel> orderSet = user.get().getUserOrder();
+		if(orderSet.isEmpty()) {
+			return "No Data Found";
+		}
+		return orderSet;
+	}
+	/*public Object createsellOrder(OrderModel orderModel) {
+		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
 		Set<WalletModel> walletType = userDetail.get().getUserWallet();
 		for(WalletModel type : walletType) {
 			if(type.getWalletType().equals(orderModel.getCoinName())){
 				
 				if(orderModel.getTradingAmount()<=type.getBalance()) {
+					orderModel.setOrderType("sell");
+					orderModel.setStatus("Pending");
 					orderModel.setUserModel(userDetail.get());
 					orderModel.setOrderCreatedOn(new Date());
 					orderRepo.save(orderModel);
@@ -41,7 +78,8 @@ public class OrderService {
 			}
 		}
 		return "success";
-	}
+	}*/
+	
 	
 	public Object getallorders() {
 		return orderRepo.findAll();

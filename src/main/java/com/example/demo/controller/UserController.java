@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.UserOrderDTO;
@@ -91,13 +92,13 @@ public class UserController {
 	}
 
 	// To add another wallet for user
-	@RequestMapping(value = "/addwallet/{name}", method = RequestMethod.POST)
-	public ResponseEntity<Object> addingAnotherWallet(@PathVariable(value = "name") String walletType,
+	@RequestMapping(value = "/addwallet", method = RequestMethod.POST)
+	public ResponseEntity<Object> addingAnotherWallet(
 			@RequestBody UserModel user) {
 	
 		Object obj;
 		try {
-			obj = userService.addAnotherWallet(user, walletType);
+			obj = userService.addAnotherWallet(user, user.getWalletType());
 		} catch (Exception e) {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}
@@ -171,10 +172,10 @@ public class UserController {
 	// ----------------TO DELETE A USER
 
 	// To delete amount into user wallet
-	@RequestMapping(value = "/deleteuser", method = RequestMethod.POST)
-	public ResponseEntity<Object> delete(@RequestBody UserModel userDetails, HttpServletResponse httpResponse) {
-		if (userDetails.getUserid() != 0) {
-			userService.deleteUser(userDetails.getUserid());
+	@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
+	public ResponseEntity<Object> delete( @RequestParam(value = "userId") Integer userId) {
+		if (userId != 0) {
+			userService.deleteUser(userId);
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
 		} else {
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "Failure", null);
@@ -222,12 +223,12 @@ public class UserController {
 	
 	// For user login
 		@RequestMapping(value = "/getbyuserid", method = RequestMethod.POST)
-		public ResponseEntity<Object> getUserByid(@RequestBody UserModel userDetails) {
+		public ResponseEntity<Object> getUserByid( @RequestParam(value = "userId") Integer userId) {
 			UserModel user = new UserModel();
 			try {
 
-				if (userDetails.getUserid()>0) {
-					 user = userService.getUserById(userDetails);
+				if (userId>0) {
+					 user = userService.getUserById(userId);
 					
 				}
 			} catch (Exception e) {
