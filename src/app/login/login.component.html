@@ -1,12 +1,17 @@
-<div class="main_container">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#LoginModalCenter">
-        Log In
-    </button>
+<!-- navigation -->
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+    
+          <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav navbar-left">
+                  <li><a href="/home"><img src="assets/img/newlogo2.png"></a>
+              </ul>
+          </div>
+        </div>
+      </nav>
 
-    <!-- Modal -->
-    <div class="modal fade" id="LoginModalCenter" tabindex="-1" role="dialog" aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+
+<div class="main_container">
 
 
                 <div class="form_container">
@@ -21,7 +26,6 @@
                         <div *ngIf="email.errors && email.touched" class="red error">
 
                             <div *ngIf="email.errors.required" class="for_error">This is required field.</div>
-                            <br>
 
                             <div *ngIf="email.errors.pattern" class="for_error">Enter Valid Email ID</div>
 
@@ -41,12 +45,12 @@
 
 
                         <div class="set_button">
-                            <button class="for_button" type="submit" name="submit" [disabled]="logInForm.invalid" name="logInForm" value="SignUp">Log In</button>
+                            <button class="for_button" type="submit" [disabled]="logInForm.invalid" name="logInForm" value="Log In" >Log In</button>
                         </div>
 
                         <h3 id="for_link_page">
-                            <a href="../signup">Sign Up</a> |
-                            <a href="../forget-password">Lost Your Password</a>
+                            <a href="/signup">Sign Up</a> |
+                            <a href="/forgetPassword">Lost Your Password</a>
                         </h3>
 
                     </form>
@@ -57,8 +61,5 @@
 
 
                 </div>
-            </div>
-        </div>
-    </div>
 
 </div>

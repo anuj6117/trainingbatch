@@ -3,14 +3,7 @@
   border: 0px;
 }
 
-.navbar-right {
-    float: right!important;
-    margin-right: 10px;
-}
 
-.carousel-control .glyphicon-chevron-right, .carousel-control .icon-next {
-    margin-right: -60px;
-}
 
 .navbar-inverse{
   background-color: #2D3F57;
@@ -24,19 +17,15 @@
 
 div ul li a img{
   width: 100px;
-  height: 50px;    
-  line-height: 50px;
-  text-align: center;
+  height: 60px;
 }
 
 .container-fluid{
   padding: 0px;
 }
 .navbar-nav>li>a{
-  color: white;  
   padding: 0px;
-  height: 50px;
-  line-height: 50px;
+  line-height: 60px;
   padding-left: 10px;
   padding-right: 10px;
 }

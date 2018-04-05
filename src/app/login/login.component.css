@@ -1,6 +1,61 @@
+/* for nav bar */
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form{
+    border-radius: 0px;
+    border: 0px;
+  }
+  
+  .navbar-right {
+      float: right!important;
+      margin-right: 10px;
+  }
+  
+  .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next {
+      margin-right: -60px;
+  }
+  
+  .navbar-inverse{
+    background-color: #2D3F57;
+    border-radius: 0px;
+    border-top: 0px;
+    border-left: 0px;
+    border-bottom: 1px solid #c0e9fd;
+    border-right: 0px;
+    height: 40px;
+  }
+  
+  div ul li a img{
+    width: 100px;
+    height: 50px;    
+    line-height: 50px;
+    margin-top: -13px;
+    text-align: center;
+  }
+  
+  .container-fluid{
+    padding: 0px;
+  }
+  .navbar-nav>li>a{
+    padding: 0px;
+    line-height: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  div ul li {
+      padding: 0px 5px 0px 5px;
+  }
+  
+
+
+
+
+
+
+
+
+
 /*common css for all page*/
 a:hover{
-    color:#9B7785;
+    color: #009A9A !important;
 }
     /*css for laptop and large screen*/
 
@@ -8,11 +63,12 @@ a:hover{
 
     
         .main_container{
-            height: 40px;
+            height: 700px;
             width: 100%;
             background-color: #2D3F57;
             width: 100%;
-            position: relative;            
+            position: relative;
+            margin-top: -20px;            
             
         }
 
@@ -609,6 +665,7 @@ a:hover{
         color: #fff;
         background-color: #2D3F57;
         border-color: #2D3F57;
-        line-height: 40px;
-        height: 40px;
+        line-height: 50px;
+        height: 50px;
+        padding: 0px;
     }

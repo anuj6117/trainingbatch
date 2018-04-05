@@ -30,7 +30,7 @@ export class MainService  {
               
       }
       
-         return this.http.post('http://192.168.9.180:8181/userlogin', data);
+         return this.http.post('http://180.151.84.102/trainingbatch/userlogin', data);
     }
 
     submitAddCoin(fromData){
@@ -44,19 +44,25 @@ export class MainService  {
             return this.http.post('http://180.151.84.102/trainingbatch/addcurrency', data);
         }
 
-getAllCurrency(): Observable<any>{
-    return this.http.get('http://180.151.84.102/trainingbatch/getallcurrency')
-    .map((res:Response) => res.json())
-    .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
-}
+        getAllCurrency(): Observable<any>{
+            return this.http.get('http://180.151.84.102/trainingbatch/getallcurrency')
+            .map((res:Response) => res.json())
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
+        }
 
 
-getAllUser(): Observable<any>{
-    return this.http.get('http://180.151.84.102/trainingbatch/getallusers')
-    .map((res:Response) => res.json())
-    .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
-}
+        getAllUser(): Observable<any>{
+            return this.http.get('http://180.151.84.102/trainingbatch/getallusers')
+            .map((res:Response) => res.json())
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
+        }
 
+
+        getUserProfile(): Observable<any>{
+            return this.http.get('http://180.151.84.102/trainingbatch/getallusers')
+            .map((res:Response) => res.json())
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
+        }
 
 
 

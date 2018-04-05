@@ -1,17 +1,19 @@
+<!-- navigation -->
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+    
+          <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav navbar-left">
+                  <li><a href="/home"><img src="assets/img/newlogo2.png"></a>
+              </ul>
+          </div>
+        </div>
+      </nav>
+
 
 
 <div class="main_container">
 
-
-    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-        SignUp
-    </button>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
                 <div class="form_container">
                     <h3 class="for_h1">Register Here</h3>
                     <form class="form1" (ngSubmit)="submitSignUp()" #signUpForm="ngForm" method="get" name="SignUp">
@@ -97,16 +99,14 @@
                             <button class="for_button" type="submit" name="submit" [disabled]="signUpForm.invalid" name="signUpForm" value="SignUp">Register</button>
                         </div>
     
-                        <h3 id="for_link_page">
-                            <a href="#">Log in</a> |
-                            <a href="#">Lost Your Password</a>
-                        </h3>
+                        <h4 id="for_link_page">
+                            <a href="/login">Log in</a> |
+                            <a href="/forgetPassword">Lost Your Password</a>
+                        </h4>
     
                     </form>
                 </div>
-            </div>
-        </div>
-    </div>
+
 
 </div>
 

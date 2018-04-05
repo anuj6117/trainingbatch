@@ -106,8 +106,22 @@ tr > th{
   min-width: 140px;
   max-width: 140px;
   font-size: 14px;
+  text-align: center;
   border:1px solid #999;
   color: rgb(73, 72, 72);
+}
+
+a {
+  color: black ;
+}
+
+.active:hover{
+  color: green;
+  font-size:16px;
+}
+.deactive:hover{
+  color: red;
+  font-size:16px;
 }
 /*target for table data*/
 tr > td {

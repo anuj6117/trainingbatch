@@ -1,3 +1,59 @@
+/* for nav bar */
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form{
+    border-radius: 0px;
+    border: 0px;
+  }
+  
+  .navbar-right {
+      float: right!important;
+      margin-right: 10px;
+  }
+  
+  .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next {
+      margin-right: -60px;
+  }
+  
+  .navbar-inverse{
+    background-color: #2D3F57;
+    border-radius: 0px;
+    border-top: 0px;
+    border-left: 0px;
+    border-bottom: 1px solid #c0e9fd;
+    border-right: 0px;
+    height: 40px;
+  }
+  
+  div ul li a img{
+    width: 100px;
+    height: 50px;    
+    line-height: 50px;
+    margin-top: -13px;
+    text-align: center;
+  }
+  
+  .container-fluid{
+    padding: 0px;
+  }
+  .navbar-nav>li>a{
+    padding: 0px;
+    line-height: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  div ul li {
+      padding: 0px 5px 0px 5px;
+  }
+  
+
+
+
+
+
+
+
+
+
+
 /*common css for all page*/
 a:hover{
     color: #009A9A !important;
@@ -8,11 +64,11 @@ a:hover{
 
     
         .main_container{
-            height: 40px;
+            height: 700px;
             width: 100%;
             background: #2D3F57;
-            width: 100%;
-            position: relative;            
+            position: relative;
+            margin-top: -20px;              
             
         }
 
@@ -71,8 +127,8 @@ a:hover{
         .form1 select {
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
-            text-align: center;
-            text-align-last: center;
+            text-align: left;
+            text-align-last: left;
             color:rgb(87, 85, 85);
             background-color: aqua;
         }
@@ -108,7 +164,6 @@ a:hover{
         .country{
             color: black;
             width: 80%;
-            text-align: center;
             margin-left: 10%;
             padding: 13px;
         } 
@@ -132,7 +187,6 @@ a:hover{
         }
         
         #for_link_page{
-            font-size: 25px;
             margin-top: 0px;
             position: absolute;
             text-align: center;
@@ -147,8 +201,9 @@ a:hover{
         color: #fff;
         background-color: #2D3F57;
         border-color: #2D3F57;
-        line-height: 40px;
-        height: 40px;
+        line-height: 50px;
+        height: 50px;
+        padding: 0px;
     }
     
     /*css for tablet, large screen mobile, notebook*/
@@ -290,7 +345,6 @@ a:hover{
         }
         
         #for_link_page{
-            font-size: 25px;
             margin-top: 0px;
             position: absolute;
             text-align: center;
@@ -441,7 +495,6 @@ a:hover{
         }
         
         #for_link_page{
-            font-size: 20px;
             margin-top: 0px;
             position: absolute;
             text-align: center;

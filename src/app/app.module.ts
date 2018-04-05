@@ -21,7 +21,8 @@ import { AdminNavComponent} from './admin-nav/admin-nav.component';
 import { AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
 import { UserNavComponent} from './user-nav/user-nav.component';
 import { FooterComponent} from './footer/footer.component';
-import { HomeComponent} from './home/home.component'
+import { HomeComponent} from './home/home.component';
+import { UserDashboardComponent} from './user-dashboard/user-dashboard.component';
 
 import { importExpr } from '@angular/compiler/src/output/output_ast';
 
@@ -47,7 +48,7 @@ const appRoutes: Routes = [
    { path: 'user-nav', component: UserNavComponent},
    { path: 'footer', component: FooterComponent},
    { path: 'home', component: HomeComponent },
-   
+   { path: 'user-dashboard', component: UserDashboardComponent},   
  
   { path: '**', component: HomeComponent }
 ];
@@ -72,6 +73,7 @@ const appRoutes: Routes = [
     UserNavComponent,
     FooterComponent,
     HomeComponent,
+    UserDashboardComponent
     
   ],
   

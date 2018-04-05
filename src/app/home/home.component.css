@@ -7,6 +7,14 @@
 .carousel {
   margin-top: -21px;
 }
+/*slider arrow*/
+.carousel-control .glyphicon-chevron-right, .carousel-control .icon-next {
+  margin-right: -70px;
+}
+
+.carousel-control .glyphicon-chevron-left, .carousel-control .icon-prev {
+  margin-left: -70px;
+}
 
 .for_price{
   background-color: #2DABAB;

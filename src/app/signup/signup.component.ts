@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MainService } from './../service/mainService';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-signup',
@@ -9,7 +10,7 @@ import { MainService } from './../service/mainService';
 })
 export class SignUpComponent implements OnInit {
     private formData: any = {};
-    constructor(private mainService: MainService) { }
+    constructor(private mainService: MainService, public router: Router) { }
 
     ngOnInit() {
         
@@ -19,7 +20,7 @@ export class SignUpComponent implements OnInit {
         this.mainService.submitSignUp(this.formData).subscribe(
             success=>
             {
-                
+                this.router.navigate(['./login']);
             })
     }
 }
