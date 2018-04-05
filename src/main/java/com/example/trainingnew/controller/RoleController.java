@@ -2,20 +2,28 @@ package com.example.trainingnew.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityListeners;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.trainingnew.DTO.UserRoleDTO;
 import com.example.trainingnew.model.Rolemodel;
-import com.example.trainingnew.model.Usermodel;
+import com.example.trainingnew.model.UserModel;
 import com.example.trainingnew.reprository.RoleRepo;
 import com.example.trainingnew.reprository.UserRepo;
+import com.example.trainingnew.services.RoleServices;
+import com.example.trainingnew.util.ExceptionHandler;
 
 @RestController
+@EntityListeners(AuditingEntityListener.class)
 public class RoleController {
 	
 	@Autowired
@@ -24,6 +32,9 @@ public class RoleController {
 	@Autowired
 	UserRepo userrepo;
 	
+	@Autowired
+	RoleServices roleservices;
+	
 	@RequestMapping(value="/showrole",method= RequestMethod.GET)
 	public List<Rolemodel> showrole() {
 		return rolerepo.findAll();
@@ -31,29 +42,31 @@ public class RoleController {
 	
 	
 	//createRoledataServices
-	@RequestMapping(value = "/insertrole", method = RequestMethod.POST)
-		public Rolemodel createRole(@RequestBody Rolemodel note) {
+	@RequestMapping(value = "/createrole", method = RequestMethod.POST)
+		public ResponseEntity<Object> createRole(@RequestBody Rolemodel note) {
+
+		 Rolemodel obj = null;
+			try {
+				 obj =roleservices.createRole(note);
+			}catch(Exception e) {
+				return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
+			}
+			return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Successful", obj);
+			
 		
-		Rolemodel model=rolerepo.findOneByRole(note.getRole());
-		
-		if(model==null)
-		{
-			return rolerepo.save(note);
-		}	
-		return null;
 		}
 	
-	
+	//assigingRoleToUsers
 	@RequestMapping(value = "/assignrole", method = RequestMethod.POST)
-	public Usermodel insertDataWithRole(@Valid @RequestBody Rolemodel note) {
+	public ResponseEntity<Object> insertDataWithRole(@Valid @RequestBody UserRoleDTO note) {
+		 UserModel obj = null;
+		try {
+			 obj =roleservices.assignRole(note);
+		}catch(Exception e) {
+			return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
+		}
+		return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Successful", obj);
 		
-		Usermodel up=userrepo.findOneByUserId(note.getId());
-		
-		Rolemodel rr=rolerepo.findOneByRole(note.getRole());
-		
-		
-		up.getRoles().add(rr);
-		return userrepo.save(up);
 	}
 	
 }

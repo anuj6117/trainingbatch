@@ -10,5 +10,7 @@ public interface CoinRepo extends JpaRepository<Coinmodel, Long>{
 
 	Coinmodel findOneByCoinId(Long coinid);
 
+	Coinmodel findOneBySymbol(String symbol);
+
 
 }

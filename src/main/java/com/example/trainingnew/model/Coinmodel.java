@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="coins")
@@ -14,10 +15,13 @@ public class Coinmodel {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long coinId;
 	
+	@NotEmpty(message="Coin name can't be null")
 	private String coinName;
+	
+	@NotEmpty(message="Coin symbol can't be null")
 	private String symbol;
-	private double intialSupply=0.0;
-	private double price=5.0;
+	private Double initialSupply=0.0;
+	private Double price=0.0;
 	public long getCoinId() {
 		return coinId;
 	}
@@ -36,19 +40,18 @@ public class Coinmodel {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
-	public double getIntialSupply() {
-		return intialSupply;
+	public Double getInitialSupply() {
+		return initialSupply;
 	}
-	public void setIntialSupply(double intialSupply) {
-		this.intialSupply = intialSupply;
+	public void setInitialSupply(Double initialSupply) {
+		this.initialSupply = initialSupply;
 	}
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.example.trainingnew.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user_wallet")
@@ -15,62 +19,56 @@ public class Walletmodel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long wallet_id;
-	private long user_id;
-	private double balance;
-	private double shadow_balance;
-	private String wallet_type;
+	private Long walletId;
+	private Double balance=0.0;
+	private Double shadowBalance=0.0;
+	private String walletType="FIATE";
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_wallet_fk", nullable = false)
-	private Usermodel usermodel;
+	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinColumn(name = "user_wallet_fk")
+	@JsonIgnore
+	private UserModel userModel;
 
-	public Usermodel getUsermodel() {
-		return usermodel;
+	public Long getWalletId() {
+		return walletId;
 	}
 
-	public void setUsermodel(Usermodel usermodel) {
-		this.usermodel = usermodel;
+	public void setWalletId(Long walletId) {
+		this.walletId = walletId;
 	}
 
-	public long getWallet_id() {
-		return wallet_id;
-	}
-
-	public void setWallet_id(long wallet_id) {
-		this.wallet_id = wallet_id;
-	}
-
-	public long getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(long user_id) {
-		this.user_id = user_id;
-	}
-
-	public double getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 
-	public double getShadow_balance() {
-		return shadow_balance;
+	public Double getShadowBalance() {
+		return shadowBalance;
 	}
 
-	public void setShadow_balance(double shadow_balance) {
-		this.shadow_balance = shadow_balance;
+	public void setShadowBalance(Double shadowBalance) {
+		this.shadowBalance = shadowBalance;
 	}
 
-	public String getWallet_type() {
-		return wallet_type;
+	public String getWalletType() {
+		return walletType;
 	}
 
-	public void setWallet_type(String wallet_type) {
-		this.wallet_type = wallet_type;
+	public void setWalletType(String walletType) {
+		this.walletType = walletType;
 	}
+
+	public UserModel getUserModel() {
+		return userModel;
+	}
+
+	public void setUserModel(UserModel userModel) {
+		this.userModel = userModel;
+	}
+
+	
 
 }

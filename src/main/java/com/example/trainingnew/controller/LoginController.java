@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.trainingnew.model.Usermodel;
+import com.example.trainingnew.model.UserModel;
 import com.example.trainingnew.services.LoginService;
 
 @RestController
@@ -16,7 +16,7 @@ public class LoginController {
 	 LoginService loginservice;
 	
 	@RequestMapping(value="/mylogin", method = RequestMethod.POST)
-	public String login(@RequestBody Usermodel model) {
+	public String login(@RequestBody UserModel model) {
 		
 		return loginservice.doLogin(model.getEmail(),model.getPassword());
 	}

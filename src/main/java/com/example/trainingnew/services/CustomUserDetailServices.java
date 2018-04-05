@@ -9,7 +9,7 @@
 //import org.springframework.stereotype.Service;
 //
 //import com.example.trainingnew.model.CustomUserDetails;
-//import com.example.trainingnew.model.Usermodel;
+//import com.example.trainingnew.model.UserModel;
 //import com.example.trainingnew.reprository.UserRepo;
 //
 //
@@ -22,7 +22,7 @@
 //	@Override
 //	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //	
-//		Optional<Usermodel> optionaluser=userrepo.findByEmail(email);
+//		Optional<UserModel> optionaluser=userrepo.findByEmail(email);
 //		optionaluser.orElseThrow(()-> new UsernameNotFoundException("user Not exist"));
 //		
 //		return optionaluser.map(CustomUserDetails::new).get();

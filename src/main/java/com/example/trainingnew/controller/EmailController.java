@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.trainingnew.model.MailModel;
 import com.example.trainingnew.services.EmailServices;
 
 @RestController

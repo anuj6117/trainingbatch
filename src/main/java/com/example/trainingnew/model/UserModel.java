@@ -23,7 +23,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,48 +37,49 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdOn" }, allowGetters = true)
-public class Usermodel {
+public class UserModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
 
-	@NotNull(message="User name must not be empty")
+	
+	@Size(min=3,max=20,message="Username length Must be between 3 to 20")
+	@NotEmpty(message="User name must not be empty")
 	private String userName;
 	
-	@NotNull(message ="Email must not be empty")
+	@NotEmpty(message ="Email must not be empty")
+	@Email
 	private String email;
 	private boolean status;
 	private String country;
-	@NotNull
+	@NotEmpty
 	private String password;
 
 	@Column(nullable = false, updatable = false)
 	@CreatedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdOn;
-
-	@NotNull
+	
 	private long phoneNumber;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL, CascadeType.MERGE })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST})
 	@JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "users_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "roles_id") })
-	
-	@JsonIgnore
+		@JoinColumn(name = "roles_id") })
 	private List<Rolemodel> roles = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usermodel")
-	@JsonIgnore
+	@OneToMany(mappedBy ="userModel",cascade=CascadeType.PERSIST,fetch=FetchType.LAZY)
 	private List<Walletmodel> wallets = new ArrayList<>();
-
-	public Usermodel() {
+	
+	
+	@OneToMany(mappedBy ="userModelInOrderModel",cascade=CascadeType.PERSIST,fetch=FetchType.LAZY)
+	private List<OrderModel> orders = new ArrayList<>();
+	
+	public UserModel() {
 
 	}
-	
-	
 
-	public Usermodel(Usermodel model) {
+	public UserModel(UserModel model) {
 		this.status = model.getStatus();
 		this.email = model.getEmail();
 		this.roles = model.getRoles();
@@ -85,6 +89,16 @@ public class Usermodel {
 		this.userId = model.getUserId();
 		this.createdOn = model.getCreatedOn();
 
+	}
+	
+	
+
+	public List<OrderModel> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<OrderModel> orders) {
+		this.orders = orders;
 	}
 
 	public List<Walletmodel> getWallets() {

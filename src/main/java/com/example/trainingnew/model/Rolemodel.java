@@ -3,50 +3,62 @@ package com.example.trainingnew.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="roles")
 public class Rolemodel {
 	
 	@Id
 	@GeneratedValue( strategy= GenerationType.IDENTITY)
-	private long id;
-	private String role;
+	private Long roleId;
+	@NotEmpty(message="RoleType Can't be entered")
+	private String roleType;
 
+	
 	@ManyToMany(mappedBy="roles")
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	private List<UserModel> user=new ArrayList();
+	
 
-	private List<Usermodel> user=new ArrayList<>();
-
-	public List<Usermodel> getUser() {
+	public List<UserModel> getUser() {
 		return user;
 	}
 
-	public void setUser(List<Usermodel> user) {
+	public void setUser(List<UserModel> user) {
 		this.user = user;
 	}
 
-	public long getId() {
-		return id;
+	
+	public Long getRoleId() {
+		return roleId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 
-	public String getRole() {
-		return role;
+	public String getRoleType() {
+		return roleType;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
-	}	
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
+
+	
 	
 }

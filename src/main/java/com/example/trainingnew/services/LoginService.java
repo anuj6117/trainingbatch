@@ -3,7 +3,7 @@ package com.example.trainingnew.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.trainingnew.model.Usermodel;
+import com.example.trainingnew.model.UserModel;
 import com.example.trainingnew.reprository.UserRepo;
 
 
@@ -16,7 +16,7 @@ public class LoginService {
 	public String doLogin(String email, String password) {
 		
 		System.out.println(password);
-		Usermodel model=userrepo.findOneByEmail(email);
+		UserModel model=userrepo.findOneByEmail(email);
 		System.out.println("lets see"+model);
 		
 		String pass=model.getPassword();

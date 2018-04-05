@@ -7,9 +7,9 @@
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 //
-//public class CustomUserDetails extends Usermodel implements UserDetails {
+//public class CustomUserDetails extends UserModel implements UserDetails {
 //
-//	public CustomUserDetails(final Usermodel model) {
+//	public CustomUserDetails(final UserModel model) {
 //		super(model);
 //	}
 //
