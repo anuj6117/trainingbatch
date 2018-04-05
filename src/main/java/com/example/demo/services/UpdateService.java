@@ -14,9 +14,10 @@ public class UpdateService {
 
 	public String updateUserData(UserModel data) {
 		UserModel model = new UserModel();
-		model = userData.findOne(data.getId());
+		model = userData.findOne(data.getUserId());
 		if (model == null)
 			throw new NullPointerException("id not found");
+		model.setUserName(data.getUserName());
 		model.setPhoneNumber(data.getPhoneNumber());
 		model = userData.save(model);
 		if (model != null)

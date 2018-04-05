@@ -10,4 +10,5 @@ public interface WalletRepostiory extends JpaRepository<WalletModel, Long>{
 
 	//public List<WalletModel> findAllByUser_model_id(Long id);
 	public WalletModel findOneByWalletType(String walletType);
+	public WalletModel findByWalletIdAndWalletType(Long id,String Type);
 }

@@ -17,10 +17,10 @@ public class CoinManagementServices {
 	CoinManagementRepository coinDate;
 
 	public Map<String, Object> addAllCoinData(CoinManagementModel data) {
-		if (data.getCoinName().equals("") || data.getSymble().equals(""))
+		if (data.getCoinName().equals("") || data.getSymbol().equals(""))
 			throw new NullPointerException("null data found");
 		Map<String, Object> result = new HashMap();
-		CoinManagementModel model = coinDate.findByCoinName(data.getCoinName());
+		CoinManagementModel model = coinDate.findByCoinNameOrSymbol(data.getCoinName(),data.getSymbol());
 		if (model != null)
 			throw new NullPointerException("duplicated found");
 		CoinManagementModel coinresult = coinDate.save(data);
@@ -41,9 +41,12 @@ public class CoinManagementServices {
 
 	public Map<String, Object> updataCoinData(CoinManagementModel data) {
 		Map<String, Object> result = new HashMap();
-		CoinManagementModel model = coinDate.findByIdAndCoinName(data.getId(), data.getCoinName());
+		CoinManagementModel model = coinDate.findByCoinIdAndCoinName(data.getCoinId(), data.getCoinName());
 		if (model == null)
 			throw new NullPointerException("currency not matched");
+		CoinManagementModel model1=coinDate.findBySymbol(data.getSymbol());
+				if (model1 != null)
+					throw new NullPointerException("duplicated symbol found");
 		model.setPrice(data.getPrice());
 		model.setInitialSupply(data.getInitialSupply());
 		CoinManagementModel coinresult = coinDate.save(model);
@@ -59,5 +62,12 @@ public class CoinManagementServices {
 			throw new NullPointerException("data not....");
 		System.out.println(data);
 		return coinDate.findAll();
+	}
+	public CoinManagementModel getcoinbyid(Long id) {
+		CoinManagementModel data = coinDate.findOne(id);
+		if (data==null)
+			throw new NullPointerException("data not....");
+		System.out.println(data);
+		return data;
 	}
 }

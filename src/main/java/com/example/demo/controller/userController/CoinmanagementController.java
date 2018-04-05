@@ -70,4 +70,15 @@ public class CoinmanagementController {
 		}
 		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
+	
+	@RequestMapping(value = "/getcurrencybyid", method = RequestMethod.GET)
+	private ResponseEntity<Object> getAllCoin(@RequestParam("coinid") long id) {
+		CoinManagementModel result = null;
+		try {
+			result = coinData.getcoinbyid(id);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+	}
 }

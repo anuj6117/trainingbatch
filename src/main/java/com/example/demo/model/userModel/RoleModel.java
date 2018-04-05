@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -18,29 +22,34 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="role")
 //@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class)
-public class RoleModel implements Serializable{
+public class RoleModel {
 
 @Id
-@GeneratedValue(strategy=GenerationType.IDENTITY)
-private long id;
-private String userRole;
-public String getUserRole() {
-	return userRole;
+@GeneratedValue(strategy=GenerationType.AUTO)
+private long roleId;
+@NotEmpty(message="not empty")
+@Pattern(regexp="^([a-z][A-z]*)$")
+private String roleType;
+
+public String getRoleType() {
+	return roleType;
 }
 
-public void setUserRole(String userRole) {
-	this.userRole = userRole;
+public void setRoleType(String roleType) {
+	this.roleType = roleType;
 }
 
 @ManyToMany(mappedBy="role"	)
 private List<UserModel> user=new ArrayList<>();
 
-public long getId() {
-	return id;
+
+
+public long getRoleId() {
+	return roleId;
 }
 
-public void setId(long id) {
-	this.id = id;
+public void setRoleId(long roleId) {
+	this.roleId = roleId;
 }
 
 @JsonIgnore

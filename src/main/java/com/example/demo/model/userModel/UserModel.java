@@ -15,6 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -27,20 +35,37 @@ public class UserModel implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private Long userId;
 	
-	//@Column(unique = true)
+	@NotEmpty(message="user name not empty")
 	private String userName;
-	@Column(unique = true)
+	@Email(message="email not valid")
+	@NotEmpty(message="email not empty")
 	private String email;
-	@Column(unique = true)
+	@NotEmpty(message="phone number not valid")
+	@Size(min=10,max=13,message="phone number not valid")
+	@Pattern(regexp="^(0|[1-9][0-9]*)$")
 	private String phoneNumber;
+	public List<OrderModel> getOrderModel() {
+		return orderModel;
+	}
+	public void setOrderModel(List<OrderModel> orderModel) {
+		this.orderModel = orderModel;
+	}
+
 	private boolean status;
+	@Column
+	@NotEmpty(message="country not valid")
 	private String country;
+	@NotEmpty(message="password not valid")
 	private String password;
 	private String createdOn;
 	@OneToMany(mappedBy = "userdata", cascade = CascadeType.ALL)
 	private List<WalletModel> WalletModel=new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<OrderModel> orderModel=new ArrayList<>();
 	public List<WalletModel> getWalletModel() {
 		return WalletModel;
 	}
@@ -76,11 +101,12 @@ public class UserModel implements Serializable {
 	public void setCreatedOn(String createdOn) {
 		this.createdOn = createdOn;
 	}
-	public Long getId() {
-		return id;
+	
+	public Long getUserId() {
+		return userId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	public String getUserName() {
 		return userName;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.roleDTO.RoleDTO;
+import com.example.demo.dto.userDTO.RoleDTO;
 import com.example.demo.model.userModel.RoleModel;
 import com.example.demo.model.userModel.UserModel;
 import com.example.demo.services.UserServices;
@@ -34,9 +34,9 @@ public class FindAllUserData {
 		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 
-	@RequestMapping(value = "/getusersbyid", method = RequestMethod.GET)
+	@RequestMapping(value = "/getbyuserid", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<Object> getAll(@RequestParam("id") Long id) {
+	public ResponseEntity<Object> getAll(@RequestParam("userid") Long id) {
 		UserModel result = null;
 		try {
 			result = userData.findById(id);

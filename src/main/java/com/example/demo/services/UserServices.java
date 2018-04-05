@@ -17,8 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.roleDTO.RoleDTO;
 import com.example.demo.dto.userDTO.ResetPasswordDTO;
+import com.example.demo.dto.userDTO.RoleDTO;
 import com.example.demo.model.userModel.RoleModel;
 import com.example.demo.model.userModel.UserModel;
 import com.example.demo.model.userModel.VerifyModel;
@@ -54,6 +54,7 @@ public class UserServices {
 		long rightLimit = 10000000000L;
 		long randemId = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
 		walletModel.setRandemId(randemId);
+		walletModel.setAmount(0);
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date today = Calendar.getInstance().getTime();
 		String date = formatter.format(today);
@@ -62,21 +63,22 @@ public class UserServices {
 		model.setCountry(data.getCountry());
 		model.setEmail(data.getEmail());
 		model.setPhoneNumber(data.getPhoneNumber());
-		model.setId(data.getId());
+		model.setUserId(data.getUserId());
 		// model.setPassword(passwordEncoder.encode(data.getPassword()));
 		model.setPassword(data.getPassword());
 		model.setUserName(data.getUserName());
 		model.setStatus(false);
 		model.setCreatedOn(date);
 		model.getWalletModel().add(walletModel);
-		RoleModel role = roleData.findOneByUserRole("user");
+		RoleModel role = roleData.findOneByRoleType("user");
 		if(role==null)
 			throw new RuntimeException("role not found");
 		model.getRole().add(role);
 		role.getUser().add(model);
 		walletModel.setUserdata(model);
-		UserModel checkData = userData.findOneByEmailAndPhoneNumber(data.getEmail(), data.getPhoneNumber());
+		UserModel checkData = userData.findByEmailOrPhoneNumber(data.getEmail(), data.getPhoneNumber());
 		if (checkData != null) {
+			System.out.println("dsfdsfds");
 			throw new NullPointerException("user already inserted Email and PhoneNumber change ");
 		}
 		userData.save(model);
@@ -88,7 +90,7 @@ public class UserServices {
 			verify.setUserName(model.getUserName());
 			verify.setDate(date);
 			verifyData.save(verify);
-			// mailServices.sendMail(data.getEmail(),otp);
+			//mailServices.sendMail(data.getEmail(),otp);
 			// smsServieces.sendSMS(otp);
 		} catch (Exception e) {
 
@@ -106,6 +108,9 @@ public class UserServices {
 	}
 
 	public UserModel findById(Long id) {
+		UserModel result=userData.findOne(id);;
+		if(result==null)
+			throw new RuntimeException("id not found");
 		return userData.findOne(id);
 	}
 
@@ -121,23 +126,23 @@ public class UserServices {
 	// addrole---------
 	public String addRole(RoleModel data) {
 
-		RoleModel model = roleData.findOneByUserRole(data.getUserRole());
+		RoleModel model = roleData.findOneByRoleType(data.getRoleType());
 		if (model == null) {
 			roleData.save(data);
 			return "success";
 		}
-		return "error";
+		return "role already exist";
 	}
 
 	// remove user role----------
 	public String removeRoleToUser(RoleModel model) {
 		boolean result = false;
-		UserModel user = userData.findOne(model.getId());
-		RoleModel role = roleData.findOneByUserRole(model.getUserRole());
+		UserModel user = userData.findOne(model.getRoleId());
+		RoleModel role = roleData.findOneByRoleType(model.getRoleType());
 		if (user != null && role != null) {
 			List<RoleModel> rolecheck = user.getRole();
 			for (RoleModel role1 : rolecheck) {
-				if ((role1.getUserRole().equals(role.getUserRole()))) {
+				if ((role1.getRoleType().equals(role.getRoleType()))) {
 					user.getRole().remove(role);
 					result = true;
 					break;
@@ -158,14 +163,14 @@ public class UserServices {
 	}
 
 	// addroletouser---------
-	public String addRoleToUser(RoleModel model) {
+	public String addRoleToUser(RoleDTO model) {
 		boolean result = true;
-		UserModel user = userData.findOne(model.getId());
-		RoleModel role = roleData.findOneByUserRole(model.getUserRole());
+		UserModel user = userData.findOne(model.getUserId());
+		RoleModel role = roleData.findOneByRoleType(model.getUserRole());
 		if (user != null && role != null) {
 			List<RoleModel> rolecheck = user.getRole();
 			for (RoleModel role1 : rolecheck) {
-				if ((role1.getUserRole().equals(role.getUserRole()))) {
+				if ((role1.getRoleType().equals(role.getRoleType()))) {
 					result = false;
 					break;
 				}
@@ -192,7 +197,7 @@ public class UserServices {
 	}
 
 	public List<RoleModel> findAllByUserModel(String data) {
-		List<RoleModel> model2 = roleData.findAllByUserRole(data);
+		List<RoleModel> model2 = roleData.findAllByRoleType(data);
 		return model2;
 	}
 
@@ -201,8 +206,8 @@ public class UserServices {
 		List<RoleDTO> data = new ArrayList<RoleDTO>();
 		for (RoleModel model : models) {
 			RoleDTO dto = new RoleDTO();
-			dto.setId(model.getId());
-			dto.setUserRole(model.getUserRole());
+			dto.setUserId(model.getRoleId());
+			dto.setUserRole(model.getRoleType());
 			data.add(dto);
 		}
 		return data;
@@ -230,7 +235,7 @@ public class UserServices {
 		List<RoleModel> roletype = role.getRole();
 		List<String> roleget = new ArrayList<>();
 		for (RoleModel role1 : roletype) {
-			roleget.add(role1.getUserRole());
+			roleget.add(role1.getRoleType());
 		}
 		return roleget;
 	}
@@ -239,7 +244,10 @@ public class UserServices {
 	public String verifyUser(VerifyModel data) {
 		VerifyModel verify = verifyData.findOneByUserNameAndTokenOtp(data.getUserName(), data.getTokenOtp());
 		if (verify== null) 
-			throw new NullPointerException("id not found");
+			throw new NullPointerException("user id or otp not found");
+		UserModel user=userData.findOne(data.getId());
+		user.setStatus(true);
+		userData.save(user);
 			verifyData.delete(verify.getId());
 			return "success";
 		
@@ -247,7 +255,7 @@ public class UserServices {
 
 	// avtive and seactive user
 	public String activeDeactiveUser(UserModel data) {
-		UserModel user = userData.findOne(data.getId());
+		UserModel user = userData.findOne(data.getUserId());
 		if (user == null)
 			throw new NullPointerException("id not found");
 		user.setStatus(data.isStatus());

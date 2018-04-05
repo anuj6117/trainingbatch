@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.example.demo.constant.WalletEnum;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,18 +18,23 @@ public class WalletModel {
 
 @Id
 @GeneratedValue(strategy=GenerationType.IDENTITY)	
-private long id;	
-private int balance;
+private long walletId;
+//@NotEmpty(message="amount not empty")
+private int amount;
 private int shadoBalance;
+@NotEmpty(message="walletType not empty")
 private String walletType=WalletEnum.fiat.toString();
 private long randemId;
 @ManyToOne
 @JoinColumn(name = "User_id")
-//@JsonIgnore
-@JsonBackReference
+@JsonIgnore
 private UserModel userdata;
-public long getId() {
-	return id;
+
+public long getWalletId() {
+	return walletId;
+}
+public void setWalletId(long walletId) {
+	this.walletId = walletId;
 }
 public UserModel getUserdata() {
 	return userdata;
@@ -41,14 +48,13 @@ public void setRandemId(long randemId) {
 public void setUserdata(UserModel userdata) {
 	this.userdata = userdata;
 }
-public void setId(long id) {
-	this.id = id;
+
+
+public int getAmount() {
+	return amount;
 }
-public int getBalance() {
-	return balance;
-}
-public void setBalance(int balance) {
-	this.balance = balance;
+public void setAmount(int amount) {
+	this.amount = amount;
 }
 public int getShadoBalance() {
 	return shadoBalance;

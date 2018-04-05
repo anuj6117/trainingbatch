@@ -27,7 +27,7 @@ public class UserLoginController {
 	public Map<String, Object> userLogin(@RequestBody LoginDTO data) {
 		Map<String, Object> map = new HashMap<>();
 		UserModel user = userData.userLogin(data.getEmail(), data.getPassword());
-		UserModel user1 = userData.findById(user.getId());
+		UserModel user1 = userData.findById(user.getUserId());
 		if (user == null) {
 			map.put("failure", new String("Fa"));
 			return map;

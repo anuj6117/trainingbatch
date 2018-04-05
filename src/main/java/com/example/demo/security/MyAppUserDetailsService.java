@@ -37,7 +37,7 @@ private List<String> getPrivileges(Collection<RoleModel> roles) {
 	  
     List<String> privileges = new ArrayList<>();
     for (RoleModel role : roles) {
-    	  privileges.add(role.getUserRole());
+    	  privileges.add(role.getRoleType());
        // System.out.println(role.getUserRole());
     }
     return privileges;

@@ -2,15 +2,19 @@ package com.example.demo.controller.userController;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.userDTO.RoleDTO;
 import com.example.demo.model.userModel.RoleModel;
 import com.example.demo.model.userModel.UserModel;
 import com.example.demo.model.userModel.VerifyModel;
@@ -24,7 +28,7 @@ public class UserController {
 	UserServices userservice;
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ResponseEntity<Object> show(@RequestBody UserModel data) {
+	public ResponseEntity<Object> show(@Validated @RequestBody UserModel data) {
 		Map<String, Object> result = null;
 		try {
 			result = userservice.saveUserData(data);
@@ -46,8 +50,8 @@ public class UserController {
 		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
 	}
 
-	@RequestMapping(value = "/addrole", method = RequestMethod.POST)
-	public ResponseEntity<Object> addRole(@RequestBody RoleModel data) {
+	@RequestMapping(value = "/createrole", method = RequestMethod.POST)
+	public ResponseEntity<Object> addRole(@Valid @RequestBody RoleModel data) {
 		String result = null;
 		try {
 			result = userservice.addRole(data);
@@ -69,7 +73,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/assignrole", method = RequestMethod.POST)
-	public ResponseEntity<Object> AddRoleToUser(@RequestBody RoleModel data) {
+	public ResponseEntity<Object> AddRoleToUser(@RequestBody RoleDTO data) {
 		String result = null;
 		try {
 			result = userservice.addRoleToUser(data);

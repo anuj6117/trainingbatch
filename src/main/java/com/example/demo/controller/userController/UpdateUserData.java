@@ -19,10 +19,10 @@ public class UpdateUserData {
 	@Autowired
 	UpdateService update;
 
-	@RequestMapping(value = "/updateData", method = RequestMethod.POST)
+	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
 	public ResponseEntity<Object> updateUserData(@RequestBody UserDTO data) {
 		UserModel model = new UserModel();
-		model.setId(data.getId());
+		model.setUserId(data.getId());
 		model.setUserName(data.getUserName());
 		model.setPhoneNumber(data.getPhoneNumber());
 		String result = null;

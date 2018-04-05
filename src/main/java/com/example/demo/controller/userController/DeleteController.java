@@ -20,7 +20,7 @@ public class DeleteController {
 	@Autowired
 	RoleRepository roleData;
 
-	@RequestMapping(value = "/deleteById", method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
 	public ResponseEntity<Object> deleteById(@RequestParam("id") Long id) {
 		String result = null;
 		try {

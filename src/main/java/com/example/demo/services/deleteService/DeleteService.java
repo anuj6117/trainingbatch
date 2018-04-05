@@ -30,7 +30,7 @@ public class DeleteService {
 			throw new NullPointerException("id not found");
 		}
 		
-		userData.delete(record.getId());	
+		userData.delete(record.getUserId());	
 		return "success";
 		
 		}

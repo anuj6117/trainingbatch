@@ -9,8 +9,8 @@ import com.example.demo.model.userModel.RoleModel;
 
 public interface RoleRepository extends JpaRepository<RoleModel, Long> {
 
-	public RoleModel findOneByUserRole(String data);
-	public List<RoleModel> findAllByUserRole(String data);
+	public RoleModel findOneByRoleType(String data);
+	public List<RoleModel> findAllByRoleType(String data);
 	
 	@Query(value="select id,user_role from role",nativeQuery=true)
 	public List<RoleModel> findAllRole();
