@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,7 +23,8 @@ public class Walletmodel {
 	private Long walletId;
 	private Double balance=0.0;
 	private Double shadowBalance=0.0;
-	private String walletType="FIATE";
+	@NotNull(message="WalletType Can't be null")
+	private String walletType="FIAT";
 
 	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name = "user_wallet_fk")

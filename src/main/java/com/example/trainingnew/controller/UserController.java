@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trainingnew.exception.UserNotFoundException;
+import com.example.trainingnew.model.OTPModel;
 import com.example.trainingnew.model.UserModel;
 import com.example.trainingnew.reprository.UserRepo;
 import com.example.trainingnew.services.EmailServices;
@@ -92,7 +93,7 @@ public class UserController {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<Object> insertData(@Validated @RequestBody UserModel user) {
 
-		UserModel obj = null;
+		String obj = null;
 			try {
 				obj = services.createData(user);
 			} catch (Exception e) {
@@ -102,10 +103,17 @@ public class UserController {
 		return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Successfull", obj);
 	}
 
-	// @RequestMapping(value="/validateotp",method=RequestMethod.POST)
-	// public ResponseEntity<?> verifyUser(@RequestBody() OTPModel otp) {
-	// return services.otpValidate(otp);
-	// }
+	 @RequestMapping(value="/verifyuser",method=RequestMethod.POST)
+	 public ResponseEntity<Object> verifyUser(@RequestBody() OTPModel otp) {
+		 UserModel obj = null;
+
+			try {
+				obj = services.otpValidate(otp);
+			} catch (Exception e) {
+				return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
+			}
+			return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Fetch Data Successfully", obj);
+	 }
 
 	
 	//getSingleUserApi

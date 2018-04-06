@@ -11,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -25,7 +28,10 @@ public class Rolemodel {
 	@Id
 	@GeneratedValue( strategy= GenerationType.IDENTITY)
 	private Long roleId;
-	@NotEmpty(message="RoleType Can't be entered")
+	@NotEmpty(message="RoleType Can't be null")
+	@NotNull(message="RoleType Can't be null")
+	@NotBlank(message="RoleType Can't be null")
+	@Pattern(regexp = "[a-zA-z]*",message="Number not accepted")
 	private String roleType;
 
 	

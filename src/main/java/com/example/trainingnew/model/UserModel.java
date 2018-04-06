@@ -46,12 +46,15 @@ public class UserModel {
 	
 	@Size(min=3,max=20,message="Username length Must be between 3 to 20")
 	@NotEmpty(message="User name must not be empty")
+	@NotBlank(message="Space Not Accepted")
 	private String userName;
 	
 	@NotEmpty(message ="Email must not be empty")
 	@Email
+	@NotBlank(message="Space Not Accepted")
 	private String email;
 	private boolean status;
+	@NotBlank(message="Space Not Accepted")
 	private String country;
 	@NotEmpty
 	private String password;
@@ -61,6 +64,8 @@ public class UserModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdOn;
 	
+//	@Pattern(regexp="[0-9]*")
+//	@Length(min=10,max=11,message="Number must be 10 digits")
 	private long phoneNumber;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST})

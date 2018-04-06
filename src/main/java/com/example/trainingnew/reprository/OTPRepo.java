@@ -8,4 +8,9 @@ public interface OTPRepo extends JpaRepository<OTPModel, Long>{
 
 	OTPModel findOneByEmailAndOtp(String email, long otp);
 
+	void deleteByOtp(long otp);
+
+//	void deleteByOtp(long otp);
+
+
 }

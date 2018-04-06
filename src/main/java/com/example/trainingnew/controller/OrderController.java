@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trainingnew.exception.UserNotFoundException;
@@ -71,6 +72,20 @@ public class OrderController {
 		}
 		return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Fetch Data Successfully", obj);
 	}
+	
+	//getOrderByUserId
+	@RequestMapping(value = "/getorderbyuserid", method = RequestMethod.GET)
+	public ResponseEntity<Object> getOrderByUserId(@RequestParam("userId") long userId) {
+		List<OrderModel> obj = null;
+
+		try {
+			obj = orderservice.getOrderByUserId(userId);
+		} catch (NullPointerException e) {
+			return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
+		}
+		return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Fetch Data Successfully", obj);
+	}
+	
 	
 	//updateUserApi
 		@RequestMapping(value = "/updateOrder/{id}", method = RequestMethod.PUT)

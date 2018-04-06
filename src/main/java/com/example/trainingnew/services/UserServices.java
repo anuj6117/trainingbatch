@@ -80,11 +80,14 @@ public class UserServices implements UserDetailsService {
 	
 
 	// ----------------------------------------------------------------------------------------addData
-	public UserModel createData(UserModel note) throws UserNotFoundException {
+	public String createData(UserModel note) throws UserNotFoundException {
 
 		Rolemodel rolemodel = rolerepo.findOneByRoleType("user");
 		UserModel userModel = new UserModel();
 		UserModel umodel = userrepo.findOneByEmail(note.getEmail());
+			
+		UserModel checkMobileNumber=userrepo.findByPhoneNumber(note.getPhoneNumber());
+		
 	
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String hashedPassword = passwordEncoder.encode(note.getPassword());
@@ -92,19 +95,25 @@ public class UserServices implements UserDetailsService {
 		if (umodel != null) {
 			logger.error("uanable to create new user with {} email", note.getEmail());
 
-			throw new UserNotFoundException("This User alredy exist");
+			throw new UserNotFoundException("This Email address already registered.");
 		}
 		else {
 			userModel.setUsername(note.getUserName());
 			userModel.setEmail(note.getEmail());
 			userModel.setStatus(false);
 			userModel.setPassword(hashedPassword);
-			userModel.setPhoneNumber(note.getPhoneNumber());
+			if(checkMobileNumber!=null)
+			{
+			throw new NullPointerException("This mobile number already register");	
+			}
+			else {
+				userModel.setPhoneNumber(note.getPhoneNumber());
+			}
 			userModel.setCountry(note.getCountry());
 			userModel.setCreatedOn(date);
 			userModel.getRoles().add(rolemodel);
 
-//			 if(sendOTP()) {
+			 if(sendOTP(note)) {
 			Walletmodel wmodel=new Walletmodel();
 			wmodel.setBalance(wmodel.getBalance());
 			wmodel.setShadowBalance(wmodel.getShadowBalance());
@@ -113,71 +122,66 @@ public class UserServices implements UserDetailsService {
 			
 			userModel.getWallets().add(wmodel);
 			
-			//walletRepo.save(wmodel);
-			return userrepo.save(userModel);
 			
-//			logger.error("after send otp cursor come save the data on usertable.");
+			userrepo.save(userModel);
+			
+			logger.error("after send otp cursor come save the data on usertable.");
 			 }
-//			 else {
-//			 logger.error("Sorry!unable to send otp.");
-//			  throw new UsernameNotFoundException("Unable to send otp");
-//			 }
-//		}
-//		return userModel;
+			 else {
+			 logger.error("Sorry!unable to send otp.");
+			  throw new UsernameNotFoundException("Unable to send otp");
+			 }
+		}
+		return "OTP Has been sended.Please verify it.";
 
 	}
 	
 	// ---------------------------------------------------------
 //	 Set OTP
-//	 public boolean sendOTP() {
-//	 generateOtp();
-//	 OTPModel otpModel = new OTPModel();
-//	 otpModel.setOtp(otp);
-//	 otpModel.setEmail(userModel.getEmail());
-//	 otpModel.setCreatedOn(date);
+	 public boolean sendOTP(UserModel userModel) {
+	 generateOtp();
+	 OTPModel otpModel = new OTPModel();
+	 otpModel.setOtp(otp);
+	 otpModel.setEmail(userModel.getEmail());
+	 otpModel.setCreatedOn(date);
 	
-//	 boolean a=emailservices.sendSimpleMessage(userModel.getEmail(),otp);
+	 boolean a=emailservices.sendSimpleMessage(userModel.getEmail(),otp);
 	
 //	 boolean a=true;
-//	 if(a) {
-//	 otpRepo.save(otpModel);
-//	 }
-//	 System.out.println(a);
-//	 return a;
-//	
-//	 }
+	 if(a) {
+	 otpRepo.save(otpModel);
+	 }
+	 System.out.println(a);
+	 return a;
+	 }
+	 
 	// //-------------------------------------------------------------------------------
 	// //validate
-	//
-	// public ResponseEntity<?> otpValidate(OTPModel otp) {
-	// logger.error("cursor enter in the validate");
-	// logger.error("Lets see what happen before:"+otp.getOtp());
-	//
-	// OTPModel serverotp=otpRepo.findOneByEmailAndOtp(otp.getEmail(),otp.getOtp());
-	//
-	//
-	// logger.error("cursor moves validate"+serverotp.toString());
-	//
-	// if(serverotp==null)
-	// {
-	// return new ResponseEntity(new CustomErrorType("OTP doesn't
-	// matches"),HttpStatus.NOT_FOUND);
-	// }
-	// else {
-	//
-	// if(userModel!=null)
-	// {
-	// return new ResponseEntity(userModel,HttpStatus.OK);
-	// }
-	// else {
-	// return new ResponseEntity(new CustomErrorType("OTP
-	// Expire"),HttpStatus.NOT_FOUND);
-	// }
-	// }
-	//
-	//
-	//
-	// }
+
+	 public UserModel otpValidate(OTPModel otp) {
+	
+	 OTPModel serverotp=otpRepo.findOneByEmailAndOtp(otp.getEmail(),otp.getOtp());
+	
+	 if(serverotp==null)
+	 {
+		 throw new NullPointerException("OTP Is Incorrect");
+	 }
+	 
+	 else {
+		 Optional<UserModel> optionalModel=userrepo.findByEmail(otp.getEmail());
+		 UserModel model=optionalModel.get();
+		 
+		 model.setStatus(true);
+		 UserModel mode=userrepo.save(model);
+		 
+		// otpRepo.deleteByOtp(serverotp.getOtp());
+		 otpRepo.delete(otp);
+		 
+		 
+		 return  mode;
+	 }
+
+	 	}
 
 	//getDataById
 	public UserModel getDataById(Long id) throws UserNotFoundException {
@@ -197,6 +201,8 @@ public class UserServices implements UserDetailsService {
 	//updateDataByid
 	public UserModel updateData(Long userId, UserModel userDetails) throws UserNotFoundException {
 		UserModel user = userrepo.findOneByUserId(userId);
+		
+//		UserModel checkingUserName=userrepo.findByUserName(userDetails.getUserName());
 
 		if (user == null) {
 
@@ -205,6 +211,7 @@ public class UserServices implements UserDetailsService {
 		} else {
 			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 			String encryptPass = bCryptPasswordEncoder.encode(userDetails.getPassword());
+			
 			user.setUsername(userDetails.getUserName());
 			user.setStatus(userDetails.getStatus());
 			user.setCountry(userDetails.getCountry());

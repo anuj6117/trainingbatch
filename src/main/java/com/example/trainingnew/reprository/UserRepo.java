@@ -22,6 +22,7 @@ public interface UserRepo extends JpaRepository<UserModel ,Long>{
 	UserModel findOneByUserName(String username);
 
 	Optional<UserModel> findByEmail(String email);
+	
 
 	List<UserModel> findByStatusTrue();
 
@@ -37,5 +38,9 @@ public interface UserRepo extends JpaRepository<UserModel ,Long>{
 	    public List<UserModel> searchWithNativeQuery(@Param("searchTerm") String searchTerm);
 
 	public UserModel findByUserId(Long userId);
+
+	UserModel findByPhoneNumber(long phoneNumber);
+
+	UserModel findByUserId(Integer userId);
 
 }

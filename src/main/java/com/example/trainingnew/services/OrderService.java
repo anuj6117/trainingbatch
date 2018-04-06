@@ -108,4 +108,25 @@ public class OrderService {
 			return updatedOrder;
 		}		
 	}
+	//getOrdersByUserId
+	public List<OrderModel> getOrderByUserId(long userId) {
+			
+		UserModel getAllUsersDetails=userRepo.findByUserId(userId);
+		if(getAllUsersDetails==null)
+		{
+			throw new NullPointerException("User doesn't exist");
+		}
+		List<OrderModel> orderList=getAllUsersDetails.getOrders();
+		
+		if(orderList.isEmpty())
+		{
+			throw new NullPointerException("No Order Present for this user");
+		}
+		else {
+
+			throw new NullPointerException("userId doesn't exist");
+			 }
+		}
+		
+	
 }

@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
@@ -16,9 +17,11 @@ public class Coinmodel {
 	private long coinId;
 	
 	@NotEmpty(message="Coin name can't be null")
+	@NotBlank(message="Space Not Accepted")
 	private String coinName;
 	
 	@NotEmpty(message="Coin symbol can't be null")
+	@NotBlank(message="Space Not Accepted")
 	private String symbol;
 	private Double initialSupply=0.0;
 	private Double price=0.0;

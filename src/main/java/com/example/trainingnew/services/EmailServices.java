@@ -40,17 +40,13 @@ public class EmailServices {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setSubject("Account Verification");
 		message.setText(body + otp);
-		message.setTo("mkr099@gmail.com");
+		message.setTo(email);
 		message.setFrom("mohit.kumar@oodlestechnologies.com");
-		
-		System.out.println(message.toString());
 
-		//mailSender.send(message);
+		mailSender.send(message);
 
 		try {
 			TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
-
-			// Build a filter for the MessageList
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 

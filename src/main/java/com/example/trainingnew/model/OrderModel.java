@@ -31,14 +31,14 @@ public class OrderModel {
 	private String coinName;
 	
 	@Transient
-	private Long userId;
+	private long userId;
 	
 	
-	public Long getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 

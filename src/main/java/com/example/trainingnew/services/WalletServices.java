@@ -115,30 +115,6 @@ public class WalletServices {
 				 throw new NullPointerException("This Wallet Type Doesn't exist");
 			}
 		return mod;
-//		UserModel userData=userRepo.findOneByUserId(dtovalues.getUserId());
-//		Walletmodel mod = null;
-//		for(Walletmodel model:userData.getWallets()) {
-//		
-//		if(model.getBalance()>dtovalues.getBalance()) 
-//		{
-//		double newBalnce=model.getBalance()-dtovalues.getBalance();
-//		model.setBalance(newBalnce);
-//		mod= walletrepo.save(model);
-//		}
-//		else {
-//			throw new NullPointerException("Oops! Don't have enough money");
-//			}
-//		}
-//		return mod;
-		
-		
-//		if(wall.getBalance()>=wallet.getBalance()||wallet.getBalance()!=0) 
-//		{
-//		double newBalnce=wall.getBalance()-wallet.getBalance();
-//		wall.setBalance(newBalnce);
-//		return walletrepo.save(wall);
-//		}
-//		return walletrepo.save(wall);
 	}
 
 

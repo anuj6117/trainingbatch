@@ -67,7 +67,7 @@ public class CoinController {
 	
 	
 	//getCurrencyById
-	@RequestMapping(value = "/getbycurrencyid/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getcurrencybyid/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getById(@PathVariable(value = "id") Long id) {
 		Coinmodel obj = null;
 
