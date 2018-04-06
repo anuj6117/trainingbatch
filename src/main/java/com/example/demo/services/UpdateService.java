@@ -12,17 +12,18 @@ public class UpdateService {
 	@Autowired
 	UserRepository userData;
 
-	public String updateUserData(UserModel data) {
+	public UserModel updateUserData(UserModel data) {
 		UserModel model = new UserModel();
 		model = userData.findOne(data.getUserId());
 		if (model == null)
 			throw new NullPointerException("id not found");
 		model.setUserName(data.getUserName());
+		model.setEmail(data.getEmail());
 		model.setPhoneNumber(data.getPhoneNumber());
 		model = userData.save(model);
 		if (model != null)
-			return "success";
-		return "error";
+			return model;
+		return null;
 
 	}
 }

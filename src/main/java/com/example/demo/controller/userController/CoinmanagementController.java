@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +27,7 @@ public class CoinmanagementController {
 
 	@RequestMapping(value = "/addcurrency", method = RequestMethod.POST)
 
-	private ResponseEntity<Object> addCoin(@RequestBody CoinManagementModel data) {
+	private ResponseEntity<Object> addCoin(@Validated @RequestBody CoinManagementModel data) {
 		Map<String, Object> result = null;
 		try {
 			result = coinData.addAllCoinData(data);

@@ -14,6 +14,8 @@ import com.example.demo.repoINterface.CoinManagementRepository;
 import com.example.demo.repoINterface.UserRepository;
 import com.example.demo.repoINterface.WalletRepostiory;
 
+import javassist.expr.NewArray;
+
 @Service
 public class WalletServices {
 
@@ -59,7 +61,7 @@ CoinManagementRepository coinDate;
 	}
 
 	// ---------------------
-	public String AddMoneyInWallet(WalletDTO data) {
+	public WalletModel AddMoneyInWallet(WalletDTO data) {
 		WalletModel model =giveWallettype(data);
 		if (model == null)
 			throw new NullPointerException("id or wallet not correct");
@@ -69,28 +71,30 @@ CoinManagementRepository coinDate;
 		model.setShadoBalance(walletAmount);
 		WalletModel result = walletData.save(model);
 		if (result != null)
-			return "success";
-		return "error";
+			return result;
+		return null;
 	}
 
 	// ---------------------
-	public String withdrawMoneyInWallet(WalletDTO data) {
+	public WalletModel withdrawMoneyInWallet(WalletDTO data) {
 		WalletModel model = giveWallettype(data);
 		if (model == null)
 			throw new NullPointerException("id or wallet type not found");
 		int walletAmount = model.getAmount();
 		walletAmount = walletAmount - data.getAmount();
-		if(walletAmount<=0)
+		if(walletAmount<0)
 			throw new RuntimeException("you dont hava enough amount");
 		model.setAmount(walletAmount);
 		model.setShadoBalance(walletAmount);
 		WalletModel result = walletData.save(model);
 		if (result != null)
-			return "success";
-		return "error";
+			return result;
+		return null;
 	}
 	public WalletModel giveWallettype(WalletDTO data)
 	{
+		if(data.getAmount()==null||data.getAmount()<0)
+			throw new RuntimeException("amount not be empty or less then 0");
 		UserModel userModel = userData.findOne(data.getUserId());
 		if (userModel == null)
 			throw new NullPointerException("id not found");

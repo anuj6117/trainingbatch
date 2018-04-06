@@ -20,8 +20,8 @@ public class WalletModel {
 @GeneratedValue(strategy=GenerationType.IDENTITY)	
 private long walletId;
 //@NotEmpty(message="amount not empty")
-private int amount;
-private int shadoBalance;
+private Integer amount;
+private Integer shadoBalance;
 @NotEmpty(message="walletType not empty")
 private String walletType=WalletEnum.fiat.toString();
 private long randemId;
@@ -50,20 +50,20 @@ public void setUserdata(UserModel userdata) {
 }
 
 
-public int getAmount() {
-	return amount;
-}
-public void setAmount(int amount) {
-	this.amount = amount;
-}
-public int getShadoBalance() {
-	return shadoBalance;
-}
-public void setShadoBalance(int shadoBalance) {
-	this.shadoBalance = shadoBalance;
-}
 public String getWalletType() {
 	return walletType;
+}
+public Integer getAmount() {
+	return amount;
+}
+public void setAmount(Integer amount) {
+	this.amount = amount;
+}
+public Integer getShadoBalance() {
+	return shadoBalance;
+}
+public void setShadoBalance(Integer shadoBalance) {
+	this.shadoBalance = shadoBalance;
 }
 public void setWalletType(String walletType) {
 	this.walletType = walletType;

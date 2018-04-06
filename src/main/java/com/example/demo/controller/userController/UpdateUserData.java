@@ -3,6 +3,7 @@ package com.example.demo.controller.userController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,17 +21,18 @@ public class UpdateUserData {
 	UpdateService update;
 
 	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
-	public ResponseEntity<Object> updateUserData(@RequestBody UserDTO data) {
+	public ResponseEntity<Object> updateUserData(@Validated @RequestBody UserDTO data) {
 		UserModel model = new UserModel();
-		model.setUserId(data.getId());
+		model.setUserId(data.getUserId());
 		model.setUserName(data.getUserName());
 		model.setPhoneNumber(data.getPhoneNumber());
-		String result = null;
+		model.setEmail(data.getEmail());
+		UserModel result = null;
 		try {
 			result = update.updateUserData(model);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 }

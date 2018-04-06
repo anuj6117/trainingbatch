@@ -21,16 +21,43 @@ private long coinId;
 private String coinName;
 @NotEmpty(message="symble not empty")
 private String symbol;
-//@NotEmpty(message="initialSupply not empty")
-//@Size(min=2,max=10,message="must be 2 digit")
-//@Pattern(regexp="^(0|[1-9][0-9]*)$")
-private int initialSupply;
-//@Size(min=2,max=10,message="must be 2 digit")
-//@NotEmpty(message="price not empty")
-//@Pattern(regexp="^(0|[1-9][0-9]*)$")
-private int price;
 
+private Integer initialSupply;
+private Integer price;
+private Integer profit;
+private Integer coinInINR;
+private Integer fee;
 
+public Integer getFee() {
+	return fee;
+}
+public void setFee(Integer fee) {
+	this.fee = fee;
+}
+public Integer getProfit() {
+	return profit;
+}
+public void setProfit(Integer profit) {
+	this.profit = profit;
+}
+public Integer getCoinInINR() {
+	return coinInINR;
+}
+public void setInitialSupply(Integer initialSupply) {
+	this.initialSupply = initialSupply;
+}
+public Integer getInitialSupply() {
+	return initialSupply;
+}
+public Integer getPrice() {
+	return price;
+}
+public void setPrice(Integer price) {
+	this.price = price;
+}
+public void setCoinInINR(Integer coinInINR) {
+	this.coinInINR = coinInINR;
+}
 public long getCoinId() {
 	return coinId;
 }
@@ -50,16 +77,6 @@ public String getSymbol() {
 public void setSymbol(String symbol) {
 	this.symbol = symbol;
 }
-public int getInitialSupply() {
-	return initialSupply;
-}
-public void setInitialSupply(int initialSupply) {
-	this.initialSupply = initialSupply;
-}
-public int getPrice() {
-	return price;
-}
-public void setPrice(int price) {
-	this.price = price;
-}
+
+
 }

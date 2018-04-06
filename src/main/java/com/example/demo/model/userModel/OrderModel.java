@@ -21,10 +21,11 @@ public class OrderModel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer orderId;
-	private Integer amount;
-	private Float fee;
+	private Integer coinQuantity;
+	private Integer fee;
 	private String orderType;
-	private Integer quote;
+	private Integer price;
+	private Integer grossAmount;
 	private Date orderCreatedOn;
 	private String status;
 	@Transient
@@ -35,11 +36,24 @@ public class OrderModel {
 	@JoinColumn(name = "UserOrderId")
 	@JsonIgnore
 	private UserModel user;
-	public Integer getQuote() {
-		return quote;
+	
+	public Integer getCoinQuantity() {
+		return coinQuantity;
 	}
-	public void setQuote(Integer quote) {
-		this.quote = quote;
+	public void setCoinQuantity(Integer coinQuantity) {
+		this.coinQuantity = coinQuantity;
+	}
+	public Integer getPrice() {
+		return price;
+	}
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+	public Integer getGrossAmount() {
+		return grossAmount;
+	}
+	public void setGrossAmount(Integer grossAmount) {
+		this.grossAmount = grossAmount;
 	}
 	public Date getOrderCreatedOn() {
 		return orderCreatedOn;
@@ -70,16 +84,12 @@ public class OrderModel {
 		this.orderId = orderId;
 	}
 	
-	public Integer getAmount() {
-		return amount;
-	}
-	public void setAmount(Integer amount) {
-		this.amount = amount;
-	}
-	public Float getFee() {
+	
+	
+	public Integer getFee() {
 		return fee;
 	}
-	public void setFee(Float fee) {
+	public void setFee(Integer fee) {
 		this.fee = fee;
 	}
 	public String getOrderType() {

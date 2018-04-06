@@ -32,24 +32,24 @@ public class WalletController {
 
 	@RequestMapping(value = "/depositamount", method = RequestMethod.POST)
 	public ResponseEntity<Object> addMoneyInWallet(@RequestBody WalletDTO data) {
-		String result = null;
+		WalletModel result = null;
 		try {
 			result = walletData.AddMoneyInWallet(data);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 
 	@RequestMapping(value = "/withdrawamount", method = RequestMethod.POST)
 	public ResponseEntity<Object> withdrawMoneyInWallet(@RequestBody WalletDTO data) {
-		String result = null;
+		WalletModel result = null;
 		try {
 			result = walletData.withdrawMoneyInWallet(data);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 	
 	

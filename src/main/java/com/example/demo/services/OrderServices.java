@@ -25,56 +25,89 @@ public class OrderServices {
 	UserRepository userData;
 	@Autowired
 	CoinManagementRepository coindata;
-	
-	public OrderModel buycurrency(OrderModel data,String type)
-	{
-		boolean flag=true;
+
+	public OrderModel buycurrency(OrderModel data, String type) {
+		int fee = 0;
+		int grossamount = 0;
+		boolean flag = true;
 		UserModel userModel = userData.findOne(data.getUserId());
-		if(userModel==null)
+		if (userModel == null)
 			throw new RuntimeException("user not exist");
+		if(!userModel.isStatus())
+			throw new RuntimeException("user not active");
 		List<WalletModel> walletdata = userModel.getWalletModel();
-		CoinManagementModel coinresult=coindata.findByCoinName(data.getCoinName());
-			if(coinresult==null)
-				throw new RuntimeException("coin not exist");
-		OrderModel order=new OrderModel();
-		order.setAmount(data.getAmount());
+		CoinManagementModel coinresult = coindata.findByCoinName(data.getCoinName());
+		if (coinresult == null)
+			throw new RuntimeException("coin not exist");
+		OrderModel order = new OrderModel();
 		order.setCoinName(data.getCoinName());
-		order.setFee(data.getFee());
+		if (type.equals("buyer")) {
+			fee = 2 * (data.getCoinQuantity() * data.getPrice()) / 100;
+			System.out.println(fee);
+			order.setFee(fee);
+		} else {
+			order.setFee(0);
+		}
 		order.setOrderCreatedOn(new Date());
 		order.setOrderType(type);
 		order.setStatus("pending");
-		order.setQuote(data.getQuote());
 		order.setUserId(data.getUserId());
-		order.setUser(userModel);
-		order.setCoinName(data.getCoinName());
-		//orderdata.save(order);
+
+		order.setCoinQuantity(data.getCoinQuantity());
+		order.setPrice(data.getPrice());
+		grossamount = fee + (data.getCoinQuantity() * data.getPrice());
+		order.setGrossAmount(grossamount);
 		userModel.getOrderModel().add(order);
-		
-		for(WalletModel walletype:walletdata)
-		{
-			if(walletype.getWalletType().equals(data.getCoinName()))
-			{
-				flag=false;
-			if(walletype.getAmount()>=data.getAmount())
-			{
-				userData.save(userModel);
-				return order;
-			}
-			else
-			{
-				throw new RuntimeException("amount not valid");
-			}
+		order.setUser(userModel);
+		if(type.equals("buyer")) {
+		for (WalletModel walletype : walletdata) {
+			if (walletype.getWalletType().equals(data.getCoinName())) {
+				flag = false;
+				WalletModel fiatwallet=walletdata.get(0);
+				if (fiatwallet.getShadoBalance()>= order.getGrossAmount()) {
+					System.out.println(order.getGrossAmount());
+					fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()-order.getGrossAmount());
+					walletype.setShadoBalance(walletype.getShadoBalance()+order.getCoinQuantity());
+					userModel.getWalletModel().add(walletype);
+					userModel.getWalletModel().add(fiatwallet);
+					userData.save(userModel);
+					return order;
+				} else {
+					throw new RuntimeException("you dont hava enough amount");
+				}
 			}
 			
 		}
-		if(flag)
+		}
+		if(type.equals("seller")) {
+			for (WalletModel walletype : walletdata) {
+				if (walletype.getWalletType().equals(data.getCoinName())) {
+					flag = false;
+					WalletModel fiatwallet=walletdata.get(0);
+					if (walletype.getShadoBalance() >= order.getCoinQuantity()) {
+						System.out.println(order.getGrossAmount());
+						fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()+order.getGrossAmount());
+						walletype.setShadoBalance(walletype.getShadoBalance()-order.getCoinQuantity());
+						userModel.getWalletModel().add(walletype);
+						userModel.getWalletModel().add(fiatwallet);
+						userData.save(userModel);
+						return order;
+					} else {
+						throw new RuntimeException("you dont hava enough amount");
+					}
+				}
+				
+			}
+		}
+		
+		if (flag)
 			throw new RuntimeException("you dont hava wallet");
 		return order;
 	}
-	public  List<OrderModel> showhistory(Long id)
-	{
-		UserModel data=userData.findOne(id);
-		List<OrderModel> result=data.getOrderModel();
+
+	public List<OrderModel> showhistory(Long id) {
+		UserModel data = userData.findOne(id);
+		List<OrderModel> result = data.getOrderModel();
 		return result;
 	}
 }

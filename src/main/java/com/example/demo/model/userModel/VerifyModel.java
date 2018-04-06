@@ -18,8 +18,6 @@ public class VerifyModel {
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 private Long id;
-@NotEmpty(message="otp require")
-@Pattern(regexp="^(0|[1-9][0-9]*)$")
 private int tokenOtp;
 @NotEmpty(message="userName require")
 private String userName;

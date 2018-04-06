@@ -45,8 +45,9 @@ public class UserServices {
 	@Autowired
 	VerifyRepository verifyData;
 
-	public Map<String, Object> saveUserData(UserModel data) {
-		Map<String, Object> result = new HashMap();
+	public UserModel saveUserData(UserModel data) {
+		if(data.getPassword()==null||data.getPassword().trim().length()==0)
+			throw new RuntimeException("password not be null");
 		Random rand = new Random();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		WalletModel walletModel = new WalletModel();
@@ -55,6 +56,7 @@ public class UserServices {
 		long randemId = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
 		walletModel.setRandemId(randemId);
 		walletModel.setAmount(0);
+		walletModel.setShadoBalance(0);
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date today = Calendar.getInstance().getTime();
 		String date = formatter.format(today);
@@ -81,16 +83,27 @@ public class UserServices {
 			System.out.println("dsfdsfds");
 			throw new NullPointerException("user already inserted Email and PhoneNumber change ");
 		}
-		userData.save(model);
-		result.put("result", "success");
+		UserModel result=userData.save(model);
+		
 		try {
 			int otp = rand.nextInt(1000000);
 			VerifyModel verify = new VerifyModel();
 			verify.setTokenOtp(otp);
 			verify.setUserName(model.getUserName());
 			verify.setDate(date);
-			verifyData.save(verify);
-			//mailServices.sendMail(data.getEmail(),otp);
+			Thread thread = new Thread(){
+			    public void run(){
+			    	verifyData.save(verify);
+					try {
+						mailServices.sendMail(data.getEmail(),otp);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    }
+			  };
+			  thread.start();
+			
 			// smsServieces.sendSMS(otp);
 		} catch (Exception e) {
 
@@ -108,10 +121,10 @@ public class UserServices {
 	}
 
 	public UserModel findById(Long id) {
-		UserModel result=userData.findOne(id);;
+		UserModel result=userData.findByUserId(id);;
 		if(result==null)
 			throw new RuntimeException("id not found");
-		return userData.findOne(id);
+		return result;
 	}
 
 	//
@@ -166,7 +179,7 @@ public class UserServices {
 	public String addRoleToUser(RoleDTO model) {
 		boolean result = true;
 		UserModel user = userData.findOne(model.getUserId());
-		RoleModel role = roleData.findOneByRoleType(model.getUserRole());
+		RoleModel role = roleData.findOneByRoleType(model.getRoleType());
 		if (user != null && role != null) {
 			List<RoleModel> rolecheck = user.getRole();
 			for (RoleModel role1 : rolecheck) {
@@ -207,7 +220,7 @@ public class UserServices {
 		for (RoleModel model : models) {
 			RoleDTO dto = new RoleDTO();
 			dto.setUserId(model.getRoleId());
-			dto.setUserRole(model.getRoleType());
+			dto.setRoleType(model.getRoleType());
 			data.add(dto);
 		}
 		return data;
@@ -215,7 +228,10 @@ public class UserServices {
 
 	// -----------------
 	public UserModel userLogin(String email, String password) {
-		return userData.findOneByEmailAndPassword(email, password);
+		UserModel model=userData.findOneByEmailAndPassword(email, password);
+		if(model==null)
+			throw new RuntimeException("eewrwe");
+		return model;
 	}
 
 	// -------
@@ -241,25 +257,28 @@ public class UserServices {
 	}
 
 	// -verifyuser-----
-	public String verifyUser(VerifyModel data) {
+	public UserModel verifyUser(VerifyModel data) {
 		VerifyModel verify = verifyData.findOneByUserNameAndTokenOtp(data.getUserName(), data.getTokenOtp());
 		if (verify== null) 
 			throw new NullPointerException("user id or otp not found");
-		UserModel user=userData.findOne(data.getId());
+		UserModel user=null;
+		user=userData.findByUserId(data.getId());
+		if(user==null)
+			throw new RuntimeException("id not match");
 		user.setStatus(true);
 		userData.save(user);
 			verifyData.delete(verify.getId());
-			return "success";
+			return user;
 		
 	}
 
 	// avtive and seactive user
-	public String activeDeactiveUser(UserModel data) {
+	public UserModel activeDeactiveUser(UserModel data) {
 		UserModel user = userData.findOne(data.getUserId());
 		if (user == null)
 			throw new NullPointerException("id not found");
 		user.setStatus(data.isStatus());
-		userData.save(user);
-		return "sucess";
+		user=userData.save(user);
+		return user;
 	}
 }

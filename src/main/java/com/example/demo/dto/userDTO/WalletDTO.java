@@ -22,14 +22,14 @@ public class WalletDTO {
 	@NotEmpty(message="amount required")
 	@Pattern(regexp="^(0|[1-9][0-9]*)$")
 	@NotBlank(message="require amount")
-	private int amount;
-	public int getAmount() {
+	private Integer amount;
+	
+	public Integer getAmount() {
 		return amount;
 	}
-	public void setAmount(int amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
-	
 	public Long getWalletId() {
 		return walletId;
 	}

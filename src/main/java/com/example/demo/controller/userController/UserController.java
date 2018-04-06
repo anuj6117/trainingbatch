@@ -29,25 +29,25 @@ public class UserController {
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<Object> show(@Validated @RequestBody UserModel data) {
-		Map<String, Object> result = null;
+		UserModel result = null;
 		try {
 			result = userservice.saveUserData(data);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
 		System.out.println(result);
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result.get("result").toString(), result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 
 	@PostMapping("/verifyuser")
 	public ResponseEntity<Object> verifyUser(@RequestBody VerifyModel data) {
-		String result = null;
+		UserModel result = null;
 		try {
 			result = userservice.verifyUser(data);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 
 	@RequestMapping(value = "/createrole", method = RequestMethod.POST)
@@ -85,14 +85,14 @@ public class UserController {
 
 	@RequestMapping(value = "/activeuser", method = RequestMethod.POST)
 	public ResponseEntity<Object> activeUser(@RequestBody UserModel data) {
-		String result = null;
+		UserModel result = null;
 		try {
 			result = userservice.activeDeactiveUser(data);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 
 		}
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 
 }

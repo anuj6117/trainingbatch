@@ -2,17 +2,18 @@ package com.example.demo.dto.userDTO;
 
 public class RoleDTO {
 private long userId;
-private String userRole;
+private String roleType;
 public long getUserId() {
 	return userId;
 }
 public void setUserId(long userId) {
 	this.userId = userId;
 }
-public String getUserRole() {
-	return userRole;
+public String getRoleType() {
+	return roleType;
 }
-public void setUserRole(String userRole) {
-	this.userRole = userRole;
+public void setRoleType(String roleType) {
+	this.roleType = roleType;
 }
+
 }
