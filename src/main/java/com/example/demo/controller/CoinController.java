@@ -32,7 +32,7 @@ public class CoinController {
 		} catch (Exception e) {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}
-		return ApiResponse.generateResponse(HttpStatus.OK, true, "success", null);
+		return ApiResponse.generateResponse(HttpStatus.OK, true,response.toString(), null);
 	}
 
 	@RequestMapping(value = "/getallcurrency", method = RequestMethod.GET)
@@ -59,7 +59,7 @@ public class CoinController {
 		}
 	}
 
-	@RequestMapping(value = "/deletecurrency", method = RequestMethod.POST)
+	@RequestMapping(value = "/deletecurrency", method = RequestMethod.GET)
 	public ResponseEntity<Object> delete(@RequestParam(value = "coinId") Integer coinId) {
 		String obj=coinService.deleteCoin(coinId);
 		if (obj.equals("success")) {
@@ -69,7 +69,7 @@ public class CoinController {
 		}
 	}
 	
-	@RequestMapping(value = "/getcurrencybyid", method = RequestMethod.POST, produces = { "application/JSON" })
+	@RequestMapping(value = "/getcurrencybyid", method = RequestMethod.GET, produces = { "application/JSON" })
 	public ResponseEntity<Object> add1(@RequestParam(value = "coinId") Integer coinId) throws Exception {
 		Object response = "";
 		try {

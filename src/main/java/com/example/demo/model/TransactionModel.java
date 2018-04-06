@@ -20,19 +20,19 @@ public class TransactionModel {
 	
 	private String status;
 	private Date transactionCreatedOn;
-	private Float netAmount;
-	private Float exchangeRate;
-	private Float transactionFee;
+	private Long netAmount;
+	private Integer exchangeRate;
+	private Integer transactionFee;
 	
 	private String description;
 	private Integer buyerId;
 	private Integer sellerId;
-	private Float grossAmount;
+	private Long grossAmount;
 	
-	public Float getTransactionFee() {
+	public Integer getTransactionFee() {
 		return transactionFee;
 	}
-	public void setTransactionFee(Float transactionFee) {
+	public void setTransactionFee(Integer transactionFee) {
 		this.transactionFee = transactionFee;
 	}
 	public String getCurrencyType() {
@@ -59,16 +59,16 @@ public class TransactionModel {
 	public void setTransactionCreatedOn(Date transactionCreatedOn) {
 		this.transactionCreatedOn = transactionCreatedOn;
 	}
-	public Float getNetAmount() {
+	public Long getNetAmount() {
 		return netAmount;
 	}
-	public void setNetAmount(Float netAmount) {
+	public void setNetAmount(Long netAmount) {
 		this.netAmount = netAmount;
 	}
-	public Float getExchangeRate() {
+	public Integer getExchangeRate() {
 		return exchangeRate;
 	}
-	public void setExchangeRate(Float exchangeRate) {
+	public void setExchangeRate(Integer exchangeRate) {
 		this.exchangeRate = exchangeRate;
 	}
 	public String getDescription() {
@@ -89,10 +89,10 @@ public class TransactionModel {
 	public void setSellerId(Integer sellerId) {
 		this.sellerId = sellerId;
 	}
-	public Float getGrossAmount() {
+	public Long getGrossAmount() {
 		return grossAmount;
 	}
-	public void setGrossAmount(Float grossAmount) {
+	public void setGrossAmount(Long grossAmount) {
 		this.grossAmount = grossAmount;
 	}
 

@@ -26,7 +26,7 @@ import com.example.demo.service.UserService;
 import com.example.demo.utils.ApiResponse;
 
 @RestController
-//@RequestMapping("/userdata")
+// @RequestMapping("/userdata")
 public class UserController {
 
 	@Autowired
@@ -35,7 +35,7 @@ public class UserController {
 	// -------------------SIGNUP--------------------------
 
 	// To add a new user and a default is created
-	@RequestMapping(value = "/signup", method = RequestMethod.POST, produces = { "application/JSON" })
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<Object> add(@RequestBody UserModel user) throws Exception {
 		String response = "";
 		try {
@@ -48,11 +48,16 @@ public class UserController {
 	}
 
 	// To verify user
-	@RequestMapping(value = "/verifyUser/{otp}", method = RequestMethod.POST)
-	public ResponseEntity<Object> verifySignUp(@RequestBody UserModel user, @PathVariable(value = "otp") Integer otp)
+	@RequestMapping(value = "/verifyuser", method = RequestMethod.POST)
+	public ResponseEntity<Object> verifySignUp(@RequestBody UserModel user)
 			throws Exception {
-		userService.verifyUser(user,otp);
-		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
+		Object response = "";
+		try {
+			response = userService.verifyUser(user);
+		} catch (Exception e) {
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
+		}
+		return ApiResponse.generateResponse(HttpStatus.OK, true, response.toString(), null);
 	}
 
 	// ----------------GET ALL USER LIST---------------------
@@ -75,8 +80,17 @@ public class UserController {
 
 	// To update user data
 	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
-	public List<UserModel> update( @RequestBody UserModel userDetails) {
-		return userService.updateUser(userDetails.getUserid(), userDetails);
+	public ResponseEntity<Object> update(@RequestBody UserModel userDetails) {
+		
+		
+		Object obj;
+		try {
+			obj = userService.updateUser(userDetails.getUserid(), userDetails);
+		} catch (Exception e) {
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
+		}
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "successfully updated", obj);
+		 
 	}
 
 	// Add another role for user
@@ -93,9 +107,8 @@ public class UserController {
 
 	// To add another wallet for user
 	@RequestMapping(value = "/addwallet", method = RequestMethod.POST)
-	public ResponseEntity<Object> addingAnotherWallet(
-			@RequestBody UserModel user) {
-	
+	public ResponseEntity<Object> addingAnotherWallet(@RequestBody UserModel user) {
+
 		Object obj;
 		try {
 			obj = userService.addAnotherWallet(user, user.getWalletType());
@@ -103,31 +116,33 @@ public class UserController {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}
 		return ApiResponse.generateResponse(HttpStatus.OK, true, "Data Loaded", obj);
-		
-		
+
 	}
 
 	// To add amount into user wallet
-	/*@RequestMapping(value = "/addamount/{amount}/{walletType}", method = RequestMethod.POST)
-	public ResponseEntity<Object> addAmount(@PathVariable(value = "amount") Float amount,
-			@PathVariable(value = "walletType") String walletType, @RequestBody UserModel userDetails) {
-		userService.addAmountIntoWallet(userDetails, amount, walletType);
-		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
-	}*/
+	/*
+	 * @RequestMapping(value = "/addamount/{amount}/{walletType}", method =
+	 * RequestMethod.POST) public ResponseEntity<Object>
+	 * addAmount(@PathVariable(value = "amount") Float amount,
+	 * 
+	 * @PathVariable(value = "walletType") String walletType, @RequestBody UserModel
+	 * userDetails) { userService.addAmountIntoWallet(userDetails, amount,
+	 * walletType); return ApiResponse.generateResponse(HttpStatus.OK, true,
+	 * "Success", null); }
+	 */
 	// To add amount into user wallet
-		@RequestMapping(value = "/depositamount", method = RequestMethod.POST)
-		public ResponseEntity<Object> addAmount1( @RequestBody UserOrderDTO userdto) {
-			userService.addAmountIntoWallet1(userdto.getUserId(), userdto.getAmount(),userdto.getWalletType());
-			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
-		}
-		
-		// To add amount into user wallet
-		@RequestMapping(value = "/withdrawamount", method = RequestMethod.POST)
-		public ResponseEntity<Object> withdrawAmount( @RequestBody UserOrderDTO userdto) {
-			userService.withdrawAmountFromWallet(userdto.getUserId(), userdto.getAmount(),userdto.getWalletType());
-			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
-		}
+	@RequestMapping(value = "/depositamount", method = RequestMethod.POST)
+	public ResponseEntity<Object> addAmount1(@RequestBody UserOrderDTO userdto) {
+		userService.addAmountIntoWallet1(userdto.getUserId(), userdto.getAmount(), userdto.getWalletType());
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
+	}
 
+	// To add amount into user wallet
+	@RequestMapping(value = "/withdrawamount", method = RequestMethod.POST)
+	public ResponseEntity<Object> withdrawAmount(@RequestBody UserOrderDTO userdto) {
+		userService.withdrawAmountFromWallet(userdto.getUserId(), userdto.getAmount(), userdto.getWalletType());
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
+	}
 
 	// ------------ FETCH ROLE AND USER AND VICE VERSA
 	// To fetch role
@@ -150,9 +165,9 @@ public class UserController {
 	@RequestMapping(value = "/userlogin", method = RequestMethod.POST)
 	public ResponseEntity<Object> getUser(@RequestBody UserModel userDetails, @RequestHeader("token") String ll) {
 		try {
-//			System.out.println("-------------------");
-//			System.out.println(userDetails.getEmail() + "-------------------");
-//			System.out.println(userDetails.getPassword() + "-------------------");
+			// System.out.println("-------------------");
+			// System.out.println(userDetails.getEmail() + "-------------------");
+			// System.out.println(userDetails.getPassword() + "-------------------");
 			if (userDetails.getEmail().equals("") || userDetails.getPassword().equals("")) {
 				System.out.println("--------aaaa-----------");
 				return ApiResponse.generateResponse(HttpStatus.OK, true, "Failure", null);
@@ -173,7 +188,7 @@ public class UserController {
 
 	// To delete amount into user wallet
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
-	public ResponseEntity<Object> delete( @RequestParam(value = "userId") Integer userId) {
+	public ResponseEntity<Object> delete(@RequestParam(value = "userId") Integer userId) {
 		if (userId != 0) {
 			userService.deleteUser(userId);
 			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", null);
@@ -213,28 +228,28 @@ public class UserController {
 		List<UserModel> list;
 
 		try {
-			list = userService.findByNameContaininy(userModel.getUserName(), PageRequest.of(1, 2, Direction.ASC, "userName"));
+			list = userService.findByNameContaininy(userModel.getUserName(),
+					PageRequest.of(1, 2, Direction.ASC, "userName"));
 		} catch (Exception e) {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}
 		return ApiResponse.generateResponse(HttpStatus.OK, true, "success", list);
 	}
-	
-	
-	// For user login
-		@RequestMapping(value = "/getbyuserid", method = RequestMethod.POST)
-		public ResponseEntity<Object> getUserByid( @RequestParam(value = "userId") Integer userId) {
-			UserModel user = new UserModel();
-			try {
 
-				if (userId>0) {
-					 user = userService.getUserById(userId);
-					
-				}
-			} catch (Exception e) {
-				return ApiResponse.generateResponse(HttpStatus.OK, true, "Enter Valid Id", null);
+	// For user login
+	@RequestMapping(value = "/getbyuserid", method = RequestMethod.GET)
+	public ResponseEntity<Object> getUserByid(@RequestParam(value = "userId") Integer userId) {
+		UserModel user = new UserModel();
+		try {
+
+			if (userId > 0) {
+				user = userService.getUserById(userId);
+
 			}
-			return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", user);
+		} catch (Exception e) {
+			return ApiResponse.generateResponse(HttpStatus.OK, true, "Enter Valid Id", null);
 		}
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "Success", user);
+	}
 
 }

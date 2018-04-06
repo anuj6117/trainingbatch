@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,12 +20,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constant.Constant;
 import com.example.demo.constant.RoleEnum;
 import com.example.demo.constant.WalletEnum;
 import com.example.demo.controller.OTPController;
 import com.example.demo.generate.password.BcryptPasswordGenerator;
 import com.example.demo.model.AuthToken;
-import com.example.demo.model.OrderModel;
 import com.example.demo.model.RoleModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.WalletModel;
@@ -33,6 +35,8 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.WalletRepository;
 import com.example.demo.utils.SendEmail;
 import com.example.demo.utils.Utility;
+import com.example.demo.validation.EmailValidation;
+import com.example.demo.validation.PasswordValidation;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -57,137 +61,130 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private JavaMailSender sender1;
-	
-	
-	
-	
-	
-	/*public Object searchType() {
-		Session session = Hibernate.getHibernateSession();
-		Criteria cr = session.createCriteria(UserModel.class);
-		long startTimeCriteria = System.nanoTime();
-		cr.add(Restrictions.like("itemName", "%item One%"));
-		 
-		List results = cr.list();
 
-	}*/
-	
-	
-	
-	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	/*
-	  public SearchResults<UserModel> search(UserSearchCriteria searchCriteria)
-	    {
-	        UserSearchType searchType = searchCriteria.getSearchType();
-	        String sortOrder = searchCriteria.getSortOrder();
-	        System.out.println(searchType+":"+sortOrder);
-	        List<UserModel> results = null;
-	        if(searchType == UserSearchType.BY_NAME)
-	        {
-	        	
-	        }
-	        else if(searchType == UserSearchType.BY_ID)
-	        {
-	           //Use hibernate Criteria API to get and sort results based on USER_ID field in sortOrder
-	             results = UserDAO.searchUsers(...);
-	        }
-	        
-	        UserSearchResults<UserModel> searchResults = new UserSearchResults<UserModel>();
-	        searchResults.setPageSize(searchCriteria.getPageSize());
-	        searchResults.setResults(results);
-	        return searchResults;
-	    }
-	
-	
-	  public Map<String, Object> search(Map<String, Object> searchCriteriaMap)
-	    {
-	        return UserDAO.search(searchCriteriaMap);
-	    }
-	
-	*/
-	
-	
-	
-	
-	
-	
-	
+	 * public Object searchType() { Session session =
+	 * Hibernate.getHibernateSession(); Criteria cr =
+	 * session.createCriteria(UserModel.class); long startTimeCriteria =
+	 * System.nanoTime(); cr.add(Restrictions.like("itemName", "%item One%"));
+	 * 
+	 * List results = cr.list();
+	 * 
+	 * }
+	 */
+
+	/*
+	 * public SearchResults<UserModel> search(UserSearchCriteria searchCriteria) {
+	 * UserSearchType searchType = searchCriteria.getSearchType(); String sortOrder
+	 * = searchCriteria.getSortOrder();
+	 * System.out.println(searchType+":"+sortOrder); List<UserModel> results = null;
+	 * if(searchType == UserSearchType.BY_NAME) {
+	 * 
+	 * } else if(searchType == UserSearchType.BY_ID) { //Use hibernate Criteria API
+	 * to get and sort results based on USER_ID field in sortOrder results =
+	 * UserDAO.searchUsers(...); }
+	 * 
+	 * UserSearchResults<UserModel> searchResults = new
+	 * UserSearchResults<UserModel>();
+	 * searchResults.setPageSize(searchCriteria.getPageSize());
+	 * searchResults.setResults(results); return searchResults; }
+	 * 
+	 * 
+	 * public Map<String, Object> search(Map<String, Object> searchCriteriaMap) {
+	 * return UserDAO.search(searchCriteriaMap); }
+	 * 
+	 */
 
 	// ------------------------SIGN UP---------------------------------
 	// Add New User
 	// @Secured({"admin","user"})
 	public String addUser(UserModel userModel) throws Exception {
-        if(userModel.getUserid()==1) {
-        	if (!(userModel.getPassword().equalsIgnoreCase(""))) {
+		logger.info(userModel.getEmail()+"=======");
+	/*	if (userModel.getUserid() == 1) {
+			if (!(userModel.getPassword().equalsIgnoreCase(""))) {
 				userModel.setCreatedOn(new Date());
 				userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
 				Set<RoleModel> roleModel = addDefaultRole(RoleEnum.USER.toString());
 				userModel.setRoleType(roleModel);
-
 				userRepo.save(userModel);
 				addWallet(userModel);
 				Integer otpNum = Utility.generateId(1000);
 				authService.addAuthToken(userModel.getUserName(), otpNum);
-				System.out.println("-----------------" + sender1.createMimeMessage());
-				 SendEmail.sendEmail(userModel.getEmail(), otpNum,
-				 userModel.getUserName(),sender1);
-				// OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
-				 OTPController.sendSMS("9873020277",otpNum.toString());
+				logger.info("-----------------" + sender1.createMimeMessage());
+				SendEmail.sendEmail(userModel.getEmail(), otpNum, userModel.getUserName(), sender1);
+				OTPController.sendSMS(userModel.getPhoneNumber().toString(), otpNum.toString());
+				// OTPController.sendSMS("9873020277",otpNum.toString());
 				return "success";
 			} else {
-				System.out.println("----------------------azsxdfghjkl");
+
 				throw new Exception("Password Cannot be null");
 			}
-        }
-        else
-        {
-        	UserModel user = userRepo.findByEmail(userModel.getEmail());
-    		System.out.println(userModel.getUserName()+"--------------------");
-    		UserModel username = userRepo.findByUserName(userModel.getUserName());
-    		System.out.println(username+"--------------------");
-    		UserModel userphone = userRepo.findByPhoneNumber(userModel.getPhoneNumber());
-    		if(userModel.getCountry()==""&&userModel.getEmail()==""&&userModel.getPhoneNumber()==null&&userModel.getUserName()=="") {
-    			throw new Exception("Field cannot be null");
-    			
-    		}
-    		else {
-    			if(userphone == null) {
-    				if(username == null) {
-    					if (user == null) {
-    						if (!(userModel.getPassword().equalsIgnoreCase(""))) {
-    							userModel.setCreatedOn(new Date());
-    							userModel.setPassword(BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
-    							Set<RoleModel> roleModel = addDefaultRole(RoleEnum.USER.toString());
-    							userModel.setRoleType(roleModel);
+		} else {*/
+			logger.info(userModel.getEmail()+"====---------------===");
+			UserModel user = userRepo.findByEmail(userModel.getEmail());
+		if(user!=null) {
+			logger.info("asdfghjkgvcxdfghjhgvfdsdfgf");
+		}
+			UserModel username = userRepo.findByUserName(userModel.getUserName());
+			System.out.println(username + "--------------------");
+			UserModel userphone = userRepo.findByPhoneNumber(userModel.getPhoneNumber());
+			if (userModel.getCountry() == "" && userModel.getEmail() == "" && userModel.getPhoneNumber() == null
+					&& userModel.getUserName() == "") {
+				throw new Exception("Field cannot be null");
 
-    							userRepo.save(userModel);
-    							addWallet(userModel);
-    							Integer otpNum = Utility.generateId(1000);
-    							authService.addAuthToken(userModel.getUserName(), otpNum);
-    							System.out.println("-----------------" + sender1.createMimeMessage());
-    							 SendEmail.sendEmail(userModel.getEmail(), otpNum,
-    							 userModel.getUserName(),sender1);
-    							// OTPController.sendSMS(userModel.getPhoneNumber().toString(),otpNum.toString());
-    							 OTPController.sendSMS("9873020277",otpNum.toString());
-    							return "success";
-    						} else {
-    							System.out.println("----------------------azsxdfghjkl");
-    							throw new Exception("Password Cannot be null");
-    						}
+			} else {
+				if (userphone == null) {
+					if (username == null) {
+						if (user == null) {
+							if (!(userModel.getPassword().equalsIgnoreCase(""))) {
+								if (new EmailValidation().validate(userModel.getEmail())) {
+									if (PasswordValidation.passwordValidation(userModel.getPassword())) {
+										if (PasswordValidation
+												.phoneNumberValidation(userModel.getPhoneNumber().toString())) {
+											userModel.setCreatedOn(new Date());
+											userModel.setPassword(
+													BcryptPasswordGenerator.passwordGenerator(userModel.getPassword()));
+											Set<RoleModel> roleModel = addDefaultRole(RoleEnum.USER.toString());
+											userModel.setRoleType(roleModel);
+											userRepo.save(userModel);
+											addWallet(userModel);
+											Integer otpNum = Utility.generateId(1000);
+											authService.addAuthToken(userModel.getUserName(), otpNum);
+											System.out.println("-----------------" + sender1.createMimeMessage());
+											SendEmail.sendEmail(userModel.getEmail(), otpNum, userModel.getUserName(),
+													sender1);
+											OTPController.sendSMS(userModel.getPhoneNumber().toString(),
+													otpNum.toString());
+											// OTPController.sendSMS("9873020277",otpNum.toString());
+											return "success";
+										} else {
+											throw new Exception("Mobile number should contain 10 digits");
+										}
 
-    					} else {
-    						throw new Exception("Email Already Exists");
-    					}
-    				}
-    				else {
-    					throw new Exception("UserName Already Exists");
-    				}
-    			}else {
-    				throw new Exception("PhoneNumber Already Exists");
-    			}
-    		}
-        }
-		
+									} else {
+										throw new Exception(Constant.VALID_PASSWORD);
+									}
+								} else {
+									throw new Exception("Enter a valid Email");
+								}
+							} else {
+								throw new Exception("Password Cannot be null");
+							}
+
+						} else {
+							throw new Exception("Email Already Exists");
+						}
+					} else {
+						throw new Exception("UserName Already Exists");
+					}
+				} else {
+					throw new Exception("PhoneNumber Already Exists");
+				}
+			}
+		/*}*/
+
 	}
 
 	// Add Default Wallet For A New User
@@ -199,13 +196,10 @@ public class UserService implements UserDetailsService {
 		walletRepo.save(walletModel);
 	}
 
-	
-	
-	
 	// Add Default Role For A New User
 	public Set<RoleModel> addDefaultRole(String role) {
 		roleService.addRole();
-		RoleModel roleModel = roleRepo.findByRole(role);
+		RoleModel roleModel = roleRepo.findByRoleType(role);
 		Set<RoleModel> roleSet = new HashSet<RoleModel>();
 		if (roleModel != null) {
 			roleSet.add(roleModel);
@@ -218,10 +212,17 @@ public class UserService implements UserDetailsService {
 
 	// -----------VERIFY USER ON SIGNUP------------------
 	// verify user
-	public String verifyUser(UserModel userModel, Integer otp) {
+	public Object verifyUser(UserModel userModel) throws Exception {
+		if (userModel.getUserid() == null) {
+			throw new Exception("UserId cannot be null");
+		}
+		if (userModel.getTokenOTP() == null) {
+			throw new Exception("otp cannot be null");
+		}
 		Optional<UserModel> userOp = userRepo.findById(userModel.getUserid());
-		if (userOp.get() != null) {
-			AuthToken authToken = authRepo.findByOtp(otp);
+		logger.info(userOp.isPresent() + "------------------");
+		if (userOp.isPresent()) {
+			AuthToken authToken = authRepo.findByOtp(userModel.getTokenOTP());
 			if (authToken != null) {
 				userOp.get().setStatus(true);
 				userRepo.save(userOp.get());
@@ -229,11 +230,11 @@ public class UserService implements UserDetailsService {
 				return "Success";
 			} else {
 				// re-send the One time password
-				return "not a valid otp";
+				throw new Exception("not a valid otp");
 			}
 		} else {
 			// sign up first
-			return "user does not exist";
+			throw new Exception("user does not exist");
 		}
 
 	}
@@ -242,18 +243,18 @@ public class UserService implements UserDetailsService {
 	// For User Login
 	public UserModel getUser(UserModel u) {
 
-		UserModel userOp = userRepo.findByEmailAndPassword(u.getEmail(), BcryptPasswordGenerator.passwordGenerator(u.getPassword()));
+		UserModel userOp = userRepo.findByEmailAndPassword(u.getEmail(),
+				BcryptPasswordGenerator.passwordGenerator(u.getPassword()));
 		System.out.println(userOp.getEmail() + "-------------------");
 		return userOp;
 	}
-	
+
 	public UserModel getUserById(Integer userId) {
 
 		Optional<UserModel> userOp = userRepo.findById(userId);
-		
+
 		return userOp.get();
 	}
-	
 
 	// ------------ FETCH ROLE AND USER AND VICE VERSA
 	// fetch the roles
@@ -274,7 +275,7 @@ public class UserService implements UserDetailsService {
 			UserModel userModel = userIterator.next();
 			Set<RoleModel> roles = userModel.getRoleType();
 			for (RoleModel type : roles) {
-				if (type.getRole().equalsIgnoreCase(role.getRole())) {
+				if (type.getRoleType().equalsIgnoreCase(role.getRoleType())) {
 					userModelList.add(userModel);
 				}
 			}
@@ -291,9 +292,9 @@ public class UserService implements UserDetailsService {
 	}
 
 	// -------------ADD ANOTHER ROLE FOR USER------------------------------
-	public String addAnotherRole(Integer userid, String roleType)throws Exception {
+	public String addAnotherRole(Integer userid, String roleType) throws Exception {
 
-		RoleModel roleOp = roleRepo.findByRole(roleType);
+		RoleModel roleOp = roleRepo.findByRoleType(roleType);
 		Optional<UserModel> userData = userRepo.findById(userid);
 		UserModel userModel = userData.get();
 
@@ -334,7 +335,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	// Add Another For a Existing User wallet
-	public Object addAnotherWallet(UserModel userModel, String walletType) throws Exception{
+	public Object addAnotherWallet(UserModel userModel, String walletType) throws Exception {
 		Boolean check = isWalletTypeValid(userModel.getWalletType());
 		if (check) {
 			int flag = 0;
@@ -353,13 +354,11 @@ public class UserService implements UserDetailsService {
 				walletModel.setWalletHash(Utility.generateId(100));
 				walletModel.setWalletType(userModel.getWalletType());
 				walletRepo.save(walletModel);
-			}
-			else {
+			} else {
 				throw new Exception("Wallet already present");
 			}
 			return "Wallet Added Successfully";
-		}
-		else {
+		} else {
 			throw new Exception("Walletype is invalid");
 		}
 
@@ -375,11 +374,11 @@ public class UserService implements UserDetailsService {
 	}
 
 	public void withdrawAmountFromWallet(Integer userid, Float amount, String walletType) {
-		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType,userid);
+		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
 		if (amount < walletModel.getBalance()) {
 			walletModel.setBalance(walletModel.getBalance() - amount);
 			walletModel.setShadowBalance(walletModel.getBalance());
-			walletRepo.save(walletModel);//testing 
+			walletRepo.save(walletModel);// testing
 		}
 	}
 
@@ -401,19 +400,19 @@ public class UserService implements UserDetailsService {
 	}
 
 	// ----------------------UPDATE USER-----------------
-	public List<UserModel> updateUser(int userId, UserModel u) {
+	public Object updateUser(int userId, UserModel u) {
 		Optional<UserModel> userOp = userRepo.findById(userId);
 		System.out.println(userOp + "---------------------------------------");
-		if(!(userOp.get().equals(null))) {
+		if (!(userOp.get().equals(null))) {
+
 			userOp.get().setUserName(u.getUserName());
 			userOp.get().setCountry(u.getCountry());
 			userOp.get().setEmail(u.getEmail());
 			userOp.get().setPhoneNumber(u.getPhoneNumber());
 			userOp.get().setPassword(u.getPassword());
 			userRepo.save(userOp.get());
+
 		}
-		
-	
 		List<UserModel> userDetails = new ArrayList<UserModel>();
 		userRepo.findAll().forEach(userDetails::add);
 		return userDetails;
@@ -429,8 +428,8 @@ public class UserService implements UserDetailsService {
 		return userRepo.findByUserName(userName, pageRequest);
 	}
 
-	public List<UserModel> findByNameContaininy(String userName,PageRequest pageRequest) {
-		return userRepo.findByUserNameContaining(userName,pageRequest);
+	public List<UserModel> findByNameContaininy(String userName, PageRequest pageRequest) {
+		return userRepo.findByUserNameContaining(userName, pageRequest);
 	}
 
 	// -----SPRING SECURITY METHOD--------------------------------------
@@ -446,7 +445,7 @@ public class UserService implements UserDetailsService {
 			Set<RoleModel> role = userModel.getRoleType();
 			String[] authStrings = new String[role.size()];
 			for (RoleModel type : role) {
-				authStrings[i] = "ROLE_"+type.getRole();
+				authStrings[i] = "ROLE_" + type.getRoleType();
 				i++;
 			}
 			for (String authString : authStrings) {

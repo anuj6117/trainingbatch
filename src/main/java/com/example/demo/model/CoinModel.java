@@ -14,33 +14,36 @@ public class CoinModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
-	private int coinId;
+	private Integer coinId;
+	private Integer profit=0;
+	private Integer fees=0;
+	private Integer INRConvergent=0;
 	private String coinName;
-	private String coinSymbol="nill";
-	private long initialSupply = 0;
-	private float price = 0;
-	public long getInitialSupply() {
+	private String symbol;
+	private Long initialSupply =100000l;
+	private Integer price;
+	public Long getInitialSupply() {
 		return initialSupply;
 	}
 
-	public void setInitialSupply(long initialSupply) {
+	public void setInitialSupply(Long initialSupply) {
 		this.initialSupply = initialSupply;
 	}
 
-	public float getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 
 
-	public int getCoinId() {
+	public Integer getCoinId() {
 		return coinId;
 	}
 
-	public void setCoinId(int coinId) {
+	public void setCoinId(Integer coinId) {
 		this.coinId = coinId;
 	}
 
@@ -52,14 +55,36 @@ public class CoinModel {
 		this.coinName = coinName;
 	}
 
-	public String getCoinSymbol() {
-		return coinSymbol;
+	public String getSymbol() {
+		return symbol;
 	}
 
-	public void setCoinSymbol(String coinSymbol) {
-		this.coinSymbol = coinSymbol;
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
 	}
 
-	
+	public Integer getProfit() {
+		return profit;
+	}
+
+	public void setProfit(Integer profit) {
+		this.profit = profit;
+	}
+
+	public Integer getFees() {
+		return fees;
+	}
+
+	public void setFees(Integer fees) {
+		this.fees = fees;
+	}
+
+	public Integer getINRConvergent() {
+		return INRConvergent;
+	}
+
+	public void setINRConvergent(Integer iNRConvergent) {
+		INRConvergent = iNRConvergent;
+	}
 
 }

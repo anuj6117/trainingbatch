@@ -12,7 +12,7 @@ public class RoleModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int roleId;
-	private String role;
+	private String roleType;
 	
 	public int getRoleId() {
 		return roleId;
@@ -22,12 +22,12 @@ public class RoleModel {
 		this.roleId = roleId;
 	}
 
-	public String getRole() {
-		return role;
+	public String getRoleType() {
+		return roleType;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
 	}
 	
 }

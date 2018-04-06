@@ -16,6 +16,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class UserModel {
@@ -23,18 +25,20 @@ public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
-	private int userid;
+	private Integer userid;
 	private String userName;
 	private String country;
 	private Date createdOn;
+
 	private String email;
 	private Long phoneNumber;
 	private String password;
 	private Boolean status = false;
 	@Transient
 	private String walletType;
+	@Transient
+	private Integer tokenOTP;
 
-	
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
 	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = {
@@ -46,10 +50,14 @@ public class UserModel {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userModel")
 	private Set<OrderModel> userOrder = new HashSet<>();
-	
+		
+	public Integer getTokenOTP() {
+		return tokenOTP;
+	}
 
-  
-
+	public void setTokenOTP(Integer tokenOTP) {
+		this.tokenOTP = tokenOTP;
+	}
 	
 	public Set<OrderModel> getUserOrder() {
 		return userOrder;
@@ -59,11 +67,11 @@ public class UserModel {
 		this.userOrder = userOrder;
 	}
 
-	public int getUserid() {
+	public Integer getUserid() {
 		return userid;
 	}
 
-	public void setUserid(int userid) {
+	public void setUserid(Integer userid) {
 		this.userid = userid;
 	}
 

@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constant.Constant;
 import com.example.demo.model.CoinModel;
 import com.example.demo.repository.CoinRepository;
+import com.example.demo.utils.Utility;
 
 @Service
 public class CoinService {
@@ -17,11 +19,12 @@ public class CoinService {
 	private CoinRepository coinRepo;
 
 	public Object addCoin(CoinModel coinModel)throws Exception {
-		if(coinModel.getCoinName().equals("")&&coinModel.getCoinSymbol().equals("")) {
-			return "invalid input";
-		}else {
+		if(Utility.isStringNull(coinModel.getSymbol())||Utility.isStringNull(coinModel.getCoinName())||Utility.isLongNull(coinModel.getInitialSupply())||Utility.isIntegerNull(coinModel.getFees())) {
+			return "Invalid!! Input field cannot be null";
+		}
+		else {
 			CoinModel coin = coinRepo.findByCoinName(coinModel.getCoinName());
-			CoinModel coinsymbol = coinRepo.findByCoinSymbol(coinModel.getCoinSymbol());
+			CoinModel coinsymbol = coinRepo.findBySymbol(coinModel.getSymbol());
 			if(coin==null) {
 				if(coinsymbol==null) {
 					coinRepo.save(coinModel);
@@ -54,10 +57,14 @@ public class CoinService {
 		Optional<CoinModel> coinOptionalObject = coinRepo.findById(coinModel.getCoinId());
 		if (coinOptionalObject != null) {
 			coinOptionalObject.get().setCoinName(coinModel.getCoinName());
-			coinOptionalObject.get().setCoinSymbol(coinModel.getCoinSymbol());
+			coinOptionalObject.get().setSymbol(coinModel.getSymbol());
 			coinOptionalObject.get().setInitialSupply(coinModel.getInitialSupply());
 			coinOptionalObject.get().setPrice(coinModel.getPrice());
+			coinOptionalObject.get().setFees(coinModel.getFees());
+			coinOptionalObject.get().setINRConvergent(coinModel.getINRConvergent());
+			coinOptionalObject.get().setProfit(coinModel.getProfit());
 			coinRepo.save(coinOptionalObject.get());
+			//addCoin(coinModel);
 			return "success";
 		} else {
 			return "No Coin Exist";

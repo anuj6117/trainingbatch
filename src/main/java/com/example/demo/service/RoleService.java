@@ -29,7 +29,7 @@ public class RoleService {
 		for (RoleEnum type : RoleEnum.values()) {
 			System.out.println(type);
 			roleModel.setRoleId(i);
-			roleModel.setRole(type.toString());
+			roleModel.setRoleType(type.toString());
 			roleRepo.save(roleModel);
 			i++;
 		}
@@ -39,7 +39,7 @@ public class RoleService {
 	}
 
 	public Object addRole1(RoleModel roleModel) throws Exception {
-		if (roleModel.getRole().equals("")) {
+		if (roleModel.getRoleType().equals("")) {
 			throw new Exception("Role type Cannot be null");
 		} else {
 			roleRepo.save(roleModel);

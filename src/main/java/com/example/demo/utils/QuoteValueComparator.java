@@ -9,7 +9,7 @@ public class QuoteValueComparator implements Comparator<OrderModel>  {
 	@Override
 	public int compare(OrderModel minCompare, OrderModel listCompare) {
 		// TODO Auto-generated method stub
-		return ((Float)minCompare.getQuoteValue()).compareTo((Float)listCompare.getQuoteValue());
+		return (minCompare.getQuoteValue()).compareTo(listCompare.getQuoteValue());
 	}
 
 }

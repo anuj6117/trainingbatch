@@ -2,6 +2,8 @@ package com.example.demo.constant;
 
 public class Constant {
 	
+	public static final String EMPTY = "";
+	public static final String Null = null;
 	public static final String SUCCESS = "success";
 	public static final String FAILURE = "failure";
 	public static final String COIN_SYMOBOL_EXISTS="";
@@ -19,5 +21,5 @@ public class Constant {
 	public static final String WALLET_ALREADY_EXIST = "success";
 	public static final String INVALID_WALLET_TYPE = "success";
 	public static final String WALLET_ADDED_SUCCESS = "success";
-
-}
+	public static final String VALID_PASSWORD = " Passowrd must contain at least one number and one uppercase and lowercase letter,special symbol and at least 8 or more characters";
+	}
