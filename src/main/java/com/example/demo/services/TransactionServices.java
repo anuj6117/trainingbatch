@@ -88,8 +88,8 @@ public class TransactionServices {
 					
 					
 				} else if (buy.getCoinQuantity() > sellerresult.getCoinQuantity()) {
-					grossamount = buy.getGrossAmount()-sellerresult.getGrossAmount();
-					coinQuantity = buy.getCoinQuantity()-sellerresult.getCoinQuantity();
+					grossamount = sellerresult.getGrossAmount();
+					coinQuantity = sellerresult.getCoinQuantity();
 					buy.setGrossAmount(buy.getGrossAmount() - sellerresult.getGrossAmount());
 					buy.setCoinQuantity(buy.getCoinQuantity() - sellerresult.getCoinQuantity());
 					sellerresult.setStatus("completed");

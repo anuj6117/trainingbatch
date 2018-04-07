@@ -100,8 +100,19 @@ public class OrderServices {
 			}
 		}
 		
-		if (flag)
-			throw new RuntimeException("you dont hava wallet");
+		if (flag) {
+			if(type.equals("buyer")) {
+			WalletModel walletModel = new WalletModel();
+		walletModel.setAmount(0);
+		walletModel.setWalletType(data.getCoinName());
+		walletModel.setShadoBalance(data.getCoinQuantity());
+		walletModel.setUserdata(userModel);
+		userModel.getWalletModel().add(walletModel);
+		UserModel result = userData.save(userModel);
+		}
+			else
+				throw new RuntimeException("you dont hava wallet");
+		}
 		return order;
 	}
 //show history
