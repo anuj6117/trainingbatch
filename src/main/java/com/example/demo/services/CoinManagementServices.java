@@ -19,7 +19,7 @@ public class CoinManagementServices {
 	public Map<String, Object> addAllCoinData(CoinManagementModel data) {
 		if(data.getInitialSupply()==null||data.getPrice()==null||data.getInitialSupply()<=0||data.getPrice()<=0)
 			throw new NullPointerException("null data found");
-		if (data.getCoinName().equals("")||data.getCoinName().trim().length()>=0 || data.getSymbol().equals(""))
+		if (data.getCoinName().equals("")||data.getCoinName().trim().length()==0 || data.getSymbol().equals(""))
 			throw new NullPointerException("null data found");
 		Map<String, Object> result = new HashMap();
 		CoinManagementModel model = coinDate.findByCoinNameOrSymbol(data.getCoinName(),data.getSymbol());
@@ -46,18 +46,18 @@ public class CoinManagementServices {
 
 	public Map<String, Object> updataCoinData(CoinManagementModel data) {
 		Map<String, Object> result = new HashMap();
-		if (data.getCoinName().equals("")||data.getCoinName().trim().length()>=0 || data.getSymbol().equals(""))
+		if (data.getCoinName().equals("")||data.getCoinName().trim().length()==0 || data.getSymbol().equals(""))
 			throw new NullPointerException("null data found");
-		if (data.getCoinName().equals("")||data.getCoinName().trim().length()>=0 || data.getSymbol().equals(""))
+		if (data.getCoinName().equals("")||data.getCoinName().trim().length()==0 || data.getSymbol().equals(""))
 			throw new NullPointerException("null data found");
 		CoinManagementModel model = coinDate.findByCoinIdAndCoinName(data.getCoinId(), data.getCoinName());
 		if (model == null)
 			throw new NullPointerException("currency not matched");
-		CoinManagementModel model1=coinDate.findBySymbol(data.getSymbol());
-				if (model1 != null)
+		List<CoinManagementModel> model1=coinDate.findBySymbol(data.getSymbol());
+				if (model1.size()>1)
 					throw new NullPointerException("duplicated symbol found");
 		model.setPrice(data.getPrice());
-		model.setInitialSupply(data.getInitialSupply());
+		model.setInitialSupply(model.getInitialSupply()+data.getInitialSupply());
 		CoinManagementModel coinresult = coinDate.save(model);
 
 		result.put("result", "success");

@@ -39,11 +39,11 @@ public class OrderServices {
 		CoinManagementModel coinresult = coindata.findByCoinName(data.getCoinName());
 		if (coinresult == null)
 			throw new RuntimeException("coin not exist");
+		
 		OrderModel order = new OrderModel();
 		order.setCoinName(data.getCoinName());
 		if (type.equals("buyer")) {
 			fee = 2 * (data.getCoinQuantity() * data.getPrice()) / 100;
-			System.out.println(fee);
 			order.setFee(fee);
 		} else {
 			order.setFee(0);
@@ -52,9 +52,9 @@ public class OrderServices {
 		order.setOrderType(type);
 		order.setStatus("pending");
 		order.setUserId(data.getUserId());
-
 		order.setCoinQuantity(data.getCoinQuantity());
 		order.setPrice(data.getPrice());
+		order.setSellettype("user");
 		grossamount = fee + (data.getCoinQuantity() * data.getPrice());
 		order.setGrossAmount(grossamount);
 		userModel.getOrderModel().add(order);
@@ -104,10 +104,39 @@ public class OrderServices {
 			throw new RuntimeException("you dont hava wallet");
 		return order;
 	}
-
+//show history
 	public List<OrderModel> showhistory(Long id) {
 		UserModel data = userData.findOne(id);
 		List<OrderModel> result = data.getOrderModel();
 		return result;
 	}
+//sellorderbyadmin....
+	
+	public OrderModel sellbyadmin(OrderModel data)
+	{
+		CoinManagementModel coinresult = coindata.findByCoinIdAndCoinName(data.getCoinId(), data.getCoinName());
+		if (coinresult == null)
+			throw new RuntimeException("coin not exist");
+		if(!(coinresult.getInitialSupply()>=data.getCoinQuantity()))
+			throw new RuntimeException("you dont have enougn amount");
+			
+		OrderModel order = new OrderModel();
+		order.setCoinName(data.getCoinName());
+		int fee = 2 * (data.getCoinQuantity() * data.getPrice()) / 100;
+		order.setFee(fee);
+		order.setOrderCreatedOn(new Date());
+		order.setOrderType("seller");
+		order.setStatus("pending");
+		order.setSellettype("admin");
+		order.setUserId(data.getCoinId());
+		order.setCoinQuantity(data.getCoinQuantity());
+		order.setPrice(data.getPrice());
+		int grossamount = fee + (data.getCoinQuantity() * data.getPrice());
+		order.setGrossAmount(grossamount);
+		orderdata.save(order);
+		return data;
+		
+	}
+	
+	
 }

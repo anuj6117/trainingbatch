@@ -28,10 +28,24 @@ public class OrderModel {
 	private Integer grossAmount;
 	private Date orderCreatedOn;
 	private String status;
-	@Transient
 	private Long userId;
 	private String coinName;
+	private String sellettype;
+	public String getSellettype() {
+		return sellettype;
+	}
+	public void setSellettype(String sellettype) {
+		this.sellettype = sellettype;
+	}
+	@Transient
+	private Long coinId;
 	
+	public Long getCoinId() {
+		return coinId;
+	}
+	public void setCoinId(Long coinId) {
+		this.coinId = coinId;
+	}
 	@ManyToOne
 	@JoinColumn(name = "UserOrderId")
 	@JsonIgnore

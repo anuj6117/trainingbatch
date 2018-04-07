@@ -65,5 +65,19 @@ public ResponseEntity<Object> showhistory(@RequestParam Long id)
 	return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	
 }
+@RequestMapping(value="/admincreatesellorder" ,method = RequestMethod.POST)
+public ResponseEntity<Object> sellcoinbyadmin(@RequestBody OrderModel data)
+{
+	OrderModel result=null;
+	try {
+		String type="seller";
+		result=orderdata.sellbyadmin(data);
+	}
+	catch (Exception e) {
+		return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+	}
+	return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+	
+}
 
 }
