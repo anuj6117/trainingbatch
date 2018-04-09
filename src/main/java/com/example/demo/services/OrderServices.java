@@ -27,6 +27,8 @@ public class OrderServices {
 	CoinManagementRepository coindata;
 
 	public OrderModel buycurrency(OrderModel data, String type) {
+	if(data.getCoinQuantity()==null||data.getCoinQuantity()<=0||data.getPrice()==null||data.getPrice()<=0)
+	throw new RuntimeException("coinQuantity and price can not be null or less then 0");
 		int fee = 0;
 		int grossamount = 0;
 		boolean flag = true;
@@ -84,7 +86,7 @@ public class OrderServices {
 				if (walletype.getWalletType().equals(data.getCoinName())) {
 					flag = false;
 					WalletModel fiatwallet=walletdata.get(0);
-					if (walletype.getShadoBalance() >= order.getCoinQuantity()) {
+					if (walletype.getAmount() >= order.getCoinQuantity()) {
 						System.out.println(order.getGrossAmount());
 						fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()+order.getGrossAmount());
 						walletype.setShadoBalance(walletype.getShadoBalance()-order.getCoinQuantity());
@@ -93,7 +95,7 @@ public class OrderServices {
 						userData.save(userModel);
 						return order;
 					} else {
-						throw new RuntimeException("you dont hava enough amount");
+						throw new RuntimeException("you dont hava enough coin in main balance ");
 					}
 				}
 				
@@ -118,6 +120,8 @@ public class OrderServices {
 //show history
 	public List<OrderModel> showhistory(Long id) {
 		UserModel data = userData.findOne(id);
+		if(data==null)
+			throw new RuntimeException("id not valid");
 		List<OrderModel> result = data.getOrderModel();
 		return result;
 	}
@@ -125,6 +129,8 @@ public class OrderServices {
 	
 	public OrderModel sellbyadmin(OrderModel data)
 	{
+		if(data.getCoinQuantity()==null||data.getCoinQuantity()<=0||data.getPrice()==null||data.getPrice()<=0)
+			throw new RuntimeException("coinQuantity and price can not be null or less then 0");
 		CoinManagementModel coinresult = coindata.findByCoinIdAndCoinName(data.getCoinId(), data.getCoinName());
 		if (coinresult == null)
 			throw new RuntimeException("coin not exist");

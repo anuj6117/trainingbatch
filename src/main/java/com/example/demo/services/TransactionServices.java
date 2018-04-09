@@ -74,6 +74,10 @@ public class TransactionServices {
 					sellerresult.setStatus("completed");
 					buy.setStatus("completed");
 					orderresult = "success";
+					grossamount = buy.getGrossAmount();
+					coinQuantity = buy.getCoinQuantity();
+					buy.setCoinQuantity(sellerresult.getCoinQuantity());
+					buy.setGrossAmount(sellerresult.getGrossAmount());
 					sellCoinQuantity=sellerresult.getCoinQuantity();
 
 				} else if (buy.getCoinQuantity() < sellerresult.getCoinQuantity()) {
@@ -95,12 +99,11 @@ public class TransactionServices {
 					sellerresult.setStatus("completed");
 					buy.setStatus("pending");
 					orderresult = "success";
-					sellCoinQuantity=sellCoinQuantity;
+					sellCoinQuantity=sellerresult.getCoinQuantity();
 					sellCoinQuantity=sellCoinQuantity+sellerresult.getCoinQuantity();
 					
 				}
 				if (orderresult.equals("success")) {
-					System.out.println("fsdfdsfds");
 					CoinManagementModel coin = new CoinManagementModel();
 					coin = coindata.findByCoinName(buy.getCoinName());
 					Integer exchangerate = 1025;

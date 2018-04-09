@@ -17,9 +17,9 @@ public class CoinManagementServices {
 	CoinManagementRepository coinDate;
 
 	public Map<String, Object> addAllCoinData(CoinManagementModel data) {
-		if(data.getInitialSupply()==null||data.getPrice()==null||data.getInitialSupply()<=0||data.getPrice()<=0)
+		if(data.getInitialSupply()==null||data.getPrice()==null||data.getInitialSupply()==0||data.getPrice()==0)
 			throw new NullPointerException("null data found");
-		if (data.getCoinName().equals("")||data.getCoinName().trim().length()==0 || data.getSymbol().equals(""))
+		if (data.getCoinName().equals("")||data.getCoinName().trim().length()==0 || data.getSymbol().equals("")||data.getSymbol().trim().length()==0 )
 			throw new NullPointerException("null data found");
 		Map<String, Object> result = new HashMap();
 		CoinManagementModel model = coinDate.findByCoinNameOrSymbol(data.getCoinName(),data.getSymbol());

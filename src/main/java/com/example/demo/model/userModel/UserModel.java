@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 //@Table(name="user")
 //@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class)
-public class UserModel implements Serializable {
+public class UserModel  {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

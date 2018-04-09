@@ -52,13 +52,13 @@ public class UserController {
 
 	@RequestMapping(value = "/createrole", method = RequestMethod.POST)
 	public ResponseEntity<Object> addRole(@Valid @RequestBody RoleModel data) {
-		String result = null;
+		RoleModel result = null;
 		try {
 			result = userservice.addRole(data);
 		} catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
 		}
-		return ResponseHandler.generateResponse(HttpStatus.OK, true, result, result);
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 	}
 
 	@RequestMapping(value = "/removerole", method = RequestMethod.POST)

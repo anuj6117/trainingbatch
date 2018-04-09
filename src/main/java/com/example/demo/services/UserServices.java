@@ -137,14 +137,14 @@ public class UserServices {
 	}
 
 	// addrole---------
-	public String addRole(RoleModel data) {
-
+	public RoleModel addRole(RoleModel data) {
+		if(data.getRoleType().trim().length()==0)
+			throw new RuntimeException("please enter valid role");
 		RoleModel model = roleData.findOneByRoleType(data.getRoleType());
-		if (model == null) {
-			roleData.save(data);
-			return "success";
-		}
-		return "role already exist";
+		if (model != null) 
+			throw new RuntimeException("role already exist");
+			model=roleData.save(data);
+			return model;
 	}
 
 	// remove user role----------
@@ -185,7 +185,7 @@ public class UserServices {
 			for (RoleModel role1 : rolecheck) {
 				if ((role1.getRoleType().equals(role.getRoleType()))) {
 					result = false;
-					break;
+					throw new RuntimeException("role already assign");
 				}
 
 			}

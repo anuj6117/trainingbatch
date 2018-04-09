@@ -28,7 +28,6 @@ public class RoleModel {
 @GeneratedValue(strategy=GenerationType.AUTO)
 private long roleId;
 @NotEmpty(message="not empty")
-@Pattern(regexp="^([a-z][A-z]*)$")
 private String roleType;
 
 public String getRoleType() {
