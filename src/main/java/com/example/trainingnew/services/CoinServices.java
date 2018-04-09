@@ -1,7 +1,6 @@
 package com.example.trainingnew.services;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,42 +24,33 @@ public class CoinServices {
 	public Coinmodel addCoin(Coinmodel model) throws CoinNotFoundException {	
 		
 		
-		
+
 		Coinmodel coinobj1=coinrepo.findOneByCoinName(model.getCoinName());
 		
 		Coinmodel coinobj2=coinrepo.findOneBySymbol(model.getSymbol());
 		
-		if(coinobj1!=null || coinobj2!=null) {
-				if(coinobj1!=null) {
-//					true
-				}
-				else {
-//					false
-				}
-				
-		}else {
-//			false
-		}
-		
-		
 		
 		if(coinobj1!=null) {
-			throw new CoinNotFoundException(coinobj1.getCoinName()+" coin already Exist");
+			throw new NullPointerException(" coin already Exist");
 		}
+		
+		else if(coinobj2!=null)
+			throw new NullPointerException(" Symbol already Exist");
+	
 		else {
-			
-			 if(coinobj2!=null) {
-					throw new CoinNotFoundException(coinobj1.getCoinName()+" Symbol already Exist");
-			}
-			 else {
 			Coinmodel coinmodel=new Coinmodel();
 			coinmodel.setCoinName(model.getCoinName());
 			coinmodel.setSymbol(model.getSymbol());
 			coinmodel.setInitialSupply(model.getInitialSupply());
+			coinmodel.setFee(model.getFee());
+			coinmodel.setProfit(0.0);
 			coinmodel.setPrice(model.getPrice());
 			
+			Double coinInInr=model.getInitialSupply()*model.getPrice();
+			
+			coinmodel.setCoinInINR(coinInInr);
+			
 			return coinrepo.save(coinmodel);
-			 }
 		}
 	}
 	
@@ -78,7 +68,7 @@ public class CoinServices {
 	
 	//
 	
-	public Coinmodel getDataById(Long id) throws CoinNotFoundException {
+	public Coinmodel getDataById(Integer id) throws CoinNotFoundException {
 		Coinmodel model = coinrepo.findOneByCoinId(id);
 
 		if (model == null) {
@@ -90,28 +80,32 @@ public class CoinServices {
 	}
 
 	//updateCoin
-	public Coinmodel updateCoin(Long coinId, Coinmodel model) throws CoinNotFoundException {
+	public Coinmodel updateCoin(Coinmodel model) throws CoinNotFoundException {
 
-		Coinmodel coinobj=coinrepo.findOneByCoinId(coinId);
+		Coinmodel coinobj=coinrepo.findOneByCoinId(model.getCoinId());
 		
 		if(coinobj ==null) {
-			throw new CoinNotFoundException("Coin does not exist at this id: "+coinId);
+			throw new CoinNotFoundException("Coin does not exist at this id: "+model.getCoinId());
 		}
-		else {
-			
-		}
+	//	Coinmodel coinObj11=coinrepo.findByCoinNameAndCoinId(model.getCoinName(),model.getCoinId());
+		
 		
 		coinobj.setCoinName(model.getCoinName());
 		coinobj.setSymbol(model.getSymbol());
-		coinobj.setInitialSupply(model.getInitialSupply());
+		coinobj.setInitialSupply(coinobj.getInitialSupply()+model.getInitialSupply());
 		coinobj.setPrice(model.getPrice());
+		List<Coinmodel> allCoins=coinrepo.findByCoinNameOrSymbol(coinobj.getCoinName(),coinobj.getSymbol());
+		Coinmodel allCoins1=coinrepo.findByCoinNameAndSymbol(coinobj.getCoinName(),coinobj.getSymbol());
+		if(allCoins.size()>1 && allCoins1==null)
+			throw new NullPointerException("This coin or symbol already exist");
 		
 		Coinmodel updated=coinobj;
+		
 		return coinrepo.save(updated);
 	}
 
 	//deleteCoin
-	public Coinmodel deleteCoin(Long coinId) throws CoinNotFoundException {
+	public Coinmodel deleteCoin(Integer coinId) throws CoinNotFoundException {
 		Coinmodel coindetails=coinrepo.findOneByCoinId(coinId);
 		logger.error(coindetails+" Checking in the coindetails "+coinId);
 		if(coindetails == null) {

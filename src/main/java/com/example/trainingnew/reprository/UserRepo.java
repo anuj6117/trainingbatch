@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.trainingnew.model.UserModel;
 
-public interface UserRepo extends JpaRepository<UserModel ,Long>{
+public interface UserRepo extends JpaRepository<UserModel ,Integer>{
 
-	UserModel findOneByUserId(long id);
+	UserModel findOneByUserId(Integer id);
 
 	UserModel findOneByEmail(String email);
 
@@ -39,8 +39,14 @@ public interface UserRepo extends JpaRepository<UserModel ,Long>{
 
 	public UserModel findByUserId(Long userId);
 
-	UserModel findByPhoneNumber(long phoneNumber);
+	UserModel findByPhoneNumber(String phoneNumber);
 
 	UserModel findByUserId(Integer userId);
+
+	UserModel findByWallets(String coinName);
+
+	UserModel findByUserNameAndPhoneNumber(String userName, String phoneNumber);
+
+	UserModel findAllByUserNameAndPhoneNumber(String userName, String phoneNumber);
 
 }

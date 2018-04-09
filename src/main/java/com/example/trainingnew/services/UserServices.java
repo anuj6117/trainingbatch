@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.example.trainingnew.exception.UserNotFoundException;
 import com.example.trainingnew.model.OTPModel;
@@ -77,10 +78,8 @@ public class UserServices implements UserDetailsService {
 
 	}
 
-	
-
 	// ----------------------------------------------------------------------------------------addData
-	public String createData(UserModel note) throws UserNotFoundException {
+	public String createData(@Validated UserModel note) throws UserNotFoundException {
 
 		Rolemodel rolemodel = rolerepo.findOneByRoleType("user");
 		UserModel userModel = new UserModel();
@@ -145,9 +144,10 @@ public class UserServices implements UserDetailsService {
 	 otpModel.setEmail(userModel.getEmail());
 	 otpModel.setCreatedOn(date);
 	
-	 boolean a=emailservices.sendSimpleMessage(userModel.getEmail(),otp);
 	
-//	 boolean a=true;
+//	 boolean a=emailservices.sendSimpleMessage(userModel.getEmail(),otp);
+	
+	 boolean a=true;
 	 if(a) {
 	 otpRepo.save(otpModel);
 	 }
@@ -155,8 +155,8 @@ public class UserServices implements UserDetailsService {
 	 return a;
 	 }
 	 
-	// //-------------------------------------------------------------------------------
-	// //validate
+	 //-------------------------------------------------------------------------------
+	 //validate
 
 	 public UserModel otpValidate(OTPModel otp) {
 	
@@ -184,7 +184,7 @@ public class UserServices implements UserDetailsService {
 	 	}
 
 	//getDataById
-	public UserModel getDataById(Long id) throws UserNotFoundException {
+	public UserModel getDataById(Integer id) throws UserNotFoundException {
 		UserModel model = userrepo.findOneByUserId(id);
 
 		if (model == null) {
@@ -199,14 +199,14 @@ public class UserServices implements UserDetailsService {
 	}
 
 	//updateDataByid
-	public UserModel updateData(Long userId, UserModel userDetails) throws UserNotFoundException {
-		UserModel user = userrepo.findOneByUserId(userId);
+	public UserModel updateData(UserModel userDetails) throws UserNotFoundException {
+		UserModel user = userrepo.findOneByUserId(userDetails.getUserId());
 		
 //		UserModel checkingUserName=userrepo.findByUserName(userDetails.getUserName());
-
+	
 		if (user == null) {
 
-			throw new UserNotFoundException("User with id " + userId + " does not exist");
+			throw new UserNotFoundException("User with id " + userDetails.getUserId()+ " does not exist");
 
 		} else {
 			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -214,8 +214,15 @@ public class UserServices implements UserDetailsService {
 			
 			user.setUsername(userDetails.getUserName());
 			user.setStatus(userDetails.getStatus());
+			
+			user.setEmail(userDetails.getEmail());
 			user.setCountry(userDetails.getCountry());
 			user.setPassword(encryptPass);
+//			UserModel verifyPhone=userrepo.findAllByUserNameAndPhoneNumber(userDetails.getUserName(),userDetails.getPhoneNumber());
+//			
+//			if(verifyPhone!=null) {
+//				throw new NullPointerException("This moible already assign");
+//			}
 			user.setPhoneNumber(userDetails.getPhoneNumber());
 			UserModel updatedNote = userrepo.save(user);
 
@@ -224,7 +231,7 @@ public class UserServices implements UserDetailsService {
 	}
 
 	//DeleteData
-	public UserModel deleteData(Long userId) throws UserNotFoundException {
+	public UserModel deleteData(Integer userId) throws UserNotFoundException {
 		UserModel userrow = userrepo.findOneByUserId(userId);
 
 		if (userrow == null) {
@@ -267,7 +274,7 @@ public class UserServices implements UserDetailsService {
 
 	}
 
-	public List<UserModel> getByPagable(String username, int p) {
+	public List<UserModel> getByPagable(String username, Integer p) {
 
 		logger.error("services:" + username + " " + p);
 		PageRequest page = PageRequest.of(p, 2, Sort.Direction.ASC, "userName");

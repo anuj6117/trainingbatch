@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,23 +24,32 @@ public class OrderModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer orderId;
-	private Float amount;
-	private Float fee;
-	private Float quote;
+	@NotNull(message="Amount can't be null")
+	private Double amount;
+	
+	private Double fee;
+	@NotNull(message="QuoteValue can't be null")
+	private Double quoteValue;
+	
 	private String orderType;
 	private Date orderCreatedOn;
 	private String status="pending";
+	
+	@NotNull(message="Coin name can't be null")
+	@NotBlank(message="Coin name can't be null")
 	private String coinName;
 	
+	private Double grossAmount;
+	 
+	
 	@Transient
-	private long userId;
+	private Integer userId;
 	
-	
-	public long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -55,28 +66,36 @@ public class OrderModel {
 		this.orderId = orderId;
 	}
 
-	public Float getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Float amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public Float getFee() {
+	public Double getFee() {
 		return fee;
 	}
 
-	public void setFee(Float fee) {
+	public void setFee(Double fee) {
 		this.fee = fee;
 	}
 	
-	public Float getQuote() {
-		return quote;
+	public Double getQuoteValue() {
+		return quoteValue;
 	}
 
-	public void setQuote(Float quote) {
-		this.quote = quote;
+	public void setQuoteValue(Double quoteValue) {
+		this.quoteValue = quoteValue;
+	}
+
+	public Double getGrossAmount() {
+		return grossAmount;
+	}
+
+	public void setGrossAmount(Double grossAmount) {
+		this.grossAmount = grossAmount;
 	}
 
 	public String getOrderType() {

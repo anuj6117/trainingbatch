@@ -17,7 +17,7 @@ import org.springframework.data.annotation.CreatedDate;
 public class OTPModel {
 	
 	@Id
-	private long otp;
+	private Integer otp;
 	private String email;
 	
 	@Column(nullable = false, updatable = false)
@@ -25,10 +25,10 @@ public class OTPModel {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdOn;
 	
-	public long getOtp() {
+	public Integer getOtp() {
 		return otp;
 	}
-	public void setOtp(long otp) {
+	public void setOtp(Integer otp) {
 		this.otp = otp;
 	}
 	

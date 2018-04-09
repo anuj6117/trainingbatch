@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="coins")
@@ -14,7 +15,7 @@ public class Coinmodel {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long coinId;
+	private Integer coinId;
 	
 	@NotEmpty(message="Coin name can't be null")
 	@NotBlank(message="Space Not Accepted")
@@ -23,12 +24,36 @@ public class Coinmodel {
 	@NotEmpty(message="Coin symbol can't be null")
 	@NotBlank(message="Space Not Accepted")
 	private String symbol;
+	@NotNull(message="Intial Supply can't be null")
 	private Double initialSupply=0.0;
+	@NotNull(message="Price can't be null")
 	private Double price=0.0;
-	public long getCoinId() {
+	private Integer fee;
+	private Double profit;
+	private Double coinInINR;
+	
+	public Integer getFee() {
+		return fee;
+	}
+	public void setFee(Integer fee) {
+		this.fee = fee;
+	}
+	public Double getProfit() {
+		return profit;
+	}
+	public void setProfit(Double profit) {
+		this.profit = profit;
+	}
+	public Double getCoinInINR() {
+		return coinInINR;
+	}
+	public void setCoinInINR(Double coinInINR) {
+		this.coinInINR = coinInINR;
+	}
+	public Integer getCoinId() {
 		return coinId;
 	}
-	public void setCoinId(long coinId) {
+	public void setCoinId(Integer coinId) {
 		this.coinId = coinId;
 	}
 	public String getCoinName() {
@@ -43,6 +68,7 @@ public class Coinmodel {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
+	
 	public Double getInitialSupply() {
 		return initialSupply;
 	}

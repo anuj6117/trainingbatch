@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.trainingnew.model.Rolemodel;
 
-public interface RoleRepo extends JpaRepository<Rolemodel, Long>{
+public interface RoleRepo extends JpaRepository<Rolemodel, Integer>{
 
-	Rolemodel findOneByRoleId(long id);
+	Rolemodel findOneByRoleId(Integer id);
 	
 	Rolemodel findOneByRoleType(String name);
 

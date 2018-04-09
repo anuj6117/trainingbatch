@@ -2,25 +2,18 @@ package com.example.trainingnew.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.trainingnew.exception.UserNotFoundException;
@@ -112,13 +105,13 @@ public class UserController {
 			} catch (Exception e) {
 				return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
 			}
-			return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Fetch Data Successfully", obj);
+			return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Verified Successfully", obj);
 	 }
 
 	
 	//getSingleUserApi
 	@RequestMapping(value = "/getbyuserid/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getById(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> getById(@PathVariable(value = "id") Integer id) {
 		UserModel obj = null;
 
 		try {
@@ -144,11 +137,11 @@ public class UserController {
 	}
 
 	//updateUserApi
-	@RequestMapping(value = "/updateuser/{id}", method = RequestMethod.POST)
-	public  ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody UserModel allDetails) {
+	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
+	public  ResponseEntity<Object> update(@RequestBody UserModel allDetails) {
 		UserModel obj = null;
 		try {
-			obj = services.updateData(id, allDetails);
+			obj = services.updateData(allDetails);
 		} catch (Exception e) {
 			return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
 		}
@@ -157,7 +150,7 @@ public class UserController {
 
 	//deleteUserApi
 	@RequestMapping(value = "/deleteuser/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> delete(@PathVariable(value = "id") Integer id) {
 		UserModel obj = null;
 		try {
 			obj = services.deleteData(id);

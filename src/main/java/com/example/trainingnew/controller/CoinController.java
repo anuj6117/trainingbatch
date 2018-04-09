@@ -30,25 +30,22 @@ public class CoinController {
 	public ResponseEntity<Object> addcoin(@Validated @RequestBody Coinmodel model) {
 		Coinmodel obj = null;
 		
-		
-//		if(model.getCoinName().isEmpty()) {
-//			return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "CoinName can't be empty", obj);
-//		}
-//		else if(model.getSymbol().isEmpty()) {
-//			return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "CoinSymbol can't be empty", obj);
-//		}
-//		else {
+		 if(model.getInitialSupply()==0) {
+			 return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Intial Supply can't be zero", obj);
+		 }
+		 else if(model.getPrice()==0) {
+			 return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "price can't be zero", obj);
+		 }
+		 else {
+	
 			try {
 				obj = services.addCoin(model);
 			} catch (CoinNotFoundException e) {
 				
 				return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
 			}
+		 }
 			return ExceptionHandler.generateResponse(HttpStatus.OK, true,"Coin Created Successfully", obj);
-//		}
-		
-		
-		
 	}
 	
 	//getAllCoinsApi
@@ -68,7 +65,7 @@ public class CoinController {
 	
 	//getCurrencyById
 	@RequestMapping(value = "/getcurrencybyid/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getById(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> getById(@PathVariable(value = "id") Integer id) {
 		Coinmodel obj = null;
 
 		try {
@@ -80,14 +77,14 @@ public class CoinController {
 	}
 	
 	//updateCoinApi
-	@RequestMapping(value="/updatecurrency/{id}",method=RequestMethod.POST)
-	public ResponseEntity<Object> updatecoin(@PathVariable("id") Long coinid ,@RequestBody Coinmodel model) {
+	@RequestMapping(value="/updatecurrency",method=RequestMethod.POST)
+	public ResponseEntity<Object> updatecoin(@RequestBody Coinmodel model) {
 		Coinmodel obj = null;
 		try {
-			obj = services.updateCoin(coinid,model);
+			obj = services.updateCoin(model);
 		} catch (CoinNotFoundException e) {
 			
-			return ExceptionHandler.generateResponse(HttpStatus.NOT_FOUND, false, e.getMessage(), obj);
+			return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
 		}
 		return ExceptionHandler.generateResponse(HttpStatus.OK, true,"Coin Updated Successfully", obj);
 
@@ -95,7 +92,7 @@ public class CoinController {
 	
 	//deleteCoinApi
 	@RequestMapping(value="/deletecurrency/{id}",method=RequestMethod.GET)
-	public ResponseEntity<Object> delete(@PathVariable(value="id") Long id){
+	public ResponseEntity<Object> delete(@PathVariable(value="id") Integer id){
 		Coinmodel obj = null;
 		try {
 			obj = services.deleteCoin(id);

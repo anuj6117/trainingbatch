@@ -27,7 +27,7 @@ public class Rolemodel {
 	
 	@Id
 	@GeneratedValue( strategy= GenerationType.IDENTITY)
-	private Long roleId;
+	private Integer roleId;
 	@NotEmpty(message="RoleType Can't be null")
 	@NotNull(message="RoleType Can't be null")
 	@NotBlank(message="RoleType Can't be null")
@@ -48,12 +48,11 @@ public class Rolemodel {
 		this.user = user;
 	}
 
-	
-	public Long getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 

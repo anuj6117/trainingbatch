@@ -2,13 +2,13 @@ package com.example.trainingnew.DTO;
 
 public class UserRoleDTO {
 	
-	private Long UserId;
+	private Integer UserId;
 	private String RoleType;
 	
-	public Long getUserId() {
+	public Integer getUserId() {
 		return UserId;
 	}
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		UserId = userId;
 	}
 	public String getRoleType() {

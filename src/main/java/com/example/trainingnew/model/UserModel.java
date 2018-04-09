@@ -27,6 +27,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -41,7 +42,7 @@ public class UserModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long userId;
+	private Integer userId;
 
 	
 	@Size(min=3,max=20,message="Username length Must be between 3 to 20")
@@ -52,11 +53,13 @@ public class UserModel {
 	@NotEmpty(message ="Email must not be empty")
 	@Email
 	@NotBlank(message="Space Not Accepted")
+	@Column(unique=true)
 	private String email;
-	private boolean status;
+	private Boolean status;
 	@NotBlank(message="Space Not Accepted")
 	private String country;
-	@NotEmpty
+	@NotEmpty(message="Password can't be null")
+	@NotBlank(message="Space Not Accepted")
 	private String password;
 
 	@Column(nullable = false, updatable = false)
@@ -66,7 +69,8 @@ public class UserModel {
 	
 //	@Pattern(regexp="[0-9]*")
 //	@Length(min=10,max=11,message="Number must be 10 digits")
-	private long phoneNumber;
+	@Column(unique=true)
+	private String phoneNumber;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST})
 	@JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "users_id") }, inverseJoinColumns = {
@@ -122,11 +126,11 @@ public class UserModel {
 		this.roles = roles;
 	}
 
-	public long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long id) {
+	public void setUserId(Integer id) {
 		this.userId = id;
 	}
 
@@ -147,11 +151,11 @@ public class UserModel {
 		this.email = email;
 	}
 
-	public boolean getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 
@@ -179,11 +183,11 @@ public class UserModel {
 		this.createdOn = createdOn;
 	}
 
-	public long getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(long phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 

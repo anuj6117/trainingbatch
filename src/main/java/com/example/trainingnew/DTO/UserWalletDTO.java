@@ -6,17 +6,17 @@ import javax.validation.constraints.NotNull;
 
 public class UserWalletDTO {
 	
-	private Long userId;
+	private Integer userId;
 	private Double balance;
 	
 	@NotEmpty(message="Please Enter wallet Type")
 	@NotNull(message="Please Enter wallet Type")
 	@NotBlank(message="Please Enter wallet Type")
 	private String walletType;
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 	public Double getBalance() {

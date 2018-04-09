@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.trainingnew.model.OTPModel;
@@ -18,6 +19,7 @@ import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.MessageFactory;
 import com.twilio.sdk.resource.instance.Message;
 
+@Async
 @Service
 public class EmailServices {
 
@@ -35,6 +37,7 @@ public class EmailServices {
 	
 	Date date = new Date();
 
+	
 	public boolean sendSimpleMessage(String email,int otp) {
 
 		SimpleMailMessage message = new SimpleMailMessage();

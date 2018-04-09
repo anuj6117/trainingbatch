@@ -9,8 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.trainingnew.DTO.UserWalletDTO;
+import com.example.trainingnew.model.Coinmodel;
 import com.example.trainingnew.model.UserModel;
 import com.example.trainingnew.model.Walletmodel;
+import com.example.trainingnew.reprository.CoinRepo;
 import com.example.trainingnew.reprository.UserRepo;
 import com.example.trainingnew.reprository.WalletRepo;
 
@@ -26,11 +28,20 @@ public class WalletServices {
 	@Autowired
 	UserRepo userRepo;
 	
+	@Autowired
+	CoinRepo coinRepo; 
+	
+	Boolean flag=true;
 	
 	public Walletmodel createWallet(UserWalletDTO wmodel) {
 		
-		UserModel umodel=userRepo.findByUserId(wmodel.getUserId());
 		
+		
+		UserModel umodel=userRepo.findByUserId(wmodel.getUserId());
+		if(umodel==null)
+		{
+			throw new NullPointerException("Invalid User Id!");
+		}
 		String newWalletType=wmodel.getWalletType();
 		
 		List<Walletmodel> listmodel=umodel.getWallets();
@@ -49,9 +60,20 @@ public class WalletServices {
 				updatedWalletModel.setUserModel(umodel);
 		}
 		
+		List<Coinmodel> allCoinsList=coinRepo.findAll();
+		
+		for(Coinmodel allCoins:allCoinsList) {
+			if(allCoins.getCoinName().equals(wmodel.getWalletType())) {
+				flag=false;
+				break;
+			}
+		}
+		if(flag)
+			throw new NullPointerException("This walletType Doesn't exist;");
+		
+
 		
 		return  walletrepo.save(updatedWalletModel);
-		
 	}
 	
 	//---------------------------------------------------------depositamount
@@ -66,19 +88,19 @@ public class WalletServices {
 			
 			logger.error("Coming in model "+model.getWalletType());
 			if(model.getWalletType().equals(newWalletType)) {
-				
 				flag=true;
 				Double newBalance=wallet.getBalance()+ model.getBalance();
 				Double newShadowbal=newBalance;
 				model.setBalance(newBalance);
 				model.setShadowBalance(newShadowbal);
-				mod=walletrepo.save(model);
+//				mod=walletrepo.save(model);
+				return walletrepo.save(model);
 			}
 		}
 			if(flag==false) {
 				 throw new NullPointerException("This Wallet Type Doesn't exist");
 			}
-		return mod;
+		return null;
 	}
 
 	//---------------------------------------------------------

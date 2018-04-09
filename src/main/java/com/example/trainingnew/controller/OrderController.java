@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.trainingnew.exception.UserNotFoundException;
 import com.example.trainingnew.model.OrderModel;
 import com.example.trainingnew.services.OrderService;
+import com.example.trainingnew.util.CustomErrorType;
 import com.example.trainingnew.util.ExceptionHandler;
 
 @RestController
@@ -35,21 +35,32 @@ public class OrderController {
 	//createBuyOrder
 	@RequestMapping(value = "/createbuyorder", method = RequestMethod.POST)
 	public ResponseEntity<Object> createBuyOrder(@Valid @RequestBody OrderModel order) {
-
-		OrderModel obj = null;
+		OrderModel  obj = null;
+		
+		 if(order.getAmount()==0 || order.getAmount()==null) {
+			 return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Amount can't be null", obj);
+		 }
+//		 else if() {
+			 
+//		 }
+		
+		 else {
+		
 			try {String type="buy";
 				obj = orderservice.createBuyOrder(order,type);
 			} catch (Exception e) {
 				return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
 			}
-
+		 
 		return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Successfull", obj);
 	}
+		 }
 	
 	//createSellOrder
 		@RequestMapping(value = "/createsellorder", method = RequestMethod.POST)
 		public ResponseEntity<Object> createSellOrder(@Valid @RequestBody OrderModel order) {
 
+			
 			OrderModel obj = null;
 				try {String type="sell";
 					obj = orderservice.createBuyOrder(order,type);
@@ -59,23 +70,24 @@ public class OrderController {
 
 			return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Successfull", obj);
 		}
-	
-	
-	@RequestMapping(value = "/showorders/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Object> getById(@PathVariable(value = "id") Integer orderId) {
-		OrderModel obj = null;
+		
+		@RequestMapping(value = "/admincreatesellorder", method = RequestMethod.POST)
+		public ResponseEntity<Object> admincreateSellOrder(@Valid @RequestBody OrderModel order) {
 
-		try {
-			obj = orderservice.getDataById(orderId);
-		} catch (UserNotFoundException e) {
-			return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
+			
+			OrderModel obj = null;
+				try {
+					obj = orderservice.admincreateSellOrder(order);
+				} catch (Exception e) {
+					return ExceptionHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), obj);
+				}
+
+			return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Successfull", obj);
 		}
-		return ExceptionHandler.generateResponse(HttpStatus.OK, true, "Fetch Data Successfully", obj);
-	}
-	
+		
 	//getOrderByUserId
 	@RequestMapping(value = "/getorderbyuserid", method = RequestMethod.GET)
-	public ResponseEntity<Object> getOrderByUserId(@RequestParam("userId") long userId) {
+	public ResponseEntity<Object> getOrderByUserId(@RequestParam("userId") Integer userId) {
 		List<OrderModel> obj = null;
 
 		try {
