@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constant.Constant;
 import com.example.demo.model.OrderModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.WalletModel;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.WalletRepository;
 import com.example.demo.utils.Utility;
 
 
@@ -25,6 +27,8 @@ public class OrderService {
 	private OrderRepository orderRepo;
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private WalletRepository walletRepo;
 	 private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public Object createbuyOrder(OrderModel orderModel) throws Exception {
@@ -44,8 +48,20 @@ public class OrderService {
 					Long grossAmount =(Long)(amount*orderModel.getFee())/100;
 					orderModel.setGrossAmount(grossAmount);
 					logger.info(orderModel.getGrossAmount()+"---------------");
-					orderRepo.save(orderModel);
+					
 					//update this users default wallets shadow balance
+					Set<WalletModel> walletSet = userDetail.get().getUserWallet();
+					for(WalletModel type:walletSet) {
+						if(type.getWalletType().equals(Constant.FIATE)) {
+							if(type.getBalance()<orderModel.getGrossAmount()) {
+								throw new Exception(Constant.LOW_BALANCE);
+							}
+							Float shadowUpdate =type.getBalance()-orderModel.getGrossAmount();
+							orderRepo.save(orderModel);
+							type.setShadowBalance(shadowUpdate);
+							walletRepo.save(type);
+						}
+					}
 					
 				}else {
 					throw new Exception("Quantity cannot be null");
@@ -64,26 +80,41 @@ public class OrderService {
 	
 	
 	
-	public Object createsellOrder(OrderModel orderModel) {
+	public Object createsellOrder(OrderModel orderModel)throws Exception {
 		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
-		if(userDetail!=null) {
-			if(!(orderModel.getCoinName().equals(""))) {
-				if(!(orderModel.getQuantity()>0)) {
+		if(userDetail.isPresent()) {//user does not exists
+			if((Utility.isStringNull(orderModel.getCoinName()))) {
+				if((orderModel.getQuantity()>0)) {
 					orderModel.setOrderType("sell");
 					orderModel.setStatus("Pending");
 					orderModel.setUserModel(userDetail.get());
 					orderModel.setOrderCreatedOn(new Date());
-					orderRepo.save(orderModel);	
+					orderModel.setFee(orderModel.getFee());
+					orderModel.setQuantity(orderModel.getQuantity());
+					orderModel.setQuoteValue(orderModel.getQuoteValue());
+					Long amount = orderModel.getQuantity()*orderModel.getQuoteValue();
+					Long grossAmount =(Long)(amount*orderModel.getFee())/100;
+					orderModel.setGrossAmount(grossAmount);
+					logger.info(orderModel.getGrossAmount()+"---------------");
+					
+					//update this users default wallets shadow balance
+					Set<WalletModel> walletSet = userDetail.get().getUserWallet();
+					for(WalletModel type:walletSet) {
+						if(type.getWalletType().equals(Constant.FIATE)) {
+							orderRepo.save(orderModel);
+						}
+					}
+					
 				}else {
-					return "Quantity cannot be null";
+					throw new Exception("Quantity cannot be null");
 				}
 			}
 			else {
-				return "Coin Name cannot be null";
+				throw new Exception("Coin Name cannot be null");
 			}	
 		}
 		else {
-			return "User Does Not exist";
+			throw new Exception("User Does Not exist");
 		}
 		return "success";
 	}

@@ -17,4 +17,13 @@ public class PasswordValidation {
 			return false;
 		}
 	}
+	
+	public static Boolean positiveNumberValidation(Integer number) {
+		if(number>=0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }

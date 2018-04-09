@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +19,27 @@ public class CoinService {
 
 	@Autowired
 	private CoinRepository coinRepo;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public Object addCoin(CoinModel coinModel)throws Exception {
-		if(Utility.isStringNull(coinModel.getSymbol())||Utility.isStringNull(coinModel.getCoinName())||Utility.isLongNull(coinModel.getInitialSupply())||Utility.isIntegerNull(coinModel.getFees())) {
-			return "Invalid!! Input field cannot be null";
+		
+	logger.info(Utility.isStringNull(coinModel.getSymbol())+"-------symbol------");
+	logger.info(Utility.isStringNull(coinModel.getCoinName())+"------coin name------");
+	logger.info(Utility.isLongNull(coinModel.getInitialSupply())+"-------intial supply-----");
+	logger.info(Utility.isLongNull(coinModel.getFees())+"-------fees-----");
+		
+	if(!(Utility.isStringNull(coinModel.getSymbol()))||!(Utility.isStringNull(coinModel.getCoinName()))) {
+			throw new Exception("Invalid!! Input field cannot be null");
 		}
-		else {
+		if(coinModel.getInitialSupply().equals(null)||coinModel.getFees().equals(null)) {
+			throw new Exception("Invalid!! Input field cannot be null");
+		}
+		if(coinModel.getInitialSupply().equals(0)||coinModel.getFees().equals(0)) {
+			throw new Exception("Invalid!! Input field cannot be null");
+		}
+		if((coinModel.getInitialSupply()<0)||(coinModel.getFees()<0)) {
+			throw new Exception("Invalid!! Input field cannot be null");
+		}
 			CoinModel coin = coinRepo.findByCoinName(coinModel.getCoinName());
 			CoinModel coinsymbol = coinRepo.findBySymbol(coinModel.getSymbol());
 			if(coin==null) {
@@ -37,7 +54,7 @@ public class CoinService {
 				throw new Exception("Coin Already exists");
 			}
 			return "success";
-		}
+		
 	
 			
 	}

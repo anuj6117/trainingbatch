@@ -18,15 +18,26 @@ public class TransactionController {
 	TransactionService transactionService;
     
 	// To add a new user and a default is created
-	@RequestMapping(value = "/createtransaction", method = RequestMethod.POST)
+	@RequestMapping(value = "/transaction", method = RequestMethod.GET)
 	public ResponseEntity<Object> addTransaction() throws Exception {
 		Object response = "";
 		try {
-			response = transactionService.createTransaction();
+			response = transactionService.mainTransaction();
 		} catch (Exception e) {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}
 		return ApiResponse.generateResponse(HttpStatus.OK, true, "sucesscontroller", null);
+
+	}
+	@RequestMapping(value = "/showalltransaction", method = RequestMethod.GET)
+	public ResponseEntity<Object> getalltransaction() throws Exception {
+		Object response;
+		try {
+			response = transactionService.getalltransaction();
+		} catch (Exception e) {
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
+		}
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "sucesscontroller", response);
 
 	}
 }

@@ -25,7 +25,7 @@ public class OrderModel {
 	private Long quantity;
 	private Long grossAmount;
 	private Integer fee;
-	private Integer quoteValue;
+	private Long quoteValue;
 	@Transient
 	private Integer userId;
 	
@@ -98,11 +98,11 @@ public class OrderModel {
 		this.coinName = coinName;
 	}
 
-	public Integer getQuoteValue() {
+	public Long getQuoteValue() {
 		return quoteValue;
 	}
 
-	public void setQuoteValue(Integer quoteValue) {
+	public void setQuoteValue(Long quoteValue) {
 		this.quoteValue = quoteValue;
 	}
 

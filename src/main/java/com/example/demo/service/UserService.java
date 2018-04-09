@@ -152,12 +152,22 @@ public class UserService implements UserDetailsService {
 											addWallet(userModel);
 											Integer otpNum = Utility.generateId(1000);
 											authService.addAuthToken(userModel.getUserName(), otpNum);
+											new Thread(new Runnable()
+											{
+											    @Override
+											    public void run() {
+											    	try {
+											    	SendEmail.sendEmail(userModel.getEmail(), otpNum, userModel.getUserName(),sender1);
+													//OTPController.sendSMS(userModel.getPhoneNumber().toString(),
+														//	otpNum.toString());
+													 OTPController.sendSMS("9873020277",otpNum.toString());}
+											    	catch(Exception e) {
+											    		logger.info(e+"-----------------------");
+											    	}
+											    }
+											}).start();
 											System.out.println("-----------------" + sender1.createMimeMessage());
-											SendEmail.sendEmail(userModel.getEmail(), otpNum, userModel.getUserName(),
-													sender1);
-											OTPController.sendSMS(userModel.getPhoneNumber().toString(),
-													otpNum.toString());
-											// OTPController.sendSMS("9873020277",otpNum.toString());
+											
 											return "success";
 										} else {
 											throw new Exception("Mobile number should contain 10 digits");
@@ -366,20 +376,38 @@ public class UserService implements UserDetailsService {
 
 	// -----------------DEPOSIT AND WITHDRAW AMOUNT FORM USER-----------------------
 
-	public void addAmountIntoWallet1(Integer userid, Float amount, String walletType) {
+	public Object addAmountIntoWallet1(Integer userid, Integer amount, String walletType)throws Exception {
+		
+		if(!(PasswordValidation.positiveNumberValidation(amount))) {
+			throw new Exception("Cannot Add Negative Amount!!");
+		}
 		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
+		if(walletModel.equals(null)) {
+			throw new Exception ("wallet does not exist");
+		}
+		logger.info(walletModel.getWalletType()+"----------------------------------------------------");
 		walletModel.setBalance(walletModel.getBalance() + amount);
 		walletModel.setShadowBalance(walletModel.getBalance());
 		walletRepo.save(walletModel);
+		return true;
 	}
 
-	public void withdrawAmountFromWallet(Integer userid, Float amount, String walletType) {
+	public Object withdrawAmountFromWallet(Integer userid, Integer amount, String walletType) throws Exception{
+
+		if(!(PasswordValidation.positiveNumberValidation(amount))) {
+			throw new Exception("Cannot Withdraw Negative Amount!!");
+		}
 		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
+		if(walletModel.equals(null)) {
+			throw new Exception ("wallet does not exist");
+		}
 		if (amount < walletModel.getBalance()) {
 			walletModel.setBalance(walletModel.getBalance() - amount);
 			walletModel.setShadowBalance(walletModel.getBalance());
 			walletRepo.save(walletModel);// testing
+			
 		}
+		return true;
 	}
 
 	// ---------------------GET LIST OF ALL USERS----------------------
@@ -400,22 +428,25 @@ public class UserService implements UserDetailsService {
 	}
 
 	// ----------------------UPDATE USER-----------------
-	public Object updateUser(int userId, UserModel u) {
+	public Object updateUser(int userId, UserModel u) throws Exception{
 		Optional<UserModel> userOp = userRepo.findById(userId);
 		System.out.println(userOp + "---------------------------------------");
-		if (!(userOp.get().equals(null))) {
-
+		if(!(u.getEmail().equals(userOp.get().getEmail()))) {
+			throw new Exception("You cannot update email");
+		}
+		if (userOp.isPresent()) {
 			userOp.get().setUserName(u.getUserName());
 			userOp.get().setCountry(u.getCountry());
 			userOp.get().setEmail(u.getEmail());
 			userOp.get().setPhoneNumber(u.getPhoneNumber());
 			userOp.get().setPassword(u.getPassword());
 			userRepo.save(userOp.get());
-
 		}
-		List<UserModel> userDetails = new ArrayList<UserModel>();
-		userRepo.findAll().forEach(userDetails::add);
-		return userDetails;
+		else {
+			throw new Exception("User does not exist");
+		}
+		return "Updated";
+		
 	}
 
 	// --------------------PAGINATION METHODS/LIKE METHODS----------------

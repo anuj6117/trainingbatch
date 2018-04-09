@@ -4,6 +4,8 @@ public class Constant {
 	
 	public static final String EMPTY = "";
 	public static final String Null = null;
+	public static final String FIATE = "Fiate";
+	public static final String LOW_BALANCE = "You are low on balance, Update it first!!!";
 	public static final String SUCCESS = "success";
 	public static final String FAILURE = "failure";
 	public static final String COIN_SYMOBOL_EXISTS="";

@@ -30,10 +30,11 @@ public class Utility {
 		}
 	}
 	public static Boolean isLongNull(Long obj) {
-		if (obj<=0) {
-			return false;
-		} else {
+		if (obj>0) {
+			System.out.println("Long---------------------");
 			return true;
+		} else {
+			return false;
 		}
 	}
 }

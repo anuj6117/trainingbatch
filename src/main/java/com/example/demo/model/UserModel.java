@@ -29,7 +29,6 @@ public class UserModel {
 	private String userName;
 	private String country;
 	private Date createdOn;
-
 	private String email;
 	private Long phoneNumber;
 	private String password;

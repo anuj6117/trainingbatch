@@ -15,76 +15,61 @@ public class CoinModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	private Integer coinId;
-	private Integer profit=0;
-	private Integer fees=0;
-	private Integer INRConvergent=0;
+	private Long profit=0l;
+	private Long fees=0l;
+	private Long INRConvergent=0l;
 	private String coinName;
 	private String symbol;
 	private Long initialSupply =100000l;
-	private Integer price;
-	public Long getInitialSupply() {
-		return initialSupply;
-	}
-
-	public void setInitialSupply(Long initialSupply) {
-		this.initialSupply = initialSupply;
-	}
-
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-
+	private Long price=0l;
 	public Integer getCoinId() {
 		return coinId;
 	}
-
 	public void setCoinId(Integer coinId) {
 		this.coinId = coinId;
 	}
-
+	public Long getProfit() {
+		return profit;
+	}
+	public void setProfit(Long profit) {
+		this.profit = profit;
+	}
+	public Long getFees() {
+		return fees;
+	}
+	public void setFees(Long fees) {
+		this.fees = fees;
+	}
+	public Long getINRConvergent() {
+		return INRConvergent;
+	}
+	public void setINRConvergent(Long iNRConvergent) {
+		INRConvergent = iNRConvergent;
+	}
 	public String getCoinName() {
 		return coinName;
 	}
-
 	public void setCoinName(String coinName) {
 		this.coinName = coinName;
 	}
-
 	public String getSymbol() {
 		return symbol;
 	}
-
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
-
-	public Integer getProfit() {
-		return profit;
+	public Long getInitialSupply() {
+		return initialSupply;
+	}
+	public void setInitialSupply(Long initialSupply) {
+		this.initialSupply = initialSupply;
+	}
+	public Long getPrice() {
+		return price;
+	}
+	public void setPrice(Long price) {
+		this.price = price;
 	}
 
-	public void setProfit(Integer profit) {
-		this.profit = profit;
-	}
-
-	public Integer getFees() {
-		return fees;
-	}
-
-	public void setFees(Integer fees) {
-		this.fees = fees;
-	}
-
-	public Integer getINRConvergent() {
-		return INRConvergent;
-	}
-
-	public void setINRConvergent(Integer iNRConvergent) {
-		INRConvergent = iNRConvergent;
-	}
 
 }

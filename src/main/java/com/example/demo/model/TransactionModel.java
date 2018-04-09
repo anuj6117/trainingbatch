@@ -21,31 +21,24 @@ public class TransactionModel {
 	private String status;
 	private Date transactionCreatedOn;
 	private Long netAmount;
-	private Integer exchangeRate;
-	private Integer transactionFee;
+	private Long exchangeRate;
+	private Long transactionFee;
 	
 	private String description;
 	private Integer buyerId;
 	private Integer sellerId;
 	private Long grossAmount;
-	
-	public Integer getTransactionFee() {
-		return transactionFee;
+	public Integer getTransactionId() {
+		return transactionId;
 	}
-	public void setTransactionFee(Integer transactionFee) {
-		this.transactionFee = transactionFee;
+	public void setTransactionId(Integer transactionId) {
+		this.transactionId = transactionId;
 	}
 	public String getCurrencyType() {
 		return currencyType;
 	}
 	public void setCurrencyType(String currencyType) {
 		this.currencyType = currencyType;
-	}
-	public Integer getTransactionId() {
-		return transactionId;
-	}
-	public void setTransactionId(Integer transactionId) {
-		this.transactionId = transactionId;
 	}
 	public String getStatus() {
 		return status;
@@ -65,11 +58,17 @@ public class TransactionModel {
 	public void setNetAmount(Long netAmount) {
 		this.netAmount = netAmount;
 	}
-	public Integer getExchangeRate() {
+	public Long getExchangeRate() {
 		return exchangeRate;
 	}
-	public void setExchangeRate(Integer exchangeRate) {
+	public void setExchangeRate(Long exchangeRate) {
 		this.exchangeRate = exchangeRate;
+	}
+	public Long getTransactionFee() {
+		return transactionFee;
+	}
+	public void setTransactionFee(Long transactionFee) {
+		this.transactionFee = transactionFee;
 	}
 	public String getDescription() {
 		return description;
@@ -95,5 +94,7 @@ public class TransactionModel {
 	public void setGrossAmount(Long grossAmount) {
 		this.grossAmount = grossAmount;
 	}
+	
+	
 
 }

@@ -32,7 +32,7 @@ public class CoinController {
 		} catch (Exception e) {
 			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}
-		return ApiResponse.generateResponse(HttpStatus.OK, true,response.toString(), null);
+		return ApiResponse.generateResponse(HttpStatus.OK, true,response.toString(), response.toString());
 	}
 
 	@RequestMapping(value = "/getallcurrency", method = RequestMethod.GET)

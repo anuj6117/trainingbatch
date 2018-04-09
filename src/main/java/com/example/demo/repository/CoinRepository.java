@@ -11,6 +11,6 @@ import com.example.demo.model.UserModel;
 public interface CoinRepository extends JpaRepository<CoinModel,Integer>{
 	public CoinModel findByCoinName(String coinName);
 	public CoinModel findBySymbol(String symbol);
-	@Query(value = "SELECT * FROM CoinModel WHERE coinName = ?1 and initialSupply>?2", nativeQuery = true)
-	public CoinModel findByCurrency(String coinName,Long initialSupply);
+	@Query(value = "SELECT * FROM coin_model WHERE coin_name = ?1 and initial_supply>?2 and price>=?3", nativeQuery = true)
+	public CoinModel findByCurrency(String coinName,Long initialSupply,Integer quoteValue);
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class UserOrderDTO {
 	private Integer userId;
-	private Float amount;
+	private Integer amount;
 	private String walletType;
 	
 	public String getWalletType() {
@@ -19,10 +19,10 @@ public class UserOrderDTO {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	public Float getAmount() {
+	public Integer getAmount() {
 		return amount;
 	}
-	public void setAmount(Float amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 	
