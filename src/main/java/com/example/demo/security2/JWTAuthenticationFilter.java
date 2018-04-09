@@ -13,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.demo.security2.SecurityConstants.HEADER_STRING;
@@ -49,9 +52,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	    public Authentication attemptAuthentication(HttpServletRequest req,
 	                                                HttpServletResponse res) throws AuthenticationException {
 	    	ObjectMapper objectMapper = new ObjectMapper();
+	    	
 	    	objectMapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
 	    	  System.out.println(req.getParameter("username"));
 	    	  System.out.println(req.getParameter("password"));
+	    	  
+	   // 	System.out.println(req.getParameter("authorities"));
 	    	try {
 //	               UserModel creds = objectMapper
 //	                       .readValue(req.getInputStream(), UserModel.class);

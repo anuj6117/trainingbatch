@@ -33,7 +33,7 @@ public class TransactionServices {
 	@Autowired
 	TransactionRepository transactionRepository;
 
-	public OrderModel transactionChech() {
+	public OrderModel transactionCheck() {
 		Integer price = 0;
 		List<OrderModel> buyer = orderdata.findAllByOrderTypeAndStatus("buyer", "pending");
 		List<OrderModel> seller = orderdata.findAllByOrderTypeAndStatus("seller", "pending");
@@ -206,5 +206,21 @@ public class TransactionServices {
 		if(data.isEmpty())
 			throw new RuntimeException("seller not found");
 		return data;
+	}
+	public List<TransactionModel> getAllTransaction()
+	{
+		List<TransactionModel> data=transactionRepository.findAll();
+		if(data.isEmpty())
+			throw new RuntimeException("no transaction available");
+		return data;
+		
+	}
+	public List<OrderModel> getAllOrder()
+	{
+		List<OrderModel> data=orderdata.findAll();
+		if(data.isEmpty())
+			throw new RuntimeException("no order available");
+		return data;
+		
 	}
 }

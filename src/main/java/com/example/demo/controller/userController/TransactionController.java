@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.userModel.OrderModel;
+import com.example.demo.model.userModel.TransactionModel;
 import com.example.demo.services.TransactionServices;
 import com.example.demo.utils.ResponseHandler;
 
@@ -29,7 +30,7 @@ TransactionServices order;
 		OrderModel result=null;
 		try {
 			
-			result=order.transactionChech();
+			result=order.transactionCheck();
 		}
 		catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
@@ -58,6 +59,34 @@ TransactionServices order;
 		try {
 			
 			result=order.getAllSeller();
+		}
+		catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+		
+	}
+	@GetMapping(value="showalltransaction")
+	public ResponseEntity<Object> getalltrancation()
+	{
+		List<TransactionModel> result=null;
+		try {
+			
+			result=order.getAllTransaction();
+		}
+		catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+		}
+		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+		
+	}
+	@GetMapping(value="showallorder")
+	public ResponseEntity<Object> getallorder()
+	{
+		List<OrderModel> result=null;
+		try {
+			
+			result=order.getAllOrder();
 		}
 		catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
