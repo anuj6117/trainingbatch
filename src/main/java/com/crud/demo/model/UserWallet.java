@@ -22,8 +22,8 @@ public class UserWallet {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer walletId;
 	private Integer wallet_random_id=RandomIDGenerator.randomIdGenerator().nextInt(100);
-	private float balance;//never use primitive types
-	private float shadowBalance;
+	private Integer balance=0;//never use primitive types
+	private Integer shadowBalance=0;
 	private String walletType = WalletType.fiate.toString();
 	
 	
@@ -50,16 +50,16 @@ public class UserWallet {
 	
 	
 	
-	public float getBalance() {
+	public Integer getBalance() {
 		return balance;
 	}
-	public void setBalance(float balance) {
+	public void setBalance(Integer balance) {
 		this.balance = balance;
 	}
-	public float getShadowBalance() {
+	public Integer getShadowBalance() {
 		return shadowBalance;
 	}
-	public void setShadowBalance(float shadowBalance) {
+	public void setShadowBalance(Integer shadowBalance) {
 		this.shadowBalance = shadowBalance;
 	}
 	public String getWalletType() {

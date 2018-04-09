@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class TokenModel {
@@ -12,6 +13,9 @@ public class TokenModel {
 	private Integer tokenId;
 	
 	private String token;
+	
+	@Transient
+	private Integer userId;
 
 	public Integer getTokenId() {
 		return tokenId;
@@ -27,6 +31,14 @@ public class TokenModel {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	
 

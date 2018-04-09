@@ -2,7 +2,9 @@ package com.crud.demo.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -12,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crud.demo.jpaRepositories.OTPJpaRepository;
+import com.crud.demo.jpaRepositories.UserJpaRepository;
 import com.crud.demo.model.OTPSMS;
+import com.crud.demo.model.TokenModel;
+import com.crud.demo.model.User;
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.MessageFactory;
@@ -28,16 +33,21 @@ public class OTPSMSService {
     @Autowired
     private OTPJpaRepository otpJpaRepository;
     
+    @Autowired
+    private UserJpaRepository userJpaRepository;
     
     
-    public void saveOTP(String automaticOTP)
+    
+    public void saveOTP(String automaticOTP,String userEmail)
     { OTPSMS otpsms=new OTPSMS();
       otpsms.setDate(new Date());
-      otpsms.setTokenOTP(automaticOTP);
+      otpsms.setEmail(userEmail);
+      otpsms.setTokenOtp(automaticOTP);
+      
       otpJpaRepository.save(otpsms);
       LOGGER.info("Message on service (saveOTP):::::::::::::::::OTP successfully saved");
       /*if otp successfully saved*/
-      sendOTPSMS(automaticOTP);
+      /*sendOTPSMS(automaticOTP);*/
       
     }
 	
@@ -61,12 +71,37 @@ public class OTPSMSService {
 		
 	}
 
-	public void verifyOTPSMS(String automaticOTP) {
-		OTPSMS verifyOTPSMS=otpJpaRepository.findByTokenOTP(automaticOTP);
-		if(verifyOTPSMS!=null)
+	public Map<String, Object> verifyOTPSMS(OTPSMS otpsms) {
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = false;
+		LOGGER.info("service method before findbyid::::::::::{}",otpsms);
+		
+		User user=userJpaRepository.findOne(otpsms.getUserId());
+	//	System.out.println("------------------------------"+user);
+		
+		if(user!=null)
 		{
-			otpJpaRepository.delete(verifyOTPSMS);
+		OTPSMS existingOTPSMS=user.getOtpsms();
+		LOGGER.info("service method before:::::delete successfully:::::{}",existingOTPSMS.getOtpId());
+/***********************************************************************************************/
+		/*OTPSMS oTPSMS=otpJpaRepository.findOne(existingOTPSMS.getOtpId());*/
+		
+		otpJpaRepository.delete(existingOTPSMS);
+		
+/***********************************************************************************************/
+		user.setStatus(true);
+		userJpaRepository.save(user);
+		map.put("Result", "verified successfully");
+		map.put("isSuccess", true);
+		LOGGER.info("service method after:::::delete successfully:::::");
 		}
+		else
+		{
+			map.put("Result", "Not verified successfilly");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("Not verified successfilly");
+		}
+		return map;
 		
 	}	
 

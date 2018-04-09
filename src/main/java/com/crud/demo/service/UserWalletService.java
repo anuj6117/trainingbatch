@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.crud.demo.dto.UserWalletDTO;
 import com.crud.demo.enums.WalletType;
+import com.crud.demo.jpaRepositories.CoinManagementJpaRepository;
 import com.crud.demo.jpaRepositories.UserJpaRepository;
 import com.crud.demo.jpaRepositories.UserWalletJpaRepository;
 import com.crud.demo.model.User;
@@ -24,6 +25,9 @@ public class UserWalletService {
 	private UserWalletJpaRepository userWalletJpaRepository;
 	@Autowired
 	private UserJpaRepository userJpaRepository;
+	@Autowired
+	private CoinManagementJpaRepository coinManagementJpaRepository;
+	
 	 Boolean walletTypeExistInEnumOrNot;//default
 	  Boolean walletTypeAlreadyAddedOrNot;//default
 
@@ -35,7 +39,7 @@ public class UserWalletService {
 		Runnable runnableThread1=new Runnable(){
 			@Override
 			public void run() {
-				 walletTypeExistInEnumOrNot=isPresentInEnum(userWalletDTO.getWalletType());
+				 walletTypeExistInEnumOrNot=isPresentAdminDatabase(userWalletDTO.getWalletType());
 				
 			}};
 			Runnable runnableThread2=new Runnable(){
@@ -74,29 +78,45 @@ public class UserWalletService {
 			
 		return map;
 	}
-	
+	/*******************************************************************************************/
 	private Boolean walletTypeAlreadyAddedOrNot(String walletType, Set<UserWallet> userWallet) {
-		Boolean walletTypeExistInEnumOrNot=false;
-		Integer objectPopulateounter=0;
+		Boolean walletTypeAlreadyAddedOrNot=false;
+		
 		for(UserWallet existingUserWallet:userWallet)
-		{	LOGGER.info("walletTypeExistInEnumOrNot:::::::::"+existingUserWallet.getWalletType());
+		{	LOGGER.info("walletTypeAlreadyAddedOrNot:::::::::"+existingUserWallet.getWalletType());
 		  if(walletType.equalsIgnoreCase(existingUserWallet.getWalletType()))
-		   { walletTypeExistInEnumOrNot=true;
+		   { walletTypeAlreadyAddedOrNot=true;
 			     break;
 		   }
 		  else
 		  {
-			  walletTypeExistInEnumOrNot=false;
+			  walletTypeAlreadyAddedOrNot=false;
 		  }
 		
 		}
-		LOGGER.info("inside wallet thread db type::::::::{}",walletTypeExistInEnumOrNot);
-		return walletTypeExistInEnumOrNot;
+		LOGGER.info("inside wallet thread db type::::::::{}",walletTypeAlreadyAddedOrNot);
+		return walletTypeAlreadyAddedOrNot;
 	}
 
 	
-
-	public Boolean isPresentInEnum(String walletType)
+	/*******************************************************************************************/
+	public Boolean isPresentAdminDatabase(String walletType)
+	{ Boolean flagExistOrNot=false;
+	Set<String> coinNamesList= coinManagementJpaRepository.findByCoinName();
+		for (String walletTypeInEnum:coinNamesList)
+		{ LOGGER.info("walletTypeInEnum:::::::::;{}"+walletTypeInEnum.toString());
+			if(walletType.equals(walletTypeInEnum))
+			{
+				flagExistOrNot=true;
+				break;
+			}
+			
+		}
+		LOGGER.info("inside wallet thread enum type{}",flagExistOrNot);
+		return flagExistOrNot;
+	}
+	
+	/*public Boolean isPresentInEnum(String walletType)
 	{ Boolean flagExistOrNot=false;
 		for (WalletType walletTypeInEnum:WalletType.values())
 		{ LOGGER.info("walletTypeInEnum:::::::::;{}"+walletTypeInEnum.toString());
@@ -109,7 +129,7 @@ public class UserWalletService {
 		}
 		LOGGER.info("inside wallet thread enum type",flagExistOrNot);
 		return flagExistOrNot;
-	}
+	}*/
 
 	/****************************************************************************************************/
 	public Map<String, Object> withdrawAmount(UserWalletDTO userWalletDTO) {
@@ -131,8 +151,9 @@ public class UserWalletService {
 		  if ((flagWalletType == 1) && (existingUserWallet.getBalance() >= userWalletDTO.getAmount())) 
 		  {
 			LOGGER.info("Message on service ::::::::::::::::inside if");
-			float remainingBalance = existingUserWallet.getBalance() - userWalletDTO.getAmount();
+			Integer remainingBalance = existingUserWallet.getBalance() - userWalletDTO.getAmount();
 			existingUserWallet.setBalance(remainingBalance);
+			existingUserWallet.setShadowBalance(remainingBalance);
 			userWalletJpaRepository.save(existingUserWallet);
 			map.put("Result", "Amount wihdraw successfully");
 			map.put("isSuccess", true);
@@ -163,8 +184,9 @@ public class UserWalletService {
 		}
 		System.out.println("::::::::::" + existingUserWallet);
 		if ((existingUserWallet != null) && (flagWalletType == 1)) {
-			float newBalance = existingUserWallet.getBalance() + userWalletDTO.getAmount();
+			Integer newBalance = existingUserWallet.getBalance() + userWalletDTO.getAmount();
 			existingUserWallet.setBalance(newBalance);
+			existingUserWallet.setShadowBalance(newBalance+existingUserWallet.getShadowBalance());
 			userWalletJpaRepository.save(existingUserWallet);
 			map.put("Result", "Amount saved successfully");
 			map.put("isSuccess", true);

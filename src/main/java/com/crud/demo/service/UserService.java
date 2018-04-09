@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.crud.demo.id.randomgenerator.RandomIDGenerator;
 import com.crud.demo.jpaRepositories.RoleJpaRepository;
 import com.crud.demo.jpaRepositories.UserJpaRepository;
+import com.crud.demo.model.OTPSMS;
 import com.crud.demo.model.Role;
 import com.crud.demo.model.User;
 import com.crud.demo.model.UserWallet;
@@ -42,11 +43,18 @@ public class UserService {
 		
 			if((user.getEmail()!=null)&&(user.getPhoneNumber()!=null)&&(userJpaRepository.findByEmail(user.getEmail())==null))
 			{
+				Integer integerAutomaticOTP = RandomIDGenerator.randomIdGenerator().nextInt(500);
+				String StringAutomaticOTP = integerAutomaticOTP.toString();
 			defaultWalletDetails(user);
 			user.setRoles(defaultRoleDetails(user));
 			user.setCreatedOn(new Date());
 			user.setPassword(CustomPasswordEncoder.customPasswordEncoder(user.getPassword()));
-
+			OTPSMS otpsms=new OTPSMS();
+		      otpsms.setDate(new Date());
+		      otpsms.setEmail(user.getEmail());
+		      otpsms.setTokenOtp(StringAutomaticOTP);
+		      user.setOtpsms(otpsms);
+		     /* otpsms.setUser(user);*/
 			userJpaRepository.save(user);// if user successfully saved then
 			
 			LOGGER.debug("debug");//doubt when printing
@@ -56,16 +64,16 @@ public class UserService {
 			LOGGER.info("Message on service (adduser):::::::::::::::::User successfully saved");
 			
 			
-			Integer integerAutomaticOTP = RandomIDGenerator.randomIdGenerator().nextInt(500);
-			String StringAutomaticOTP = integerAutomaticOTP.toString();
-			otpsmsService.saveOTP(StringAutomaticOTP);
+			
+			/*otpsmsService.saveOTP(StringAutomaticOTP,user.getEmail());*/
+			otpsmsService.sendOTPSMS(StringAutomaticOTP);
 			emailService.sendEmailToGmail(user.getEmail(), StringAutomaticOTP);
 			mapResult.put("Result", "User data saved successfully");
 			mapResult.put("isSuccess", true);
 			LOGGER.info("Message on service (adduser)::::::::::::::::User saved +OTP saved+OTP send successfully");
 			//only one return type in one function
 		} else {
-			mapResult.put("Result", "Failed to save or Error");
+			mapResult.put("Result", "Failed to save or user alrady exist");
 			mapResult.put("isSuccess", isSuccess);
 			LOGGER.error("Message on service (adduser)::::::::::::::::Something went wrong");
 			

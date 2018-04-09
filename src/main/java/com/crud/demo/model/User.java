@@ -13,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -26,15 +30,33 @@ public class User {
 	private Boolean status = false;
 	private String country;
 	private Date createdOn;
+	
+	
+	@OneToOne(cascade= {CascadeType.PERSIST})
+	@PrimaryKeyJoinColumn
+	private OTPSMS otpsms;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+	
+	//mapping with wallet bidirectional
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<UserWallet> userWallet;
+	
 	// here EAGER is required because of security later may change depending on use
+	//mapping with role bidirectional
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
 	private Set<Role> roles;
 
+	//unidirectional mapping with order
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
+	private Set<Orders> orders;
+	
+	
+	
+	
+	
+	
 	public Integer getUserId() {
 		return userId;
 	}
@@ -114,5 +136,29 @@ public class User {
 	public void setUserWallet(Set<UserWallet> userWallet) {
 		this.userWallet = userWallet;
 	}
+
+	public Set<Orders> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Orders> orders) {
+		this.orders = orders;
+	}
+
+	public OTPSMS getOtpsms() {
+		return otpsms;
+	}
+
+	public void setOtpsms(OTPSMS otpsms) {
+		this.otpsms = otpsms;
+	}
+
+	/*public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}*/
 
 }

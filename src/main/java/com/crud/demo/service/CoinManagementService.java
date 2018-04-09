@@ -3,6 +3,7 @@ package com.crud.demo.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +24,15 @@ public class CoinManagementService {
 	public Map<String, Object> addCurreuncy(CoinManagement coinManagement) {
 		Boolean isSuccess = false;
 		Map<String, Object> map = new HashMap<>();
-		try {
+		Set<String> alreadyAddedCurrency=coinManagementJpaRepository.findByCoinName();
+		if(!alreadyAddedCurrency.contains(coinManagement.getCoinName())) 
+		{
 			coinManagementJpaRepository.save(coinManagement);
 			map.put("Result", "Coin details saved successfully ");
 			isSuccess = true;
 			map.put("isSuccess", isSuccess);
 			LOGGER.info("Method on service:::::::::::::Coin details saved successfully");
-		} catch (Exception e) {
+		} else {
 			map.put("Result", "Coin details unable to save");
 			map.put("isSuccess", isSuccess);
 			LOGGER.error("Method on service:::::::::::::Coin details unable to save");
@@ -63,7 +66,8 @@ public class CoinManagementService {
 		CoinManagement existingCoinManagement = coinManagementJpaRepository.findOne(coinManagement.getCoinId());
 		
 			if (existingCoinManagement != null) {
-				existingCoinManagement.setInitialSupply(coinManagement.getInitialSupply());
+			Integer updatedSupply=existingCoinManagement.getInitialSupply()+coinManagement.getInitialSupply();
+				existingCoinManagement.setInitialSupply(updatedSupply);
 				existingCoinManagement.setCoinName(coinManagement.getCoinName());
 				existingCoinManagement.setPrice(coinManagement.getPrice());
 				existingCoinManagement.setSymbol(coinManagement.getSymbol());

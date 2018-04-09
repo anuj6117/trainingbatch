@@ -6,6 +6,6 @@ import com.crud.demo.model.OTPSMS;
 
 public interface OTPJpaRepository extends JpaRepository<OTPSMS, Integer>{
 	
-	OTPSMS findByTokenOTP(String tokenOTP);
+	OTPSMS findByTokenOtp(String tokenOtp);
 
 }

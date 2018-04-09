@@ -2,10 +2,19 @@ package com.crud.demo.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 @Entity
 public class OTPSMS {
@@ -14,7 +23,15 @@ public class OTPSMS {
 	private Integer otpId;
 	private String email = "mohitjainrk@gmail.com";
 	private Date date = new Date();//add timing also
-	private String tokenOTP;
+	private String tokenOtp;
+	
+	/*@OneToOne()
+	@JoinColumn(name="fk_user",nullable=false)
+	@JsonIgnore
+	private User user;*/
+	
+	@Transient
+	private Integer userId;
 
 	public Integer getOtpId() {
 		return otpId;
@@ -40,12 +57,29 @@ public class OTPSMS {
 		this.date = date;
 	}
 
-	public String getTokenOTP() {
-		return tokenOTP;
+	public String getTokenOtp() {
+		return tokenOtp;
 	}
 
-	public void setTokenOTP(String tokenOTP) {
-		this.tokenOTP = tokenOTP;
+	public void setTokenOtp(String tokenOtp) {
+		this.tokenOtp = tokenOtp;
+	}
+
+	
+	/*public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}*/
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 }

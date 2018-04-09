@@ -4,7 +4,7 @@ public class UserWalletDTO {
 	
 	private Integer userId;
 	private String walletType;
-	private Float amount;
+	private Integer amount=0;
 	public Integer getUserId() {
 		return userId;
 	}
@@ -17,10 +17,10 @@ public class UserWalletDTO {
 	public void setWalletType(String walletType) {
 		this.walletType = walletType;
 	}
-	public Float getAmount() {
+	public Integer getAmount() {
 		return amount;
 	}
-	public void setAmount(Float amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 
