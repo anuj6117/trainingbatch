@@ -15,6 +15,7 @@ import com.example.demo.model.userModel.WalletModel;
 import com.example.demo.repoINterface.CoinManagementRepository;
 import com.example.demo.repoINterface.OrderRepository;
 import com.example.demo.repoINterface.UserRepository;
+import com.example.demo.repoINterface.WalletRepostiory;
 
 @Service
 public class OrderServices {
@@ -25,7 +26,8 @@ public class OrderServices {
 	UserRepository userData;
 	@Autowired
 	CoinManagementRepository coindata;
-
+	@Autowired 
+	WalletRepostiory walletData;
 	public OrderModel buycurrency(OrderModel data, String type) {
 	if(data.getCoinQuantity()==null||data.getCoinQuantity()<=0||data.getPrice()==null||data.getPrice()<=0)
 	throw new RuntimeException("coinQuantity and price can not be null or less then 0");
@@ -67,7 +69,6 @@ public class OrderServices {
 				flag = false;
 				WalletModel fiatwallet=walletdata.get(0);
 				if (fiatwallet.getShadoBalance()>= order.getGrossAmount()) {
-					System.out.println(order.getGrossAmount());
 					fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()-order.getGrossAmount());
 					walletype.setShadoBalance(walletype.getShadoBalance()+order.getCoinQuantity());
 					userModel.getWalletModel().add(walletype);
@@ -95,25 +96,33 @@ public class OrderServices {
 						userData.save(userModel);
 						return order;
 					} else {
-						throw new RuntimeException("you dont hava enough coin in main balance ");
+						throw new RuntimeException("you dont have enough coin in main balance ");
 					}
 				}
-				
+//				else
+//					throw new RuntimeException("you dont have wallet");
 			}
 		}
 		
 		if (flag) {
 			if(type.equals("buyer")) {
 			WalletModel walletModel = new WalletModel();
-		walletModel.setAmount(0);
-		walletModel.setWalletType(data.getCoinName());
-		walletModel.setShadoBalance(data.getCoinQuantity());
-		walletModel.setUserdata(userModel);
-		userModel.getWalletModel().add(walletModel);
-		UserModel result = userData.save(userModel);
-		}
+			for (WalletModel walletype : walletdata) {
+		WalletModel fiatwallet=walletdata.get(0);
+		if (fiatwallet.getShadoBalance()>= order.getGrossAmount()) {
+			fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()-order.getGrossAmount());
+			walletModel.setAmount(0);
+			walletModel.setWalletType(data.getCoinName());
+			walletModel.setShadoBalance(data.getCoinQuantity());
+			walletModel.setUserdata(userModel);
+			userModel.getWalletModel().add(walletModel);
+			UserModel result = userData.save(userModel);
+			return order;
+			}
 			else
-				throw new RuntimeException("you dont hava wallet");
+				throw new RuntimeException("you dont hava enough amount");
+		}
+			}
 		}
 		return order;
 	}
@@ -140,7 +149,7 @@ public class OrderServices {
 		OrderModel order = new OrderModel();
 		order.setCoinName(data.getCoinName());
 		int fee = 2 * (data.getCoinQuantity() * data.getPrice()) / 100;
-		order.setFee(fee);
+		order.setFee(0);
 		order.setOrderCreatedOn(new Date());
 		order.setOrderType("seller");
 		order.setStatus("pending");
@@ -148,7 +157,7 @@ public class OrderServices {
 		order.setUserId(data.getCoinId());
 		order.setCoinQuantity(data.getCoinQuantity());
 		order.setPrice(data.getPrice());
-		int grossamount = fee + (data.getCoinQuantity() * data.getPrice());
+		int grossamount = (data.getCoinQuantity() * data.getPrice());
 		order.setGrossAmount(grossamount);
 		orderdata.save(order);
 		return data;

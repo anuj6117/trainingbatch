@@ -56,7 +56,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	    	objectMapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
 	    	  System.out.println(req.getParameter("username"));
 	    	  System.out.println(req.getParameter("password"));
-	  
 	 
 	    	try {
 	               return authenticationManager.authenticate(

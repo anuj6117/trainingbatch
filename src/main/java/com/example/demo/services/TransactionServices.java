@@ -35,6 +35,7 @@ public class TransactionServices {
 
 	public OrderModel transactionCheck() {
 		Integer price = 0;
+		Integer difference=0;
 		List<OrderModel> buyer = orderdata.findAllByOrderTypeAndStatus("buyer", "pending");
 		List<OrderModel> seller = orderdata.findAllByOrderTypeAndStatus("seller", "pending");
 		if (seller.isEmpty())
@@ -65,6 +66,8 @@ public class TransactionServices {
 					if (price >= getresult.getPrice()) {
 						price = getresult.getPrice();
 						sellerresult = getresult;
+						difference=buy.getGrossAmount()-((buy.getCoinQuantity()*sellerresult.getPrice())-buy.getFee());
+						System.out.println(difference);
 					}
 				}
 			}
@@ -77,13 +80,13 @@ public class TransactionServices {
 					grossamount = buy.getGrossAmount();
 					coinQuantity = buy.getCoinQuantity();
 					buy.setCoinQuantity(sellerresult.getCoinQuantity());
-					buy.setGrossAmount(sellerresult.getGrossAmount());
+					buy.setGrossAmount(sellerresult.getGrossAmount()+buy.getFee());
 					sellCoinQuantity=sellerresult.getCoinQuantity();
 
 				} else if (buy.getCoinQuantity() < sellerresult.getCoinQuantity()) {
 					grossamount = buy.getGrossAmount();
 					coinQuantity = buy.getCoinQuantity();
-					sellerresult.setGrossAmount(sellerresult.getGrossAmount() - buy.getGrossAmount());
+					sellerresult.setGrossAmount(sellerresult.getGrossAmount() - (buy.getGrossAmount()-buy.getFee()));
 					sellerresult.setCoinQuantity(sellerresult.getCoinQuantity() - buy.getCoinQuantity());
 					sellerresult.setStatus("pending");
 					buy.setStatus("completed");
@@ -94,7 +97,7 @@ public class TransactionServices {
 				} else if (buy.getCoinQuantity() > sellerresult.getCoinQuantity()) {
 					grossamount = sellerresult.getGrossAmount();
 					coinQuantity = sellerresult.getCoinQuantity();
-					buy.setGrossAmount(buy.getGrossAmount() - sellerresult.getGrossAmount());
+					buy.setGrossAmount(buy.getGrossAmount() - (sellerresult.getGrossAmount()+buy.getFee()));
 					buy.setCoinQuantity(buy.getCoinQuantity() - sellerresult.getCoinQuantity());
 					sellerresult.setStatus("completed");
 					buy.setStatus("pending");
@@ -122,6 +125,9 @@ public class TransactionServices {
 					transactionModel.setNetAmount(amount);
 					transactionModel.setCoinQuantity(coinQuantity);
 					transactionModel.setGrossAmount((fee + exchangerate + amount));
+					String result=updateWalletOfBuyer(buy,difference+fee);
+					if(result.equals("error"))
+						throw new RuntimeException("buy dont hava more amount");
 					transactionRepository.save(transactionModel);
 					orderdata.save(sellerresult);
 					orderdata.save(buy);
@@ -130,10 +136,7 @@ public class TransactionServices {
 					updateWalletOfAdmin(sellerresult,sellCoinQuantity,amount,fee);
 					else
 				updateWalletOfSeller(sellerresult);
-					updateWalletOfBuyer(buy);
-					System.out.println(sellerresult.getCoinQuantity());
-					System.out.println(sellCoinQuantity);
-					System.out.println(buy.getCoinQuantity());
+					
 				}
 
 			}
@@ -146,7 +149,7 @@ public class TransactionServices {
 		CoinManagementModel result=coindata.findByCoinIdAndCoinName(data.getUserId(), data.getCoinName());
 		result.setCoinInINR(result.getCoinInINR()+amount);
 		result.setInitialSupply(result.getInitialSupply()-coinq);
-		result.setProfit(result.getProfit()+fee);
+		//result.setProfit(result.getProfit()+fee);
 		coindata.save(result);
 		return "success";
 	}
@@ -170,15 +173,19 @@ public class TransactionServices {
 
 	}
 
-	private String updateWalletOfBuyer(OrderModel data) {
+	private String updateWalletOfBuyer(OrderModel data, Integer diff) {
 		UserModel userresult = userdata.findByUserId(data.getUser().getUserId());
 		List<WalletModel> walletModels = userresult.getWalletModel();
 		for (WalletModel walletype : walletModels) {
 			if (walletype.getWalletType().equals(data.getCoinName())) {
 
 				WalletModel fiatwallet = walletModels.get(0);
+				Integer buyamount=fiatwallet.getAmount()-data.getGrossAmount();
+				if(buyamount<0)
+					return "error";
 				fiatwallet.setAmount((fiatwallet.getAmount() - data.getGrossAmount()));
 				walletype.setAmount(walletype.getAmount() + data.getCoinQuantity());
+				fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()+diff);
 				userresult.getWalletModel().add(walletype);
 				userresult.getWalletModel().add(fiatwallet);
 				userdata.save(userresult);

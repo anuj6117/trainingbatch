@@ -67,13 +67,13 @@ CoinManagementRepository coinDate;
 			throw new NullPointerException("id or wallet not correct");
 		int walletAmount = model.getAmount();
 		walletAmount = walletAmount + data.getAmount();
-		model.setAmount(walletAmount);
-		model.setShadoBalance(walletAmount);
+		model.setAmount(model.getAmount()+data.getAmount());
+		model.setShadoBalance(model.getShadoBalance()+data.getAmount());
 		WalletModel result = walletData.save(model);
 		if (result != null)
 			return result;
 		return null;
-	}
+	}	
 
 	// ---------------------
 	public WalletModel withdrawMoneyInWallet(WalletDTO data) {
