@@ -128,7 +128,8 @@ public class TransactionService {
 
 		List<OrderModel> buyerOrder = orderRepo.findBuyer("buy","Pending");
 		List<CoinModel> allCurrency = coinRepo.findAll();
-		List<OrderModel> sellerOrder;
+		List<OrderModel> sellerOrder1;
+		List<OrderModel> sellerOrder = new ArrayList<OrderModel>();
 		if(buyerOrder.isEmpty()) {
 			throw new Exception("Buy order not available");
 		}
@@ -151,16 +152,24 @@ public class TransactionService {
 				throw new Exception("No coin Exist");
 			}
 			
-			sellerOrder = orderRepo.findSeller(buyorder.getCoinName(),"sell",buyorder.getQuoteValue(),"Pending"); 
-			for(OrderModel type:sellerOrder) {
+			sellerOrder1 = orderRepo.findSeller(buyorder.getCoinName(),"sell",buyorder.getQuoteValue(),"Pending"); 
+			for(OrderModel type:sellerOrder1) {
 				logger.info("seller Model------>>>>"+type.getQuoteValue()+"-------------------"+type.getUserModel().getUserid());
+			}
+			for(OrderModel type: sellerOrder1) {
+				if(type.getUserModel().getUserid()==buyorder.getUserModel().getUserid()) {
+					continue;
+				}
+				else {
+					sellerOrder.add(type);
+				}
 			}
 			if(sellerOrder.isEmpty()) {
 				logger.info(sellerOrder.isEmpty()+"--------------------------------after sell-------------------------------");
 				createTransaction();
 				continue;
 				}
-			System.out.println(buyerId+"------------------buyerId-----------");
+			
 			Collections.sort(sellerOrder,new QuoteValueComparator()); 
 			OrderModel userSeller = sellerOrder.get(0);
 			logger.info(sellerOrder.get(0).getQuoteValue()+"----------------------------------12345567890------------------------------");
@@ -174,47 +183,49 @@ public class TransactionService {
 				createUpdateWallet(buyorder, buyorder.getGrossAmount());
 				updateOrderStatus(buyorder);
 			}
-			else
-			if(coin.getPrice()<=userSeller.getQuoteValue()||coin.getInitialSupply()<buyorder.getQuantity()) {
+			else if(coin.getPrice()>=userSeller.getQuoteValue()) {
 				//made transaction via user seller	
+				logger.info("Enter into transaction Zone of user");
 				UserModel userModel = userSeller.getUserModel();
-				if(userModel.getStatus()==false) {
+				/*if(userModel.getStatus()==false) {
 					throw new Exception("Seller First Complete the Verification Process");
-				}
+				}*/
 				Integer sellerId = userModel.getUserid();
-				if(buyerId==sellerId) {
-					throw new Exception("Buyer and seller can't be same");
-				}
+				/*if(buyerId==sellerId) {
+					continue;
+					//throw new Exception("Buyer and seller can't be same");
+				}*/
 				 if(userSeller.getQuantity()==buyorder.getQuantity()) {
+					 logger.info("buyerlist-----via user seller 1--------------");
 					  madeTransactionByUser(buyorder, userSeller);//transaction
 					  updateOrderStatus(buyorder);//buyer order status update
 					  updateOrderStatus(userSeller);//seller order status update
 					  createUpdateWallet(buyorder, buyorder.getGrossAmount());//buyer wallet update
 					  createSellerUpdateWallet(userSeller,buyorder.getGrossAmount()-buyorder.getFee());//seller wallet update
-					  updateCurrency(coin, buyorder);//add profit only
-					  
-						logger.info("buyerlist-----via user seller 1--------------");
+					  updateProfitCurrency(coin, buyorder.getFee());//add profit only
 					  return "sellorder"; 
 					  } 
 				 else if(userSeller.getQuantity()>buyorder.getQuantity()) {
+					 logger.info("buyerlist-----via user seller 2--------------");
 					  madeTransactionByUser(buyorder, userSeller); //transaction
 					  updateOrderStatus(buyorder);//buyer order status update
 					  createUpdateWallet(buyorder, buyorder.getGrossAmount());//buyer wallet update
 					  updatesellOrderAmount(userSeller,buyorder.getQuantity()); //seller order quantity
 					  createSellerUpdateWallet(userSeller,buyorder.getGrossAmount()-buyorder.getFee());//seller wallet update
-					  updateCurrency(coin, buyorder);//add profit only
-					  logger.info("buyerlist-----via user seller 2--------------");
+					  updateProfitCurrency(coin, buyorder.getFee());//add profit only
+					 
 					  return "success444";
 					  
 					  } 
 				 else if(userSeller.getQuantity()<buyorder.getQuantity()) {
+					  logger.info("buyerlist-----via user seller 3--------------");
 					  madeTransactionByUser(buyorder, userSeller); //transaction
 					  updateOrderAmount(buyorder,userSeller.getQuantity()); //buy order amount update
 					  createUpdateWallet(buyorder, buyorder.getGrossAmount());//buyer wallet update
 					  updateOrderStatus(userSeller); //seller order status update
 					  createSellerUpdateWallet(userSeller,buyorder.getGrossAmount()-buyorder.getFee());//seller wallet update
-					  updateCurrency(coin, buyorder);//add profit only
-					  logger.info("buyerlist-----via user seller 3--------------");
+					  updateProfitCurrency(coin, buyorder.getFee());//add profit only
+					
 					  return "success8888";
 					  }
 					 
@@ -230,10 +241,7 @@ public class TransactionService {
 		CoinModel coin;
 		for (OrderModel buyorder : buyerOrder) {
 			coin = getListByName(allCurrency, buyorder.getCoinName());
-			if (buyorder.getQuoteValue() < coin.getPrice()) {
-				logger.info(buyorder.getOrderId()+"---------------");
-				logger.info("Your quote is too low!!");
-			} else if (buyorder.getQuoteValue() >= coin.getPrice()) {
+			 if (buyorder.getQuoteValue() >= coin.getPrice()) {
 				logger.info("enter into loop--------------------------------------");
 				madeTransactionByCoin(buyorder, coin);
 				updateCurrency(coin, buyorder);
@@ -262,10 +270,21 @@ public class TransactionService {
 	}
 
 	public void updateCurrency(CoinModel coinModel, OrderModel orderModel) {
+		coinModel.setCoinName(coinModel.getCoinName());
+		coinModel.setSymbol(coinModel.getSymbol());
 		coinModel.setInitialSupply(coinModel.getInitialSupply() - orderModel.getQuantity());
-		coinModel.setProfit(((orderModel.getQuantity() * coinModel.getPrice()) * coinModel.getFees()) / 100);
+		coinModel.setProfit(((orderModel.getQuantity() * coinModel.getPrice())*2)/100);
 		coinModel.setINRConvergent(orderModel.getQuantity() * coinModel.getPrice()
-				+ ((orderModel.getQuantity() * coinModel.getPrice()) * coinModel.getFees()) / 100);
+				+ ((orderModel.getQuantity() * coinModel.getPrice()) *2)/100);
+		coinRepo.save(coinModel);
+	}
+	
+	public void updateProfitCurrency(CoinModel coinModel,Long profit) {
+		coinModel.setCoinName(coinModel.getCoinName());
+		coinModel.setSymbol(coinModel.getSymbol());
+		coinModel.setInitialSupply(coinModel.getInitialSupply());
+		coinModel.setProfit(profit);
+		coinModel.setINRConvergent(coinModel.getINRConvergent());
 		coinRepo.save(coinModel);
 	}
 
@@ -276,7 +295,7 @@ public class TransactionService {
 		Integer flag = 0;
 		Integer walletId = 0;
 		for (WalletModel type : walletSet) {
-			if (coinName.equalsIgnoreCase(type.getWalletType())) {
+			if (coinName==type.getWalletType()) {
 				flag = 1;
 				walletId = type.getWalletId();
 			}
@@ -286,7 +305,7 @@ public class TransactionService {
 			Optional<WalletModel> walletOptionalObject = walletRepo.findById(walletId);
 			WalletModel walletModel = walletOptionalObject.get();
 			walletModel.setBalance(walletModel.getBalance() + orderModel.getQuantity());
-			walletModel.setShadowBalance(walletModel.getBalance() + orderModel.getQuantity());
+			walletModel.setShadowBalance(walletModel.getBalance());
 			walletRepo.save(walletModel);
 		} else {
 			// add wallet
@@ -301,7 +320,9 @@ public class TransactionService {
 		}
 		for (WalletModel type : walletSet) {
 			if ("fiate".equalsIgnoreCase(type.getWalletType())) {
-				type.setBalance(type.getShadowBalance());// balance deducted
+				type.setBalance(type.getShadowBalance());
+				type.setShadowBalance(type.getShadowBalance());// balance deducted
+				logger.info(type.getBalance()+"------------------");
 			}
 		}
 		return "success";
@@ -317,21 +338,23 @@ public class TransactionService {
 		for(WalletModel type:walletSet) {
 			if(type.getWalletType().equalsIgnoreCase("Fiate")) {
 				fiatewallet = type;
+				logger.info(type.getWalletType()+"-----seller wallet fiate update--");
 			}
 			else if(type.getWalletType().equals(coinName)){
 				currencywallet = type;
+				logger.info(type.getWalletType()+"-----seller wallet currency update--");
 			}
 		}
 		Optional<WalletModel> fiatewalletOptionalObject = walletRepo.findById(fiatewallet.getWalletId());
 		WalletModel fiatewalletModel = fiatewalletOptionalObject.get();
 		fiatewalletModel.setBalance(fiatewalletModel.getBalance() + amount);
-		fiatewalletModel.setShadowBalance(fiatewalletModel.getBalance() + amount);
+		fiatewalletModel.setShadowBalance(fiatewalletModel.getBalance());
 		walletRepo.save(fiatewalletModel);
 		
 		Optional<WalletModel> currencywalletOptionalObject = walletRepo.findById(currencywallet.getWalletId());
 		WalletModel currencywalletModel = currencywalletOptionalObject.get();
 		currencywalletModel.setBalance(currencywalletModel.getBalance()-orderModel.getQuantity());
-		currencywalletModel.setShadowBalance(currencywalletModel.getBalance()-orderModel.getQuantity());
+		currencywalletModel.setShadowBalance(currencywalletModel.getBalance());
 		walletRepo.save(currencywalletModel);
 		
 		return "success";
@@ -346,9 +369,11 @@ public class TransactionService {
 		transactionModel.setTransactionCreatedOn(new Date());
 		transactionModel.setDescription("transaction Made by coin Seller");
 		transactionModel.setExchangeRate(coinModel.getPrice());
-		transactionModel.setTransactionFee(23l);
-		Long feeAmount = ((coinModel.getPrice() * buyerModel.getQuantity()) * 23) / 100;
-		transactionModel.setGrossAmount((coinModel.getPrice() * buyerModel.getQuantity()) + feeAmount);
+		Long fee =2l;
+		Long grossAmount = ((coinModel.getPrice() * buyerModel.getQuantity())*fee)/100;
+		transactionModel.setTransactionFee(buyerModel.getFee());
+		transactionModel.setGrossAmount(
+				(coinModel.getPrice() * buyerModel.getQuantity()) + grossAmount);	
 		transactionModel.setNetAmount(buyerModel.getQuantity());
 		transactionModel.setSellerId(coinModel.getCoinId());
 		transactionModel.setStatus("Completed");
@@ -365,7 +390,7 @@ public class TransactionService {
 		transactionModel.setExchangeRate(sellerModel.getQuoteValue());
 		Long fee =2l;
 		Long grossAmount = ((sellerModel.getQuoteValue() * buyerModel.getQuantity())*fee)/100;
-		transactionModel.setTransactionFee(23l);
+		transactionModel.setTransactionFee(buyerModel.getFee());
 		transactionModel.setGrossAmount(
 				(sellerModel.getQuoteValue() * buyerModel.getQuantity()) + grossAmount);
 		transactionModel.setNetAmount(buyerModel.getQuantity());

@@ -56,7 +56,7 @@ public class OrderController {
 
 			}
 			
-			@RequestMapping(value = "/getallorders", method = RequestMethod.GET)
+			@RequestMapping(value = "/showallorder", method = RequestMethod.GET)
 			public ResponseEntity<Object> allorders() throws Exception {
 				Object response ;
 				try {

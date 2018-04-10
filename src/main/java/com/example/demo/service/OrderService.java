@@ -38,6 +38,9 @@ public class OrderService {
 	
 	public Object createbuyOrder(OrderModel orderModel) throws Exception {
 		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
+		if(userDetail.get().getStatus()==false) {
+			throw new Exception("First!! verify your account");
+		}
 		logger.info(userDetail.isPresent()+"--------");
 		if(orderModel.getQuoteValue()==null) {
 			throw new Exception("Quote value cannot be null");
@@ -108,6 +111,9 @@ public class OrderService {
 	
 	public Object createsellOrder(OrderModel orderModel)throws Exception {
 		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
+		if(userDetail.get().getStatus()==false) {
+			throw new Exception("First!! verify your account");
+		}
 		if(orderModel.getQuoteValue()==null) {
 			throw new Exception("Quote value cannot be null");
 		}
@@ -127,16 +133,7 @@ public class OrderService {
 		if(coin==null) {
 			throw new Exception("Coin Does Not Exists");
 		}
-	   Set<WalletModel> walletModel = userDetail.get().getUserWallet();
-	   Integer flag=0;
-	   for(WalletModel type:walletModel) {
-		   if(type.getWalletType().equals(orderModel.getCoinName())) {
-			  flag=1; 
-		   }
-	   }
-	   if(flag==0) {
-		   throw new Exception("This wallet does not exist!!");
-	   }
+		
 		if(userDetail.isPresent()) {//user does not exists
 			if((Utility.isStringNull(orderModel.getCoinName()))) {
 				if((orderModel.getQuantity()>0)) {
