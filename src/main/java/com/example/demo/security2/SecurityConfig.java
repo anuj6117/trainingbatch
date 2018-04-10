@@ -36,10 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.csrf().disable()
 		.authorizeRequests().anyRequest().permitAll();
 //.authorizeRequests().antMatchers("/signup","/verifyuser","/createrole").permitAll()
-//.anyRequest().authenticated().and().formLogin().successForwardUrl("/getallusers").and()
+//.antMatchers("/getallusers").hasAnyRole("user")
+//.anyRequest().authenticated().and().formLogin().and()
 //.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 //.addFilter(new JWTAuthorizationFilter(authenticationManager()));
- //this disables session creation on Spring Security
+// this disables session creation on Spring Security
 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 	}

@@ -52,6 +52,7 @@ private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
     for (String privilege : privileges) {
         authorities.add(new SimpleGrantedAuthority("ROLE_"+privilege));
     }
+    
     return authorities;
 }
 }
