@@ -24,7 +24,7 @@ public class OrderModel {
 	private String coinName;
 	private Long quantity;
 	private Long grossAmount;
-	private Integer fee;
+	private Long fee;
 	private Long quoteValue;
 	@Transient
 	private Integer userId;
@@ -58,11 +58,11 @@ public class OrderModel {
 		this.grossAmount = grossAmount;
 	}
 
-	public Integer getFee() {
+	public Long getFee() {
 		return fee;
 	}
 
-	public void setFee(Integer fee) {
+	public void setFee(Long fee) {
 		this.fee = fee;
 	}
 

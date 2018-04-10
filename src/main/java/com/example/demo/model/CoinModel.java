@@ -16,7 +16,7 @@ public class CoinModel {
 
 	private Integer coinId;
 	private Long profit=0l;
-	private Long fees=0l;
+	private Long fees=2l;
 	private Long INRConvergent=0l;
 	private String coinName;
 	private String symbol;

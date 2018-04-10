@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -21,42 +22,38 @@ public class CoinService {
 	private CoinRepository coinRepo;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public Object addCoin(CoinModel coinModel)throws Exception {
-		
-	logger.info(Utility.isStringNull(coinModel.getSymbol())+"-------symbol------");
-	logger.info(Utility.isStringNull(coinModel.getCoinName())+"------coin name------");
-	logger.info(Utility.isLongNull(coinModel.getInitialSupply())+"-------intial supply-----");
-	logger.info(Utility.isLongNull(coinModel.getFees())+"-------fees-----");
-		
-	if(!(Utility.isStringNull(coinModel.getSymbol()))||!(Utility.isStringNull(coinModel.getCoinName()))) {
-			throw new Exception("Invalid!! Input field cannot be null");
+	public Object addCoin(CoinModel coinModel) throws Exception {
+		if (coinModel.getSymbol() == null || coinModel.getSymbol() == "") {
+			throw new Exception("Invalid!! Symbol field cannot be null");
 		}
-		if(coinModel.getInitialSupply().equals(null)||coinModel.getFees().equals(null)) {
-			throw new Exception("Invalid!! Input field cannot be null");
+		if (coinModel.getCoinName() == null || coinModel.getCoinName() == "") {
+			throw new Exception("Invalid!! coin name field cannot be null");
 		}
-		if(coinModel.getInitialSupply().equals(0)||coinModel.getFees().equals(0)) {
-			throw new Exception("Invalid!! Input field cannot be null");
+		if (coinModel.getInitialSupply() == null) {
+			throw new Exception("Invalid!! Initial Supply field cannot be null");
 		}
-		if((coinModel.getInitialSupply()<0)||(coinModel.getFees()<0)) {
-			throw new Exception("Invalid!! Input field cannot be null");
+		if (coinModel.getPrice() == null) {
+			throw new Exception("Invalid!! Price field cannot be null");
 		}
-			CoinModel coin = coinRepo.findByCoinName(coinModel.getCoinName());
-			CoinModel coinsymbol = coinRepo.findBySymbol(coinModel.getSymbol());
-			if(coin==null) {
-				if(coinsymbol==null) {
-					coinRepo.save(coinModel);
-				}
-				else {
-					throw new Exception("Symbol cannot be same");
-				}
+		if (Objects.isNull(coinModel.getInitialSupply())) {
+			throw new Exception("Invalid!! Initial Supply cannot be null");
+		}
+		if ((coinModel.getInitialSupply() <= 0) || coinModel.getPrice() <= 0) {
+			throw new Exception("Invalid!! Input field should be greater than zero");
+		}
+		CoinModel coin = coinRepo.findByCoinName(coinModel.getCoinName());
+		CoinModel coinsymbol = coinRepo.findBySymbol(coinModel.getSymbol());
+		if (coin == null) {
+			if (coinsymbol == null) {
+				coinRepo.save(coinModel);
+			} else {
+				throw new Exception("Symbol cannot be same");
 			}
-			else {
-				throw new Exception("Coin Already exists");
-			}
-			return "success";
-		
-	
-			
+		} else {
+			throw new Exception("Coin Already exists");
+		}
+		return "success";
+
 	}
 
 	public Object getAllCoinDetail() {
@@ -69,10 +66,38 @@ public class CoinService {
 		}
 	}
 
-	public Object updateCoin(CoinModel coinModel) {
+	public Object updateCoin(CoinModel coinModel) throws Exception {
+		if (coinModel.getSymbol() == null || coinModel.getSymbol() == "") {
+			throw new Exception("Invalid!! Symbol field cannot be null");
+		}
+		if (coinModel.getCoinName() == null || coinModel.getCoinName() == "") {
+			throw new Exception("Invalid!! coin name field cannot be null");
+		}
+		if (coinModel.getInitialSupply() == null) {
+			throw new Exception("Invalid!! Initial Supply field cannot be null");
+		}
+		if (coinModel.getPrice() == null) {
+			throw new Exception("Invalid!! Price field cannot be null");
+		}
+		if ((coinModel.getInitialSupply() <= 0)) {
+			throw new Exception("Invalid!! Input field should be greater than zero");
+		}
+		if (coinModel.getPrice() <= 0) {
+			throw new Exception("Invalid!! Price field should be greater than zero");
+		}
 
+		logger.info(coinModel.getCoinName() + "---coinName----");
+		logger.info(coinModel.getSymbol() + "---coinsymbol----");
+		logger.info(coinModel.getFees() + "---fees----");
+		logger.info(coinModel.getInitialSupply() + "---initial supply----");
+		logger.info(coinModel.getPrice() + "---price----");
 		Optional<CoinModel> coinOptionalObject = coinRepo.findById(coinModel.getCoinId());
+	
 		if (coinOptionalObject != null) {
+		CoinModel coin = coinRepo.findByCoinName(coinModel.getCoinName());
+		CoinModel coinsymbol = coinRepo.findBySymbol(coinModel.getSymbol());
+
+		logger.info("------------abcefgj----------------------");
 			coinOptionalObject.get().setCoinName(coinModel.getCoinName());
 			coinOptionalObject.get().setSymbol(coinModel.getSymbol());
 			coinOptionalObject.get().setInitialSupply(coinModel.getInitialSupply());
@@ -80,11 +105,46 @@ public class CoinService {
 			coinOptionalObject.get().setFees(coinModel.getFees());
 			coinOptionalObject.get().setINRConvergent(coinModel.getINRConvergent());
 			coinOptionalObject.get().setProfit(coinModel.getProfit());
-			coinRepo.save(coinOptionalObject.get());
-			//addCoin(coinModel);
+			
+		    if(coin==null) {
+		    	if(coinsymbol==null) {
+		    		coinRepo.save(coinOptionalObject.get());
+		    	}
+		    	else {
+		    		if(coinOptionalObject.get().getCoinId()==coinsymbol.getCoinId()) {
+		    			coinRepo.save(coinOptionalObject.get());
+		    		}
+		    		else {
+		    			throw new Exception("Cannot Update Symbol already exists");
+		    		}
+		    	}
+		    }
+		    else {
+		    	if(coinsymbol==null) {
+		    		if(coinOptionalObject.get().getCoinId()==coin.getCoinId()) {
+		    			coinRepo.save(coinOptionalObject.get());
+		    		}
+		    		else {
+			    			throw new Exception("Cannot Update Name already exists");
+			    		}
+		    		}
+		    	else {
+		    		if(coinOptionalObject.get().getCoinId()==coin.getCoinId()&&coinOptionalObject.get().getCoinId()==coinsymbol.getCoinId()) {
+		    			coinRepo.save(coinOptionalObject.get());
+		    		}
+		    		else {
+		    			throw new Exception("Cannot update duplicate record exist!!");
+		    		}
+		    		
+		    		
+		    	}
+		    }
+		    	
+		    
+
 			return "success";
 		} else {
-			return "No Coin Exist";
+			throw new Exception("No coin Exist");
 		}
 	}
 
@@ -100,26 +160,24 @@ public class CoinService {
 			return null;
 		}
 	}
-	
+
 	public Object getCoinById(Integer coinId) {
-		int flag=0;
+		int flag = 0;
 		Optional<CoinModel> coinData;
-			if (coinId > 0) {
-				coinData=coinRepo.findById(coinId);
-				if(coinData.get()!=null) {
-					flag=1;
-				}
-			} else {
-				return "Enter valid Coin Id first";
+		if (coinId > 0) {
+			coinData = coinRepo.findById(coinId);
+			if (coinData.get() != null) {
+				flag = 1;
 			}
-			if(flag==1) {
-				return coinData.get();
-			}
-			else {
-				return "Coin Id does not exist";
-			}
-		
-		
+		} else {
+			return "Enter valid Coin Id first";
+		}
+		if (flag == 1) {
+			return coinData.get();
+		} else {
+			return "Coin Id does not exist";
+		}
+
 	}
 
 }

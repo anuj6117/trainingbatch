@@ -382,7 +382,7 @@ public class UserService implements UserDetailsService {
 			throw new Exception("Cannot Add Negative Amount!!");
 		}
 		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
-		if(walletModel.equals(null)) {
+		if(walletModel==null) {
 			throw new Exception ("wallet does not exist");
 		}
 		logger.info(walletModel.getWalletType()+"----------------------------------------------------");

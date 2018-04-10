@@ -51,12 +51,14 @@ public class CoinController {
 
 	@RequestMapping(value = "/updatecurrency", method = RequestMethod.POST)
 	public ResponseEntity<Object> update(@RequestBody CoinModel coinDetails) {
-		Object obj = coinService.updateCoin(coinDetails);
-		if (obj == "success") {
-			return ApiResponse.generateResponse(HttpStatus.OK, true, "success", null);
-		} else {
-			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false,"failure", null);
+		Object response ;
+		try {
+			response = coinService.updateCoin(coinDetails);
+
+		} catch (Exception e) {
+			return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
 		}
+		return ApiResponse.generateResponse(HttpStatus.OK, true, "success", response);
 	}
 
 	@RequestMapping(value = "/deletecurrency", method = RequestMethod.GET)

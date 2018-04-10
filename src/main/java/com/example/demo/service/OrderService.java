@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -10,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.constant.Constant;
+import com.example.demo.model.CoinModel;
 import com.example.demo.model.OrderModel;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.WalletModel;
+import com.example.demo.repository.CoinRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.WalletRepository;
@@ -29,11 +32,34 @@ public class OrderService {
 	private UserRepository userRepo;
 	@Autowired
 	private WalletRepository walletRepo;
+	@Autowired
+	private CoinRepository coinRepo;
 	 private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public Object createbuyOrder(OrderModel orderModel) throws Exception {
 		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
 		logger.info(userDetail.isPresent()+"--------");
+		if(orderModel.getQuoteValue()==null) {
+			throw new Exception("Quote value cannot be null");
+		}
+		if(orderModel.getQuantity()==null){
+			throw new Exception("Quantity cannot be null");
+		}
+		if(orderModel.getCoinName()==null||orderModel.getCoinName()=="") {
+			throw new Exception("Invalid!! coin name field cannot be null");
+		}
+		if(orderModel.getQuoteValue()<=0) {
+			throw new Exception("Quote value should be greater than 0");
+		}
+		if(orderModel.getQuantity()<=0){
+			throw new Exception("Quantity cannot be null");
+		}
+		logger.info(orderModel.getQuoteValue()+"---------");
+		logger.info(orderModel.getQuantity()+"----------");
+		CoinModel coin = coinRepo.findByCoinName(orderModel.getCoinName());
+		if(coin==null) {
+			throw new Exception("Coin Does Not Exists");
+		}
 		if(userDetail.isPresent()) {//user does not exists
 			if((Utility.isStringNull(orderModel.getCoinName()))) {
 				if((orderModel.getQuantity()>0)) {
@@ -41,12 +67,12 @@ public class OrderService {
 					orderModel.setStatus("Pending");
 					orderModel.setUserModel(userDetail.get());
 					orderModel.setOrderCreatedOn(new Date());
-					orderModel.setFee(orderModel.getFee());
+					Long fee =(2*(orderModel.getQuantity()*orderModel.getQuoteValue()))/100;
+					orderModel.setFee(fee);
 					orderModel.setQuantity(orderModel.getQuantity());
+					orderModel.setGrossAmount(orderModel.getQuantity()*orderModel.getQuoteValue()+fee);
 					orderModel.setQuoteValue(orderModel.getQuoteValue());
-					Long amount = orderModel.getQuantity()*orderModel.getQuoteValue();
-					Long grossAmount =(Long)(amount*orderModel.getFee())/100;
-					orderModel.setGrossAmount(grossAmount);
+					
 					logger.info(orderModel.getGrossAmount()+"---------------");
 					
 					//update this users default wallets shadow balance
@@ -64,7 +90,7 @@ public class OrderService {
 					}
 					
 				}else {
-					throw new Exception("Quantity cannot be null");
+					throw new Exception("Quantity should br geater than zero");
 				}
 			}
 			else {
@@ -82,6 +108,35 @@ public class OrderService {
 	
 	public Object createsellOrder(OrderModel orderModel)throws Exception {
 		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
+		if(orderModel.getQuoteValue()==null) {
+			throw new Exception("Quote value cannot be null");
+		}
+		if(orderModel.getQuantity()==null){
+			throw new Exception("Quantity cannot be null");
+		}
+		if(orderModel.getCoinName()==null||orderModel.getCoinName()=="") {
+			throw new Exception("Invalid!! coin name field cannot be null");
+		}
+		if(orderModel.getQuoteValue()<=0) {
+			throw new Exception("Quote value should be greater than 0");
+		}
+		if(orderModel.getQuantity()<=0){
+			throw new Exception("Quantity should be greater than 0");
+		}
+		CoinModel coin = coinRepo.findByCoinName(orderModel.getCoinName());
+		if(coin==null) {
+			throw new Exception("Coin Does Not Exists");
+		}
+	   Set<WalletModel> walletModel = userDetail.get().getUserWallet();
+	   Integer flag=0;
+	   for(WalletModel type:walletModel) {
+		   if(type.getWalletType().equals(orderModel.getCoinName())) {
+			  flag=1; 
+		   }
+	   }
+	   if(flag==0) {
+		   throw new Exception("This wallet does not exist!!");
+	   }
 		if(userDetail.isPresent()) {//user does not exists
 			if((Utility.isStringNull(orderModel.getCoinName()))) {
 				if((orderModel.getQuantity()>0)) {
@@ -89,12 +144,12 @@ public class OrderService {
 					orderModel.setStatus("Pending");
 					orderModel.setUserModel(userDetail.get());
 					orderModel.setOrderCreatedOn(new Date());
-					orderModel.setFee(orderModel.getFee());
+					Long fee =(2*(orderModel.getQuantity()*orderModel.getQuoteValue()))/100;
+					orderModel.setFee(fee);
 					orderModel.setQuantity(orderModel.getQuantity());
+					orderModel.setGrossAmount(orderModel.getQuantity()*orderModel.getQuoteValue()+fee);
 					orderModel.setQuoteValue(orderModel.getQuoteValue());
-					Long amount = orderModel.getQuantity()*orderModel.getQuoteValue();
-					Long grossAmount =(Long)(amount*orderModel.getFee())/100;
-					orderModel.setGrossAmount(grossAmount);
+					orderModel.setCoinName(orderModel.getCoinName());
 					logger.info(orderModel.getGrossAmount()+"---------------");
 					
 					//update this users default wallets shadow balance
