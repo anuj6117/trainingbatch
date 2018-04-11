@@ -111,6 +111,7 @@ public class OrderService {
 	
 	public Object createsellOrder(OrderModel orderModel)throws Exception {
 		Optional<UserModel> userDetail = userRepo.findById(orderModel.getUserId());
+		
 		if(userDetail.get().getStatus()==false) {
 			throw new Exception("First!! verify your account");
 		}
@@ -132,8 +133,21 @@ public class OrderService {
 		CoinModel coin = coinRepo.findByCoinName(orderModel.getCoinName());
 		if(coin==null) {
 			throw new Exception("Coin Does Not Exists");
+		} 
+		Integer flag=0;
+		Optional<UserModel> userOp= userRepo.findById(orderModel.getUserId());
+		logger.info(userOp+"---------gg---------till here-------------------");
+		Set<WalletModel> walletModel =userOp.get().getUserWallet();
+		logger.info(walletModel+"------------------till here--rrr-----------------");
+		for(WalletModel type:walletModel) {
+			if(type.getWalletType().equalsIgnoreCase(orderModel.getCoinName())&&type.getBalance()>=orderModel.getQuantity()) {
+				flag=1;
+			}
+		}logger.info("------------------till here-------vv------------");
+		if(flag==0) {
+			throw new Exception("You cannot place this order either wallet does not exists or you dont have much quantity to place a sell order");
 		}
-		
+		logger.info("------------------till here-------------fff------");
 		if(userDetail.isPresent()) {//user does not exists
 			if((Utility.isStringNull(orderModel.getCoinName()))) {
 				if((orderModel.getQuantity()>0)) {

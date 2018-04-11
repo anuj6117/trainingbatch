@@ -100,7 +100,7 @@ public class CoinService {
 		logger.info("------------abcefgj----------------------");
 			coinOptionalObject.get().setCoinName(coinModel.getCoinName());
 			coinOptionalObject.get().setSymbol(coinModel.getSymbol());
-			coinOptionalObject.get().setInitialSupply(coinModel.getInitialSupply());
+			coinOptionalObject.get().setInitialSupply(coinOptionalObject.get().getInitialSupply()+coinModel.getInitialSupply());
 			coinOptionalObject.get().setPrice(coinModel.getPrice());
 			coinOptionalObject.get().setFees(coinModel.getFees());
 			coinOptionalObject.get().setINRConvergent(coinModel.getINRConvergent());

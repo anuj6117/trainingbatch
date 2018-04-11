@@ -64,38 +64,7 @@ public class UserService implements UserDetailsService {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/*
-	 * public Object searchType() { Session session =
-	 * Hibernate.getHibernateSession(); Criteria cr =
-	 * session.createCriteria(UserModel.class); long startTimeCriteria =
-	 * System.nanoTime(); cr.add(Restrictions.like("itemName", "%item One%"));
-	 * 
-	 * List results = cr.list();
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public SearchResults<UserModel> search(UserSearchCriteria searchCriteria) {
-	 * UserSearchType searchType = searchCriteria.getSearchType(); String sortOrder
-	 * = searchCriteria.getSortOrder();
-	 * System.out.println(searchType+":"+sortOrder); List<UserModel> results = null;
-	 * if(searchType == UserSearchType.BY_NAME) {
-	 * 
-	 * } else if(searchType == UserSearchType.BY_ID) { //Use hibernate Criteria API
-	 * to get and sort results based on USER_ID field in sortOrder results =
-	 * UserDAO.searchUsers(...); }
-	 * 
-	 * UserSearchResults<UserModel> searchResults = new
-	 * UserSearchResults<UserModel>();
-	 * searchResults.setPageSize(searchCriteria.getPageSize());
-	 * searchResults.setResults(results); return searchResults; }
-	 * 
-	 * 
-	 * public Map<String, Object> search(Map<String, Object> searchCriteriaMap) {
-	 * return UserDAO.search(searchCriteriaMap); }
-	 * 
-	 */
+	
 
 	// ------------------------SIGN UP---------------------------------
 	// Add New User
@@ -377,35 +346,67 @@ public class UserService implements UserDetailsService {
 	// -----------------DEPOSIT AND WITHDRAW AMOUNT FORM USER-----------------------
 
 	public Object addAmountIntoWallet1(Integer userid, Integer amount, String walletType)throws Exception {
-		
+		WalletModel wallet=new WalletModel();
 		if(!(PasswordValidation.positiveNumberValidation(amount))) {
 			throw new Exception("Cannot Add Negative Amount!!");
 		}
-		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
-		if(walletModel==null) {
-			throw new Exception ("wallet does not exist");
+	
+		Integer flag=0;
+		Optional<UserModel> userModel = userRepo.findById(userid);
+		logger.info(userModel.get().getUserName()+"-------");
+		Set<WalletModel> walletModel =  userModel.get().getUserWallet();
+		if(walletModel!=null) {
+			logger.info(walletModel+"-----------empty---------------------");
 		}
-		logger.info(walletModel.getWalletType()+"----------------------------------------------------");
-		walletModel.setBalance(walletModel.getBalance() + amount);
-		walletModel.setShadowBalance(walletModel.getBalance());
-		walletRepo.save(walletModel);
+		for(WalletModel type:walletModel) {
+			logger.info(type.getWalletType()+"wallet------------------");
+			if(type.getWalletType().equalsIgnoreCase(walletType)) {
+				flag=1;
+				logger.info(type.getWalletType()+"wallet------------------");
+				wallet = type;
+			}
+		}
+		if(flag==1) {
+			wallet.setBalance(wallet.getBalance() + amount);
+			wallet.setShadowBalance(wallet.getBalance());
+			walletRepo.save(wallet);
+			
+		}
+		else {
+			throw new Exception("Wallet does not exist---");
+		}
+		
 		return true;
 	}
 
 	public Object withdrawAmountFromWallet(Integer userid, Integer amount, String walletType) throws Exception{
-
+		WalletModel wallet=new WalletModel();
 		if(!(PasswordValidation.positiveNumberValidation(amount))) {
 			throw new Exception("Cannot Withdraw Negative Amount!!");
 		}
-		WalletModel walletModel = walletRepo.findByWalletTypeAndUserIdW(walletType, userid);
-		if(walletModel.equals(null)) {
-			throw new Exception ("wallet does not exist");
+		Integer flag=0;
+		Optional<UserModel> userModel = userRepo.findById(userid);
+		logger.info(userModel.get().getUserName()+"-------");
+		Set<WalletModel> walletModel =  userModel.get().getUserWallet();
+		if(walletModel!=null) {
+			logger.info(walletModel+"-----------empty---------------------");
 		}
-		if (amount < walletModel.getBalance()) {
-			walletModel.setBalance(walletModel.getBalance() - amount);
-			walletModel.setShadowBalance(walletModel.getBalance());
-			walletRepo.save(walletModel);// testing
+		for(WalletModel type:walletModel) {
+			logger.info(type.getWalletType()+"wallet------------------");
+			if(type.getWalletType().equalsIgnoreCase(walletType)) {
+				flag=1;
+				logger.info(type.getWalletType()+"wallet------------------");
+				wallet = type;
+			}
+		}
+		if(flag==1) {
+			wallet.setBalance(wallet.getBalance() - amount);
+			wallet.setShadowBalance(wallet.getBalance());
+			walletRepo.save(wallet);
 			
+		}
+		else {
+			throw new Exception("Wallet does not exist---");
 		}
 		return true;
 	}
