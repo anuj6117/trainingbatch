@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Orders {//we can't take Order as class name for this model
+public class Orders implements Cloneable{//we can't take Order as class name for this model
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +32,13 @@ public class Orders {//we can't take Order as class name for this model
 	@JoinColumn(name="fk_userId",nullable=false)
 	@JsonIgnore
 	private User user;
+	
+	public Object clone() throws
+    CloneNotSupportedException
+{
+return super.clone();
+}
+
 	
 	@Transient
 	private Integer userId;

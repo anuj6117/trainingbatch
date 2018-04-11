@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class UserController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ResponseEntity<Object> addUser(@RequestBody User user, @RequestHeader("host") String hostName) {
+	public ResponseEntity<Object> addUser(@Validated @RequestBody User user, @RequestHeader("host") String hostName) {
 		System.out.println("Request header information is:::::::" + hostName);
 		LOGGER.info("Message on usercontroller (adduser):::::::::::::::::controller hit");
 		Map<String, Object> map = null;
@@ -81,7 +82,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
-	public ResponseEntity<Object> updateUserById(@RequestBody User user) {
+	public ResponseEntity<Object> updateUserById(@Validated @RequestBody User user) {
 		Map<String, Object> map = null;
 		try {
 		map=userService.updateUser(user);

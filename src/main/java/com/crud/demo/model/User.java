@@ -15,6 +15,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,9 +28,25 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer userId;
+	
+	@NotEmpty(message="UserName must not be empty")
+	@NotBlank(message="Space Not Accepted")
+	@NotNull(message="UserName canot be null")
 	private String userName;
+	
+	@NotEmpty(message="Password must not be empty")
+	@NotBlank(message="Space Not Accepted")
+	@NotNull(message="Password canot be null")
 	private String password;
+	
+	@NotEmpty(message="Password must not be empty")
+	@NotBlank(message="Space Not Accepted")
+	@NotNull(message="Password canot be null")
+	@Email
 	private String email;
+	@NotEmpty(message="PhoneNumber must not be empty")
+	@NotBlank(message="Space Not Accepted")
+	@NotNull(message="PhoneNumber canot be null")
 	private String phoneNumber;
 	private Boolean status = false;
 	private String country;

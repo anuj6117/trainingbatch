@@ -41,7 +41,7 @@ public class UserService {
 		Map<String, Object> mapResult = new HashMap<>();
 		boolean isSuccess = false;
 		
-			if((user.getEmail()!=null)&&(user.getPhoneNumber()!=null)&&(userJpaRepository.findByEmail(user.getEmail())==null))
+if((userJpaRepository.findByEmail(user.getEmail())==null)&&(userJpaRepository.findByPhoneNumber((user.getPhoneNumber()))==null))
 			{
 				Integer integerAutomaticOTP = RandomIDGenerator.randomIdGenerator().nextInt(500);
 				String StringAutomaticOTP = integerAutomaticOTP.toString();

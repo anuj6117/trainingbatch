@@ -13,5 +13,6 @@ public interface UserJpaRepository extends JpaRepository<User,Integer> ,JpaSpeci
 	User findByUserName(String userName);
 	//for pagination
 	User findByEmail(String email);
+	User findByPhoneNumber(String phoneNumber);
 
 }

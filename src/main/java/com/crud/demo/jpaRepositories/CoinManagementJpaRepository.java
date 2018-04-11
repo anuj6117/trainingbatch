@@ -16,5 +16,8 @@ public interface CoinManagementJpaRepository  extends JpaRepository<CoinManageme
 	Set<String> findByCoinName();
 	
 	CoinManagement findByCoinName(String coinName);
+	
+	@Query("Select DISTINCT c.symbol from CoinManagement c ")
+	Set<String> findBySymbol();
 
 }

@@ -79,11 +79,12 @@ public class OTPSMSService {
 		User user=userJpaRepository.findOne(otpsms.getUserId());
 	//	System.out.println("------------------------------"+user);
 		
-		if(user!=null)
+		if(user!=null&&(user.getOtpsms().getTokenOtp().equals(otpsms.getTokenOtp())))
 		{
 		OTPSMS existingOTPSMS=user.getOtpsms();
 		LOGGER.info("service method before:::::delete successfully:::::{}",existingOTPSMS.getOtpId());
-/***********************************************************************************************/
+
+		/***********************************************************************************************/
 		/*OTPSMS oTPSMS=otpJpaRepository.findOne(existingOTPSMS.getOtpId());*/
 		
 		otpJpaRepository.delete(existingOTPSMS);

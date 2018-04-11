@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +26,7 @@ public class RoleController {
 	private RoleService roleService;
 	
 	@RequestMapping(value="/createrole",method=RequestMethod.POST)
-	public ResponseEntity<Object> createRole(@RequestBody Role role) {
+	public ResponseEntity<Object> createRole(@Validated @RequestBody Role role) {
 		LOGGER.info("Role controller hit");
 		Map<String, Object> map = null;
 		try
@@ -45,7 +46,7 @@ public class RoleController {
 		
 	}
 	@RequestMapping(value="/assignrole",method=RequestMethod.POST)
-	public ResponseEntity<Object> assignRole(@RequestBody UserRoleDTO userRoleDTO)
+	public ResponseEntity<Object> assignRole(@Validated @RequestBody UserRoleDTO userRoleDTO)
 	{
 		LOGGER.info("Role controller hit");
 		Map<String, Object> map = null;

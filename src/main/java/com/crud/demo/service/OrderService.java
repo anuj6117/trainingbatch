@@ -136,47 +136,54 @@ public class OrderService {
 		LOGGER.info("OrderService:::createSellingOrder::::method hit");
 		Map<String, Object> map=new HashMap<>();
 		Boolean isSuccess=false;
-		User user=userJpaRepository.findOne(order.getUserId());//user whose buying order will be saved
+		User user=userJpaRepository.findOne(order.getUserId());//user whose selling order will be saved
 		Map<String,Integer> userAlreadyWallets=new HashMap<>();
 		
 		for(UserWallet userWallet:user.getUserWallet())
 		{
 			userAlreadyWallets.put(userWallet.getWalletType(),userWallet.getWalletId());
 		}
-		LOGGER.info("OrderService:::createBuyingOrder::::before checking user is null or not");
+		LOGGER.info("OrderService:::createSellingOrder::::before checking user is null or not");
 		if((user!=null)&& userAlreadyWallets.containsKey(order.getCoinName()))
 		{   
-			LOGGER.info("OrderService:::createBuyingOrder::::before calculation");
+			LOGGER.info("OrderService:::createSellingOrder::::before calculation");
 			Integer tradingAmount=order.getCoinQuantity()*order.getQuoteValue();
 			Integer grossAmount=tradingAmount;
 			order.setGrossAmount(grossAmount);
 			UserWallet userWalletAutomaticUpdation=userWalletJpaRepository.findOne(userAlreadyWallets.get(order.getCoinName()));
 			 LOGGER.info("OrderService:::before save::::{}{}{}",tradingAmount,grossAmount,userWalletAutomaticUpdation.getBalance());
-			if(userWalletAutomaticUpdation.getBalance()>grossAmount)
-		    {
+			if(userWalletAutomaticUpdation.getBalance()>=order.getCoinQuantity()) {
 			order.setOrderType("sell");
 		    user.getOrders().add(order);
-		   
+		   order.setUser(user);
 		   userJpaRepository.save(user);
 		   LOGGER.info("OrderService:::createSellingOrder::::order saved successfully");
 		   isSuccess=true;
 /******/   if(isSuccess)//automatic update in userWallet
 		   {  
 		  /*if(userWalletAutomaticUpdation.getBalance()>grossAmount)*/
-		    Integer newShadowBalance=userWalletAutomaticUpdation.getBalance()-grossAmount;
+		    Integer newShadowBalance=userWalletAutomaticUpdation.getBalance()-order.getCoinQuantity();
 		    userWalletAutomaticUpdation.setShadowBalance(newShadowBalance);
+		    //fiate wallet automatic updation
+		    
 		    userJpaRepository.save(user);
 		    map.put("Result","Selling Order placed successfully");
 		    map.put("isSuccess", isSuccess);
 		    LOGGER.info("OrderService:::createSellingOrder::::Selling Order placed successfully");
-/******/   }}
-		
+/******/   }		
+		    }
+			else
+			{
+				map.put("Result","Not Sufficient balance ");
+				map.put("isSuccess", isSuccess);
+				LOGGER.error("OrderService:::createSellingOrder::::Unable to place Selling order");
+			}	
 		}
 		else
 		{
 			map.put("Result","Unable to place Selling order");
 			map.put("isSuccess", isSuccess);
-			LOGGER.error("OrderService:::createSellingOrder::::Unable to place Buying order");
+			LOGGER.error("OrderService:::createSellingOrder::::Unable to place Selling order");
 		}
 	
 		return map;
