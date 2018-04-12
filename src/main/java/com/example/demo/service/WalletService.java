@@ -62,10 +62,10 @@ public class WalletService {
 		return walletDetails;
 	}
 	
-	public Object addAmountIntoWallet1(INRDepositDTO inrdeposit)throws Exception {
+	public Object addAmountIntoWallet1(Integer buyerId, String currencyType,Long netAmount)throws Exception {
 		WalletModel wallet=new WalletModel();
 		Integer flag=0;
-		Optional<UserModel> userModel = userRepo.findById(inrdeposit.getUserId());
+		Optional<UserModel> userModel = userRepo.findById(buyerId);
 		logger.info(userModel.get().getUserName()+"-------");
 		Set<WalletModel> walletModel =  userModel.get().getUserWallet();
 		if(walletModel!=null) {
@@ -73,7 +73,7 @@ public class WalletService {
 		}
 		for(WalletModel type:walletModel) {
 			logger.info(type.getWalletType()+"wallet------------------");
-			if(type.getWalletType().equalsIgnoreCase(inrdeposit.getWalletType())) {
+			if(type.getWalletType().equalsIgnoreCase(currencyType)) {
 				flag=1;
 				logger.info(type.getWalletType()+"wallet------------------");
 				wallet = type;
@@ -81,7 +81,7 @@ public class WalletService {
 			}
 		}
 		if(flag==1) {
-			wallet.setBalance(wallet.getBalance() + inrdeposit.getAmount());
+			wallet.setBalance(wallet.getBalance() + netAmount);
 			wallet.setShadowBalance(wallet.getBalance());
 			walletRepo.save(wallet);
 			
@@ -92,6 +92,8 @@ public class WalletService {
 		
 		return true;
 	}
+	
+	
 	
 
 }

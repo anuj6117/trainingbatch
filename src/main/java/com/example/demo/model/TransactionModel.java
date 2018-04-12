@@ -25,6 +25,14 @@ public class TransactionModel {
 	private String description;
 	private Integer buyerId;
 	private Integer sellerId;
+	private Long coinQuantity;
+	
+	public Long getCoinQuantity() {
+		return coinQuantity;
+	}
+	public void setCoinQuantity(Long coinQuantity) {
+		this.coinQuantity = coinQuantity;
+	}
 	private Long grossAmount;
 	
 	public Integer getTransactionId() {

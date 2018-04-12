@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ApprovedTransactionDTO;
 import com.example.demo.dto.INRDepositDTO;
 import com.example.demo.model.UserModel;
 import com.example.demo.model.WalletModel;
@@ -48,16 +49,6 @@ public class WalletController {
 		}
 		return ApiResponse.generateResponse(HttpStatus.OK, true, response.toString(), null);
 	}
-	@RequestMapping(value = "/approveinrrequest", method = RequestMethod.POST)
-	public ResponseEntity<Object> approveINRRequest(@RequestBody INRDepositDTO inrDepositDTO) {
-		 Object response;
-			try {
-				response = walletService.addAmountIntoWallet1(inrDepositDTO);
-			} catch (Exception e) {
-				return ApiResponse.generateResponse(HttpStatus.NOT_ACCEPTABLE, false, e.getMessage(), null);
-			}
-			return ApiResponse.generateResponse(HttpStatus.OK, true, response.toString(), null);
-		
-	}
+
 
 }

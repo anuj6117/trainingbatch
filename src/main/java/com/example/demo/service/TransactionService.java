@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.constant.WalletEnum;
 import com.example.demo.dto.INRDepositDTO;
+import com.example.demo.dto.WalletHistory;
 import com.example.demo.model.CoinModel;
 import com.example.demo.model.OrderModel;
 import com.example.demo.model.TransactionModel;
@@ -37,18 +38,14 @@ public class TransactionService {
 	private CoinRepository coinRepo;
 	@Autowired
 	private UserRepository userRepo;
-
+	@Autowired
+	private WalletService walletService;
 	@Autowired
 	private WalletRepository walletRepo;
 	List<OrderModel> buyerList = new ArrayList<OrderModel>();
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	// get bit coin name of buyer
-	// check its wallet availability
-	// if not present create a wallet
-	// update wallet with currency value
-	// deduct that amount form the fiat wallet
 
 	public Object createTransactionForINRDeposit(INRDepositDTO inrDepositDTO) throws Exception {
 	
@@ -109,14 +106,36 @@ public class TransactionService {
 		return "success";
 	}
 
-	public void approveTransaction(Integer transactionId) throws Exception{
-		
+	public Object approveTransaction(Integer transactionId,String status) throws Exception{
+		logger.info(transactionId+status+"-----------transaction id---------");
 	    Optional<TransactionModel> userTransaction = transactionRepo.findById(transactionId);
-	    if(user==null) {
-	    	throw new Exception("No user Exists");
+	    if(userTransaction.get()==null) {
+	    	throw new Exception("No transaction Exists");
 	    }
-		List<TransactionModel> inrUserTransaction = transactionRepo.findByBuyerIdAndCurrencyType(userId,"fiate"); 
-		
+	    if(status.equalsIgnoreCase("approved")) {
+	    	logger.info("-----------approved1----------");
+	    	userTransaction.get().setStatus("approved");
+	    	userTransaction.get().setDescription("Transaction successful");
+		    transactionRepo.save(userTransaction.get());
+		    updateAprovedTransactionDetail(transactionId, status);
+		    return "Transaction approved";
+	    }
+	    else if(status.equalsIgnoreCase("failed")) {
+	    	userTransaction.get().setStatus("failed");
+	    	userTransaction.get().setDescription("Transaction failed due to some network issue");
+	    	transactionRepo.save(userTransaction.get());
+	    	throw new Exception("Your transaction is failed");
+	    }
+	    else if(status.equalsIgnoreCase("rejected")) {
+	    	userTransaction.get().setStatus("rejected");
+	    	userTransaction.get().setDescription("Transaction rejected bad data");
+	    	 transactionRepo.save(userTransaction.get());
+	    	 throw new Exception("Your transaction is rejected");
+	    }
+	    else {
+	    	 return "Transaction Pending";
+	    }
+	    
 	}
 	
 	public Object getalltransaction() {
@@ -184,14 +203,14 @@ public class TransactionService {
 			} else if (coin.getPrice() >= userSeller.getQuoteValue()) {
 				// made transaction via user seller
 				logger.info("Enter into transaction Zone of user");
-				if (userSeller.getQuantity() == buyorder.getQuantity()) {
+				madeTransactionByUser(buyorder, userSeller);// transaction
+			/*	if (userSeller.getQuantity() == buyorder.getQuantity()) {
 					logger.info("buyerlist-----via user seller 1--------------");
 					madeTransactionByUser(buyorder, userSeller);// transaction
 					updateOrderStatusAsCompleted(buyorder);// buyer order status update
 					updateOrderStatusAsCompleted(userSeller);// seller order status update
 					createBuyerUpdateWallet(buyorder, buyorder.getGrossAmount());// buyer wallet update
-					createSellerUpdateWallet(userSeller, buyorder.getGrossAmount() - buyorder.getFee());// seller wallet
-																										// update
+					createSellerUpdateWallet(userSeller, buyorder.getGrossAmount() - buyorder.getFee());// seller wallet update																		// update
 					updateProfitCurrency(coin, buyorder.getFee());// add profit only
 					return "sellorder";
 				} else if (userSeller.getQuantity() > buyorder.getQuantity()) {
@@ -218,13 +237,77 @@ public class TransactionService {
 
 					return "success8888";
 				}
-
+*/
 			}
 			logger.info("----loop running----------");
 		}
 		return "1234567898765432";
 	}
+	
+	public Object updateAprovedTransactionDetail(Integer transactionId,String status) throws Exception {
+		logger.info("-----------approved2----------");
+    Optional<TransactionModel> transOp = transactionRepo.findById(transactionId);
+    TransactionModel transaction = transOp.get();
+    CoinModel coin = coinRepo.findByCoinName(transaction.getCurrencyType());
+    if(transaction.getCurrencyType().equalsIgnoreCase("fiate")) {
+    	//update wallet of user with INR deposit
+    	walletService.addAmountIntoWallet1(transaction.getBuyerId(),transaction.getCurrencyType(),transaction.getNetAmount());
+    }
+    else {
+    	logger.info("-----------approved3----------");
+    	//fetch the buyer and seller/coin based on transaction
+    	Optional<OrderModel> buyerOp = orderRepo.findById(transaction.getBuyerId());
+    	OrderModel buyer = buyerOp.get();
+    	if(transaction.getSellerId()==0) {
+    		// fetch the currency type
+    		
+    		//update coin initial Supply and stuff
+    		updateCurrency(coin, buyer);
+			createBuyerUpdateWallet(buyer, buyer.getGrossAmount());
+			updateOrderStatusAsCompleted(buyer);
+    	}
+    	else {
+    		logger.info("-----------approved4----------");
+    		Optional<OrderModel> sellerOp = orderRepo.findById(transaction.getSellerId());
+    		OrderModel seller = sellerOp.get();
+				if (seller.getQuantity() == buyer.getQuantity()) {
+					updateOrderStatusAsCompleted(buyer);// buyer order status update
+					updateOrderStatusAsCompleted(seller);// seller order status update
+					createBuyerUpdateWallet(buyer, buyer.getGrossAmount());// buyer wallet update
+					createSellerUpdateWallet(seller, buyer.getGrossAmount()-buyer.getFee());// seller wallet update																		// update
+					updateProfitCurrency(coin, buyer.getFee());// add profit only
+					logger.info("-----------approved------1----");
+					return "sellorder";
+				} else if (seller.getQuantity() > buyer.getQuantity()) {
+					updateOrderStatusAsCompleted(buyer);// buyer order status update
+					createBuyerUpdateWallet(buyer, buyer.getGrossAmount());// buyer wallet update
+					updateOrderQuantity(seller, buyer.getQuantity()); // seller order quantity
+					createSellerUpdateWallet(seller,buyer.getGrossAmount()-buyer.getFee());// seller wallet																					// update
+					updateProfitCurrency(coin, buyer.getFee());// add profit only
+					logger.info("-----------approved1-----2-----");
+					return "success444";
 
+				} else if (seller.getQuantity() < buyer.getQuantity()) {
+					updateOrderQuantity(buyer, seller.getQuantity()); // buy order amount update
+					createBuyerUpdateWallet(buyer, buyer.getGrossAmount());// buyer wallet update
+					updateOrderStatusAsCompleted(seller); // seller order status update
+					createSellerUpdateWallet(seller,buyer.getGrossAmount()-buyer.getFee());// seller wallet
+					updateProfitCurrency(coin, buyer.getFee());// add profit only
+					logger.info("-----------approved1------3----");
+					return "success8888";
+				}
+			}
+    
+			logger.info("----loop running----------");
+		}
+		return "1234567898765432";
+	}
+
+	
+	
+	
+	
+	
 	public Object createTransaction(OrderModel orderModel) throws Exception {
 
 		List<CoinModel> allCurrency = coinRepo.findAll();
@@ -235,14 +318,8 @@ public class TransactionService {
 			logger.info("enter into loop for transaction--------------------------------------");
 			if (coin.getInitialSupply() > orderModel.getQuantity()) {
 				madeTransactionByCoin(orderModel, coin);
-				updateCurrency(coin, orderModel);
-				createBuyerUpdateWallet(orderModel, orderModel.getGrossAmount());
-				updateOrderStatusAsCompleted(orderModel);
 			} else {
 				madeTransactionByCoin(orderModel, coin);
-				updateCurrency(coin, orderModel);
-				createBuyerUpdateWallet(orderModel, orderModel.getGrossAmount());
-				updateOrderQuantity(orderModel, orderModel.getQuantity() - coin.getInitialSupply());
 			}
 
 		}
@@ -378,7 +455,13 @@ public class TransactionService {
 		transactionModel.setGrossAmount((coinModel.getPrice() * buyerModel.getQuantity()) + grossAmount);
 		transactionModel.setNetAmount(buyerModel.getQuantity());
 		transactionModel.setSellerId(coinModel.getCoinId());
-		transactionModel.setStatus("Completed");
+		transactionModel.setStatus("Pending");
+		if(buyerModel.getQuantity()>coinModel.getInitialSupply()) {
+			transactionModel.setCoinQuantity(buyerModel.getQuantity()-coinModel.getInitialSupply());
+		}
+		else {
+			transactionModel.setCoinQuantity(coinModel.getInitialSupply()-buyerModel.getQuantity());
+		}
 		transactionRepo.save(transactionModel);
 	}
 
@@ -396,7 +479,13 @@ public class TransactionService {
 		transactionModel.setGrossAmount((sellerModel.getQuoteValue() * buyerModel.getQuantity()) + grossAmount);
 		transactionModel.setNetAmount(buyerModel.getQuantity());
 		transactionModel.setSellerId(sellerModel.getOrderId());
-		transactionModel.setStatus("Completed");
+		transactionModel.setStatus("Pending");
+		if(buyerModel.getQuantity()>sellerModel.getQuantity()) {
+			transactionModel.setCoinQuantity(buyerModel.getQuantity()-sellerModel.getQuantity());
+		}
+		else {
+			transactionModel.setCoinQuantity(sellerModel.getQuantity()-buyerModel.getQuantity());
+		}
 		transactionRepo.save(transactionModel);
 	}
 
@@ -422,5 +511,23 @@ public class TransactionService {
 		orderModel.setGrossAmount(orderModel.getGrossAmount());
 		orderModel.setUserModel(orderModel.getUserModel());
 		orderRepo.save(orderModel);
+	}
+	
+	public  Object showAllHistory(Integer userId) {
+		logger.info(userId+"------userid-----------");
+		List<TransactionModel>  transactionData1= transactionRepo.findByBuyerIdAndCurrencyType(userId,"fiate");
+	
+		logger.info(transactionData1.size()+"-----------------");
+		List<WalletHistory> wallet = new ArrayList<>();
+		for(TransactionModel transactionData:transactionData1) {
+			WalletHistory walletHistory = new WalletHistory();
+			walletHistory.setDescription(transactionData.getDescription());
+			walletHistory.setNetAmount(transactionData.getNetAmount());
+			walletHistory.setStatus(transactionData.getStatus());
+			walletHistory.setUserId(transactionData.getBuyerId());
+			wallet.add(walletHistory);
+		}
+		
+		return wallet;
 	}
 }
