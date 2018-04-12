@@ -17,17 +17,16 @@ public class TransactionModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer transactionId;
 	private String currencyType;
-	
 	private String status;
 	private Date transactionCreatedOn;
 	private Long netAmount;
 	private Long exchangeRate;
 	private Long transactionFee;
-	
 	private String description;
 	private Integer buyerId;
 	private Integer sellerId;
 	private Long grossAmount;
+	
 	public Integer getTransactionId() {
 		return transactionId;
 	}

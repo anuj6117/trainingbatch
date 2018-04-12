@@ -57,15 +57,30 @@ public class OrderService {
 		if(orderModel.getQuantity()<=0){
 			throw new Exception("Quantity cannot be null");
 		}
+		
 		logger.info(orderModel.getQuoteValue()+"---------");
 		logger.info(orderModel.getQuantity()+"----------");
 		CoinModel coin = coinRepo.findByCoinName(orderModel.getCoinName());
 		if(coin==null) {
 			throw new Exception("Coin Does Not Exists");
 		}
+		
+		Integer flag=0;
+		Optional<UserModel> userOp= userRepo.findById(orderModel.getUserId());
+	
+		Set<WalletModel> walletModel =userOp.get().getUserWallet();
+		
+		for(WalletModel type:walletModel) {
+			if(type.getWalletType().equalsIgnoreCase("fiate")&&type.getShadowBalance()>=orderModel.getQuantity()) {
+				flag=1;
+			}
+		}
+		if(flag==0) {
+			throw new Exception("You cannot place this order either wallet does not exists or you dont have much quantity to place a buy order");
+		}
 		if(userDetail.isPresent()) {//user does not exists
 			if((Utility.isStringNull(orderModel.getCoinName()))) {
-				if((orderModel.getQuantity()>0)) {
+				
 					orderModel.setOrderType("buy");
 					orderModel.setStatus("Pending");
 					orderModel.setUserModel(userDetail.get());
@@ -91,10 +106,6 @@ public class OrderService {
 							walletRepo.save(type);
 						}
 					}
-					
-				}else {
-					throw new Exception("Quantity should br geater than zero");
-				}
 			}
 			else {
 				throw new Exception("Coin Name cannot be null");
@@ -140,7 +151,7 @@ public class OrderService {
 		Set<WalletModel> walletModel =userOp.get().getUserWallet();
 		logger.info(walletModel+"------------------till here--rrr-----------------");
 		for(WalletModel type:walletModel) {
-			if(type.getWalletType().equalsIgnoreCase(orderModel.getCoinName())&&type.getBalance()>=orderModel.getQuantity()) {
+			if(type.getWalletType().equalsIgnoreCase(orderModel.getCoinName())&&type.getShadowBalance()>=orderModel.getQuantity()) {
 				flag=1;
 			}
 		}logger.info("------------------till here-------vv------------");
