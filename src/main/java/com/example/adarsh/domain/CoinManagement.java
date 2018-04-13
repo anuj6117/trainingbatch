@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 
@@ -14,11 +15,39 @@ public class CoinManagement {
 	private Long coinId;
 	private String coinName;
 	private String symbol;
-	private int initialSupply;
+	@NotNull(message="can not be null")
+	private Double initialSupply;
 	private int price;
+	private Double coinInr=0.0;
+	private Double profit=0.0;
+	private int fee;
 
 	public Long getCoinId() {
 		return coinId;
+	}
+
+	public Double getCoinInr() {
+		return coinInr;
+	}
+
+	public void setCoinInr(Double coinInr) {
+		this.coinInr = coinInr;
+	}
+
+	public Double getProfit() {
+		return profit;
+	}
+
+	public void setProfit(Double profit) {
+		this.profit = profit;
+	}
+
+	public int getFee() {
+		return fee;
+	}
+
+	public void setFee(int fee) {
+		this.fee = fee;
 	}
 
 	public void setCoinId(Long coinId) {
@@ -33,8 +62,6 @@ public class CoinManagement {
 		this.coinName = coinName;
 	}
 
-	
-
 	public String getSymbol() {
 		return symbol;
 	}
@@ -43,12 +70,12 @@ public class CoinManagement {
 		this.symbol = symbol;
 	}
 
-	public int getInitialSupply() {
+	public Double getInitialSupply() {
 		return initialSupply;
 	}
 
-	public void setInitialSupply(int initialSupply) {
-		this.initialSupply = initialSupply;
+	public void setInitialSupply(Double newIntialSupply) {
+		this.initialSupply = newIntialSupply;
 	}
 
 	public int getPrice() {

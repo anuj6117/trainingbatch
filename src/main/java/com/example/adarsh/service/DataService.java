@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.adarsh.Dto.AssigneRole;
 import com.example.adarsh.SmsServices.SmsServices;
+import com.example.adarsh.domain.OrderTabel;
 import com.example.adarsh.domain.Role;
 import com.example.adarsh.domain.User;
 import com.example.adarsh.domain.VerifyOtp;
@@ -41,12 +42,15 @@ public class DataService {
 	@Autowired
 	VerifyOtpRepository verifyOtpRepository;
 
-	// .@@@@@@@@@@............USER REGISTRATION.......@@@@@@@@@@................//
-
+	// ****************************************************************************************************************
 	public Map<String, Object> saveUser(User user) {
+
+		System.err.println(
+				"+++++++++++++++++++++++++++++++User Registration++++++++++++++++++++++++++++++++++++++++++++++");
 
 		User user1 = new User();
 		Wallet wallet = new Wallet();
+		OrderTabel orderTabel = new OrderTabel();
 		Random rand = new Random();
 		long leftLimit = 1L;
 		long rightLimit = 10000000000L;
@@ -72,18 +76,20 @@ public class DataService {
 		user1.setDate(date);
 		user1.getWallet().add(wallet);
 		wallet.setUser(user1);
+		// user1.getOrderTabel().add(orderTabel);
+		// orderTabel.setUser(user1);
 
-		List<Wallet> walletList = user1.getWallet();
-		walletList.size();
-		System.out.println("**********" + walletList.size());
+		/*
+		 * List<Wallet> walletList = user1.getWallet(); walletList.size();
+		 * System.out.println("**********" + walletList.size());
+		 */
 
 		// wallet.setUser(user1);
 		userRepository.save(user1);
 
-		// ...@@@@@@@@@@@@@ SEND MAIL AND OTP.....@@@@@@@@@@@............//
-
+		System.err.println("+++++++++++++++++++++++++ Registration mail++++++++++++++++++++++++++++++++++++++++++++++");
 		try {
-			 mailServices.sendMail(user.getEmail());
+			// mailServices.sendMail(user.getEmail());
 			// smsServices.sedSms(otp);
 
 		} catch (Exception e) {
@@ -98,22 +104,16 @@ public class DataService {
 
 	}
 
-	// ..........@@@@@@@@@@@.......FETCH ALL USER LIST..........@@@@@@@@@@@@@//
+	// **********************************************************************************************************
 
 	public List<User> getAllUsers() {
+		System.err.println("+++++++++++++++++++++++++All user list++++++++++++++++++++++++++++++++++++++++++++++");
 		List<User> userList = userRepository.findAll();
-
-		/*
-		 * userList.size(); System.out.println("**********" + userList.size()); for(User
-		 * userListObj: Wallet) {
-		 * 
-		 * }
-		 */
 		if (userList.isEmpty()) {
 			throw new NullPointerException("data not fond");
 		}
 
-		return userRepository.findAll();
+		return userList;
 	}
 
 	/*
@@ -136,23 +136,10 @@ public class DataService {
 	 * roleRepository.findOne(id); return role.getUser(); }
 	 */
 
-	// ..........@@@@@@@@@@..........ASSIGN ROLE..........@@@@@@@@@@@//
+//******************************************************************************************************************
 
-	/*
-	 * public List<Role> asignRole(AssigneRole assigneRole) { String roleids =
-	 * assigneRole.getRoleName(); User user =
-	 * userRepository.findOne(assigneRole.getUserId()); if (user != null) {
-	 * 
-	 * List<Role> result = new ArrayList<>(); for (Long id : roleids) { Role role =
-	 * roleRepository.findOne(id); if (role != null) {
-	 * 
-	 * result.add(role); }
-	 * 
-	 * } user.setRole(result);
-	 * 
-	 * userRepository.save(user); return result; } return null; }
-	 */
 	public User assignRole(AssigneRole assigneRole) {
+		System.err.println("+++++++++++++++++++++++++assigne role++++++++++++++++++++++++++++++++++++++++++++++");
 		User userID = userRepository.findOneByUserId(assigneRole.getUserId());
 		Role roleType = roleRepository.findOneByRoleType(assigneRole.getRoleType());
 		if (userID != null) {
@@ -168,9 +155,11 @@ public class DataService {
 		}
 	}
 
-	// ......@@@@@@@@@@@@@@@.........VERIFY OTP>.........@@@@@@@@@//
+//***************************************************************************************************************
 
 	public String verifyUser(VerifyOtp data) {
+		
+		System.err.println("+++++++++++++++++++++++++ verify otp++++++++++++++++++++++++++++++++++++++++++++++");
 		VerifyOtp verify = verifyOtpRepository.findOneByUserNameAndTokenOtp(data.getUserName(), data.getTokenOtp());
 		if (verify == null)
 			throw new NullPointerException("id not found");
@@ -178,8 +167,11 @@ public class DataService {
 		return "success";
 
 	}
+	
+	//*********************************************************************************************************
 
-	public User getuserById(Long id) {
+	public User getuserById(int id) {
+		System.err.println("+++++++++++++++++++++++++ All user list through id++++++++++++++++++++++++++++++++++++++++++++++");
 		User usrid = userRepository.findByUserId(id);
 		if (usrid != null) {
 			return usrid;
@@ -188,7 +180,11 @@ public class DataService {
 		}
 	}
 
-	public String deleteUser(Long userId) {
+	
+	//***************************************************************************************************************8
+	public String deleteUser(int userId) {
+		
+		System.err.println("+++++++++++++++++++++++++ delete user through id++++++++++++++++++++++++++++++++++++++++++++++");
 		User deleteById = userRepository.findByUserId(userId);
 		if (deleteById != null) {
 			userRepository.delete(deleteById);
@@ -198,7 +194,10 @@ public class DataService {
 		}
 	}
 
-	public User UpdateUser(Long userId, User userDetails) {
+	//**************************************************************************
+	public User UpdateUser(int userId, User userDetails) {
+		
+		System.err.println("+++++++++++++++++++++++++ update user function++++++++++++++++++++++++++++++++++++++++++++++");
 		User usrDetail = userRepository.findByUserId(userId);
 		if (usrDetail != null) {
 			usrDetail.setUserName(userDetails.getUserName());

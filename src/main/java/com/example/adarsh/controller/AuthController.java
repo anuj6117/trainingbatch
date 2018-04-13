@@ -129,7 +129,7 @@ public class AuthController {
 	}
 
 	@RequestMapping(value = "/getbyuserid", method = RequestMethod.GET)
-	public ResponseEntity<Object> getById(@RequestParam("id") Long id) {
+	public ResponseEntity<Object> getById(@RequestParam("id") int id) {
 		User obj = null;
 		try {
 			obj = dataService.getuserById(id);
@@ -151,15 +151,15 @@ public class AuthController {
 	}
 
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
-	public String deletedata(@RequestParam(value = "userId") Long userId) {
-		if (userId != null)
+	public String deletedata(@RequestParam(value = "userId") int userId) {
+		if (userId!= 0)
 			return dataService.deleteUser(userId);
 		else
 			return "id is not exist";
 	}
 
 	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
-	public ResponseEntity<?> updatedata(@RequestParam(value = "userId") Long userId, @RequestBody User userDetails) {
+	public ResponseEntity<?> updatedata(@RequestParam(value = "userId") int userId, @RequestBody User userDetails) {
 		User obj = null;
 		try {
 			obj = dataService.UpdateUser(userId, userDetails);

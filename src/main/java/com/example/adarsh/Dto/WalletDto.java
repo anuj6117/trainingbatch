@@ -2,23 +2,23 @@ package com.example.adarsh.Dto;
 
 public class WalletDto {
 
-	private Long userId;
-	private int balance;
+	private Integer userId;
+	private Double balance;
 	private String walletType;
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
-	public int getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(int balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 

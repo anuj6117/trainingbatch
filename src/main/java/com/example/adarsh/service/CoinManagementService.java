@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.example.adarsh.domain.CoinManagement;
 import com.example.adarsh.repository.CoinManagementRepository;
@@ -17,7 +18,7 @@ public class CoinManagementService {
 	@Autowired
 	CoinManagementRepository coinManagementRepository;
 
-	public CoinManagement addAllCoinData(CoinManagement data) {
+	public CoinManagement addAllCoinData(@Validated CoinManagement data) {
 
 		CoinManagement model = coinManagementRepository.findByCoinName(data.getCoinName());
 

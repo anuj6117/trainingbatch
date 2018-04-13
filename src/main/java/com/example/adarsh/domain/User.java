@@ -5,16 +5,19 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,23 +25,25 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long userId;
-	@Size(min=3,max=20,message="Username length Must be between 3 to 20") 
-	@NotEmpty(message="User name must not be empty") 
-	@NotBlank(message="Space Not Accepted")
+	private Integer userId;
+	@Size(min = 3, max = 20, message = "Username length Must be between 3 to 20")
+	@NotEmpty(message = "User name must not be empty")
+	@NotBlank(message = "Space Not Accepted")
 	private String userName;
+	@Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message = "{invalid.phonenumber}")
+	@Size(min = 10, max = 10)
 	private String phoneNumber;
 	private String country;
 	private String date;
-	@NotEmpty(message ="Email must not be empty") 
-	@Email 
-	@NotBlank(message="Space Not Accepted")
+	@NotEmpty(message = "Email must not be empty")
+	@Email
+	@NotBlank(message = "Space Not Accepted")
 	private String email;
 	@NotEmpty
 	@Size(message = "Password size must be between 4 to 20")
 	private String password;
 
-	@OneToMany(cascade=CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST,mappedBy="userModelInOrderModel",fetch=FetchType.LAZY)
 	@JsonIgnore
 	private List<OrderTabel> orderTabel;
 
@@ -72,11 +77,11 @@ public class User {
 		this.role = role;
 	}
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 

@@ -79,7 +79,7 @@ public class WalletService {
 		for (Wallet getwallettype : walletTypeOfuser) {
 			if (walletDto.getWalletType().equals(getwallettype.getWalletType())) {
 
-				int moneyBalance = getwallettype.getBalance() + walletDto.getBalance();
+				Double moneyBalance = getwallettype.getBalance() + walletDto.getBalance();
 				getwallettype.setBalance(moneyBalance);
 				getwallettype.setShadowBalance(moneyBalance);
 				// getwallettype.setBalance(walletDto.getBalance());
@@ -113,7 +113,7 @@ public class WalletService {
 		for (Wallet getwallettype : walletTypeOfuser) {
 			if (walletDto.getWalletType().equals(getwallettype.getWalletType())) {
 
-				int moneyBalance = getwallettype.getBalance() - walletDto.getBalance();
+				Double moneyBalance = getwallettype.getBalance() - walletDto.getBalance();
 				getwallettype.setBalance(moneyBalance);
 				getwallettype.setShadowBalance(moneyBalance);
 				// getwallettype.setBalance(walletDto.getBalance());

@@ -10,27 +10,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-
+@Table(name = "orderTabel")
 public class OrderTabel {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer orderId;
-	private Float tradingAmount;
-	private Float fee;
+	@NotNull(message = "Amount can't be null")
+	private Double amount;
+	private Double fee;
+	@NotNull(message = "QuoteValue can't be null")
+	private Double quoteValue;
 	private String orderType;
 	private Date orderCreatedOn;
 	private String status = "pending";
+	@NotNull(message = "Coin name can't be null")
+	@NotBlank(message = "Coin name can't be null")
 	private String coinName;
-	private Float quoteValue;
+	private Double grossAmount;
+	@Transient
+	private Integer userId;
 
-	@ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.PERSIST)
-	@JoinColumn(name = "userid")
-	private User user;
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_order_fk")
+	@JsonIgnore
+	private User userModelInOrderModel;
 
 	public Integer getOrderId() {
 		return orderId;
@@ -40,20 +60,36 @@ public class OrderTabel {
 		this.orderId = orderId;
 	}
 
-	public Float getTradingAmount() {
-		return tradingAmount;
+	public Double getAmount() {
+		return amount;
 	}
 
-	public void setTradingAmount(Float tradingAmount) {
-		this.tradingAmount = tradingAmount;
+	public void setAmount(Double amount) {
+		this.amount = amount;
 	}
 
-	public Float getFee() {
+	public Double getFee() {
 		return fee;
 	}
 
-	public void setFee(Float fee) {
+	public void setFee(Double fee) {
 		this.fee = fee;
+	}
+
+	public Double getQuoteValue() {
+		return quoteValue;
+	}
+
+	public void setQuoteValue(Double quoteValue) {
+		this.quoteValue = quoteValue;
+	}
+
+	public Double getGrossAmount() {
+		return grossAmount;
+	}
+
+	public void setGrossAmount(Double grossAmount) {
+		this.grossAmount = grossAmount;
 	}
 
 	public String getOrderType() {
@@ -88,20 +124,12 @@ public class OrderTabel {
 		this.coinName = coinName;
 	}
 
-	public Float getQuoteValue() {
-		return quoteValue;
+	public User getUserModelInOrderModel() {
+		return userModelInOrderModel;
 	}
 
-	public void setQuoteValue(Float quoteValue) {
-		this.quoteValue = quoteValue;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserModelInOrderModel(User userModelInOrderModel) {
+		this.userModelInOrderModel = userModelInOrderModel;
 	}
 
 }

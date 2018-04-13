@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.example.adarsh.constant.WalletEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,8 +19,10 @@ public class Wallet {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer walletId;
-	private Integer balance=0;
-	private Integer shadowBalance=0;
+	private Double balance=0.0;
+	private Double shadowBalance=0.0;
+	@NotEmpty(message = "walletType  must not be empty")
+	@NotBlank(message = "Space Not Accepted")
 	private String walletType=WalletEnum.fiat.toString();
 	private Long randomId;
 	
@@ -43,19 +48,21 @@ public class Wallet {
 		this.walletId = walletId;
 	}
 
-	public Integer getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Integer balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 
-	public Integer getShadowBalance() {
+	
+
+	public Double getShadowBalance() {
 		return shadowBalance;
 	}
 
-	public void setShadowBalance(Integer shadowBalance) {
+	public void setShadowBalance(Double shadowBalance) {
 		this.shadowBalance = shadowBalance;
 	}
 
