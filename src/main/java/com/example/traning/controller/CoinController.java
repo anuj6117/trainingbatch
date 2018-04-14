@@ -19,6 +19,7 @@ import com.example.traning.utill.CustomExceptionhandler;
 @RestController
 //@RequestMapping("/tranapi")
 public class CoinController {
+
 	
 	@Autowired
 	CoinService coinservice;
