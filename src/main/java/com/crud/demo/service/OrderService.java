@@ -1,6 +1,7 @@
 package com.crud.demo.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +15,6 @@ import com.crud.demo.jpaRepositories.CoinManagementJpaRepository;
 import com.crud.demo.jpaRepositories.OrderJpaRepository;
 import com.crud.demo.jpaRepositories.UserJpaRepository;
 import com.crud.demo.jpaRepositories.UserWalletJpaRepository;
-import com.crud.demo.model.CoinManagement;
 import com.crud.demo.model.Orders;
 import com.crud.demo.model.User;
 import com.crud.demo.model.UserWallet;
@@ -60,7 +60,7 @@ public class OrderService {
 		}
 		LOGGER.info("OrderService:::createBuyingOrder::::before checking user is null or not");
 		Set<String> existingCurrency =coinManagementJpaRepository.findByCoinName();
-		if((user!=null)&& userAlreadyWallets.containsKey(order.getCoinName())&&(existingCurrency.contains(order.getCoinName())))
+		if((user!=null)&&(user.getStatus())&& userAlreadyWallets.containsKey(order.getCoinName())&&(existingCurrency.contains(order.getCoinName())))
 		{   
 			LOGGER.info("OrderService:::createBuyingOrder::::before calculation");
 			Integer tradingAmount=order.getCoinQuantity()*order.getQuoteValue();
@@ -81,16 +81,25 @@ public class OrderService {
 /******/   if(isSuccess)//automatic update in userWallet
 		   {  
 		  /*if(userWalletAutomaticUpdation.getBalance()>grossAmount)*/
-		   Integer newShadowBalance=userWalletAutomaticUpdation.getBalance()-grossAmount;
-		    userWalletAutomaticUpdation.setShadowBalance(newShadowBalance);
+		   Integer newShadowBalance=userWalletAutomaticUpdation.getShadowBalance()-grossAmount;
+		   if(userWalletAutomaticUpdation.getShadowBalance()>=grossAmount) { 
+		   userWalletAutomaticUpdation.setShadowBalance(newShadowBalance);
 		    userJpaRepository.save(user);
 		    map.put("Result","Buying Order placed successfully");
 		    map.put("isSuccess", isSuccess);
 		    LOGGER.info("OrderService:::createBuyingOrder::::Buying Order placed successfully");
-/******/   }}
+/******/   }
+		   }else
+		   {
+			   map.put("Result","Not sufficent balance");
+				map.put("isSuccess", isSuccess);
+				LOGGER.error("OrderService:::createBuyingOrder::::Unable to place Buying order");
+		   }
+		   }
 		
 		}
-		else if((user!=null)&& !userAlreadyWallets.containsKey(order.getCoinName())&&(existingCurrency.contains(order.getCoinName()))){
+		else if((user!=null)&&(user.getStatus())&& !userAlreadyWallets.containsKey(order.getCoinName())&&(existingCurrency.contains(order.getCoinName())))
+		{
 			UserWalletDTO userWalletDTO=new UserWalletDTO();
 			userWalletDTO.setUserId(order.getUserId());
 			userWalletDTO.setWalletType(order.getCoinName());
@@ -107,20 +116,28 @@ public class OrderService {
 		    {
 			order.setOrderType("buy");
 		    user.getOrders().add(order);
-		   
+		    order.setUser(user);
 		   userJpaRepository.save(user);
 		   LOGGER.info("OrderService:::createBuyingOrder::::order saved successfully");
 		   isSuccess=true;
 /******/   if(isSuccess)//automatic update in userWallet
 		   {  
 		  /*if(userWalletAutomaticUpdation.getBalance()>grossAmount)*/
-		    Integer newShadowBalance=userWalletAutomaticUpdation.getBalance()-grossAmount;
+		    Integer newShadowBalance=userWalletAutomaticUpdation.getShadowBalance()-grossAmount;
+		    if(userWalletAutomaticUpdation.getShadowBalance()>=grossAmount) {
 		    userWalletAutomaticUpdation.setShadowBalance(newShadowBalance);
 		    userJpaRepository.save(user);
 		    map.put("Result","Buying Order placed successfully");
 		    map.put("isSuccess", isSuccess);
 		    LOGGER.info("OrderService:::createBuyingOrder::::Buying Order placed successfully");
-/******/   }	
+/******/   }
+		    else
+		    {
+		    	map.put("Result","Not sufficent balance");
+				map.put("isSuccess", isSuccess);
+				LOGGER.error("OrderService:::createBuyingOrder::::Unable to place Buying order");
+		    }
+		    }	
 		}
 		else
 		{
@@ -128,6 +145,12 @@ public class OrderService {
 			map.put("isSuccess", isSuccess);
 			LOGGER.error("OrderService:::createBuyingOrder::::Unable to place Buying order");
 		}}
+		else
+		{
+			map.put("Result","Unable to place Buying order");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("OrderService:::createBuyingOrder::::Unable to place Buying order");
+		}
 		return map;
 	}
 	
@@ -211,20 +234,62 @@ public class OrderService {
 	}
 /*	
 	
-	*//*****************************************************************************************//*
+	/*****************************************************************************************/
 	public Map<String, Object> getAllBuyingOrders() {
 		LOGGER.info("OrderService:::getAllBuyingOrders::::method hit");
+		Boolean isSuccess=false;
 		Map<String, Object> map=new HashMap<>();
+		List<Orders> listBuyOrders=orderJpaRepository.findAllByOrderType("buy");
+				if(listBuyOrders!=null)
+				{
+					map.put("Result",listBuyOrders);
+					map.put("isSuccess", true);
+				}else
+				{
+					map.put("Result","Buy order list empty");
+					map.put("isSuccess", isSuccess);
+					LOGGER.error("OrderService:::getAllBuyingOrders::::Buy order list empty");
+				}
 		return map;
 	}
-	*//*****************************************************************************************//*
+	/*****************************************************************************************/
 
 	public Map<String, Object> getAllSellingOrders() {
 		LOGGER.info("OrderService:::getAllSellingOrders::::method hit");
+		Boolean isSuccess=false;
 		Map<String, Object> map=new HashMap<>();
+		List<Orders> listSellOrders=orderJpaRepository.findAllByOrderType("sell");
+		if(listSellOrders!=null)
+		{
+			map.put("Result",listSellOrders);
+			map.put("isSuccess", true);
+		}else
+		{
+			map.put("Result","Sell order list empty");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("OrderService:::getAllBuyingOrders::::Sell order list empty");
+		}
 		return map;
 	}
-*/
+/*******************************************************************************/
+	public Map<String, Object> getAllOrders() {
+		LOGGER.info("OrderService:::getAllOrders::::method hit");
+		Boolean isSuccess=false;
+		Map<String, Object> map=new HashMap<>();
+		List<Orders> listOrders=orderJpaRepository.findAll();
+		if(listOrders!=null)
+		{
+			map.put("Result",listOrders);
+			map.put("isSuccess", true);
+		}else
+		{
+			map.put("Result"," order list empty");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("OrderService:::getAllBuyingOrders::::Sell order list empty");
+		}
+		return map;
+	}
+
 	
 
 }

@@ -9,5 +9,6 @@ import com.crud.demo.model.Orders;
 public interface OrderJpaRepository extends JpaRepository<Orders,Integer>{
 	
 	public List<Orders> findAllByStatusAndOrderType(String status,String orderType);
+	public List<Orders> findAllByOrderType(String orderType);
 
 }

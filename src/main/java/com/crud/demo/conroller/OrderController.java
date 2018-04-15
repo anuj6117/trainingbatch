@@ -90,9 +90,9 @@ public class OrderController {
 
 	}
 
-/*
-	*//*****************************************************************************************//*
-	@RequestMapping(value = "/")
+
+	/*****************************************************************************************/
+	@RequestMapping(value = "/getallsellingorders")
 	public ResponseEntity<Object> getAllSellingOrders() {
 		LOGGER.info("Message on OrderController (getAllSellingOrders):::::::::::::::::controller hit");
 		Map<String, Object> map = null;
@@ -113,8 +113,8 @@ public class OrderController {
 
 	}
 
-	*//*****************************************************************************************//*
-	@RequestMapping(value = "/")
+	/*****************************************************************************************/
+	@RequestMapping(value = "/getallbuyingorders")
 	public ResponseEntity<Object> getAllBuyingOrders() {
 		LOGGER.info("Message on OrderController (getAllBuyingOrders):::::::::::::::::controller hit");
 		Map<String, Object> map = null;
@@ -133,6 +133,6 @@ public class OrderController {
 
 		}
 
-	}*/
+	}
 
 }

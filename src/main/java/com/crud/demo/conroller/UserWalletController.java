@@ -10,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.demo.custom.responcsehandler.ResponseHandler;
 import com.crud.demo.dto.UserWalletDTO;
+import com.crud.demo.model.Transaction;
 /*import com.crud.demo.dto.UserWalletDTO;*/
 import com.crud.demo.model.User;
 import com.crud.demo.service.UserWalletService;
@@ -79,7 +81,7 @@ public class UserWalletController {
 		System.out.println("controller hit");
 		/* user.getRole().forEach(role->role.setUser(user)); important */
 		try {
-			map = userWalletService.depositAmount(userWalletDTO);
+			map = userWalletService.depositAmountRequest(userWalletDTO);
 			if (map.get("isSuccess").equals(true)) {
 				map.remove("isSuccess", true);
 				return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
@@ -90,6 +92,48 @@ public class UserWalletController {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
 
 		}
+
+	}
+	
+	/*************************************************************************************/
+	@RequestMapping(value = "/walletHistory", method = RequestMethod.POST)
+	public ResponseEntity<Object> walletHistory(@RequestBody UserWalletDTO userWalletDTO) {
+		LOGGER.info("Message on UserWalletController :::::::::::::::::controller hit");
+		Map<String, Object> map = null;
+		System.out.println("controller hit wallet history");
+		/* user.getRole().forEach(role->role.setUser(user)); important */
+		try {
+			map = userWalletService.walletHistory(userWalletDTO);
+			if (map.get("isSuccess").equals(true)) {
+				map.remove("isSuccess", true);
+				return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
+			} else {
+				return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
+			}
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
+
+		}
+	}
+		/*************************************************************************************/
+		@RequestMapping(value = "/approveWalletTransactionOrNot", method = RequestMethod.POST)
+		public ResponseEntity<Object> approveWalletTransactionOrNot(@RequestBody Transaction transaction) {
+			LOGGER.info("Message on UserWalletController :::::::::::::::::controller hit");
+			Map<String, Object> map = null;
+			System.out.println("controller hit approveWalletTransactionOrNot");
+			/* user.getRole().forEach(role->role.setUser(user)); important */
+			try {
+				map = userWalletService.approveWalletTransactionOrNot(transaction);
+				if (map.get("isSuccess").equals(true)) {
+					map.remove("isSuccess", true);
+					return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
+				} else {
+					return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
+				}
+			} catch (Exception e) {
+				return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
+
+			}
 
 	}
 }

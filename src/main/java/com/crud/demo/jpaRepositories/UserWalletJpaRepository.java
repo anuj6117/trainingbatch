@@ -17,6 +17,10 @@ UserWallet findByIdAndWalletType(@Param("id") Integer id,@Param("walletType") St
 
 
 
-UserWallet findByWalletType(String walletType);
+       UserWallet findByWalletType(String walletType);
+       
+       
+       
+       
 
 }

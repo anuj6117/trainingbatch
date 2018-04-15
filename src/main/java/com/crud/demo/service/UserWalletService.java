@@ -1,7 +1,10 @@
 package com.crud.demo.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,8 +15,10 @@ import org.springframework.stereotype.Service;
 import com.crud.demo.dto.UserWalletDTO;
 import com.crud.demo.enums.WalletType;
 import com.crud.demo.jpaRepositories.CoinManagementJpaRepository;
+import com.crud.demo.jpaRepositories.TransactionJpaRepository;
 import com.crud.demo.jpaRepositories.UserJpaRepository;
 import com.crud.demo.jpaRepositories.UserWalletJpaRepository;
+import com.crud.demo.model.Transaction;
 import com.crud.demo.model.User;
 import com.crud.demo.model.UserWallet;
 
@@ -27,6 +32,8 @@ public class UserWalletService {
 	private UserJpaRepository userJpaRepository;
 	@Autowired
 	private CoinManagementJpaRepository coinManagementJpaRepository;
+	@Autowired
+	private TransactionJpaRepository transactionJpaRepository;
 	
 	 Boolean walletTypeExistInEnumOrNot;//default
 	  Boolean walletTypeAlreadyAddedOrNot;//default
@@ -198,4 +205,127 @@ public class UserWalletService {
 		}
 		return map;
 	}
+	
+	/***********************to fetch user wallet deposit history****************/
+	public Map<String, Object> walletHistory(UserWalletDTO userWalletDTO) {
+		LOGGER.info("Message on service ::::::::::::::::History service hit");
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = false;
+		User user = userJpaRepository.findOne(userWalletDTO.getUserId());// to get all wallets of user
+		Set<UserWallet> userExistingAllWallets=user.getUserWallet();
+		Set<String> userExistingAllWalletTypes=new HashSet<>();
+		for(UserWallet u:userExistingAllWallets)
+		{
+			userExistingAllWalletTypes.add(u.getWalletType());
+		}
+		LOGGER.info("Message on service ::::::::::::::::History service before if");
+		if(userExistingAllWalletTypes.contains(userWalletDTO.getWalletType()))
+		{  
+			LOGGER.info("Message on service ::::::::::::::::History service if part");
+			List<Transaction> listWalletTransaction=transactionJpaRepository.findByBuyerId(userWalletDTO.getUserId());
+			/*List<Transaction> fileredListWalletTransaction=new ArrayList<>();
+			for(Transaction t:listWalletTransaction)
+			{
+				Transaction t=new Transaction();
+			}*/
+			map.put("Result",listWalletTransaction);
+			map.put("isSuccess", true);
+			LOGGER.info("Message on service ::::::::::::::::History fetched successfully");
+		}
+		else
+		{
+			LOGGER.info("Message on service ::::::::::::::::History service else part");
+			map.put("Result", "No list found or no wallet type exist");
+			map.put("isSuccess", isSuccess);
+			LOGGER.info("Message on service ::::::::::::::::No list found or no wallet type exist");
+		}
+		return map;
+	}
+	
+	/*************************************to approve or not************************************************/
+	public Map<String, Object> approveWalletTransactionOrNot(Transaction transaction) {
+		LOGGER.info("Message on service ::::::::::::::::approveWalletTransactionOrNot hit");
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = false;
+		/*User user = userJpaRepository.findOne(transactionId);*/// to get all wallets of user
+		Transaction existingTransaction=transactionJpaRepository.findOne(transaction.getTransactionId());;
+		User user=null;
+		UserWallet userWallet=null;
+		user=userJpaRepository.findOne(existingTransaction.getBuyerId());
+		for(UserWallet usWallet:user.getUserWallet())
+		{
+			if(("fiate").equals(usWallet.getWalletType()))
+			{
+				userWallet=usWallet;
+				break;
+			}
+		}
+		LOGGER.info("Message on service ::::::::::::::::before if{}::::::",transaction.getStatus());
+		if(("approved").equalsIgnoreCase(transaction.getStatus())&&("pending").equalsIgnoreCase(existingTransaction.getStatus()))
+		{
+			LOGGER.info("Message on service ::::::::::::::::if part");
+			existingTransaction.setStatus(transaction.getStatus());
+			userWallet.setBalance(userWallet.getBalance()+existingTransaction.getNetAmount());
+			userWallet.setShadowBalance(userWallet.getShadowBalance()+existingTransaction.getNetAmount());
+			map.put("Result","Amount saved successfully");
+			map.put("isSuccess", true);
+			LOGGER.info("Message on service ::::::::::::::::Amount saved successfully");
+		}
+		else if(("cancel").equalsIgnoreCase(transaction.getStatus())||("disapproved").equalsIgnoreCase(transaction.getStatus()))
+		{
+			LOGGER.info("Message on service ::::::::::::::::else part");
+			existingTransaction.setStatus(transaction.getStatus());
+			map.put("Result","transaction cancelled or disapproved");
+			map.put("isSuccess", true);
+			LOGGER.info("Message on service ::::::::::::::::transaction cancelled or disapproved");
+		}
+		else
+		{
+			map.put("Result","status value in appropriate");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("Message on service ::::::::::::::::status value in appropriate");
+		}
+		userWalletJpaRepository.save(userWallet);
+		transactionJpaRepository.save(existingTransaction);
+		return map;
+	}
+	/*******************************************************************************/
+	public Map<String, Object> depositAmountRequest(UserWalletDTO userWalletDTO) {
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = false;
+		Integer flagWalletType = 0;
+		UserWallet existingUserWallet = null;
+		User user = userJpaRepository.findOne(userWalletDTO.getUserId());// to get all wallets of user
+		for (UserWallet testUserWallet : user.getUserWallet())// to check coming wallet exist or not
+		{
+			if (userWalletDTO.getWalletType().equals(testUserWallet.getWalletType())) {
+				flagWalletType = 1;
+				existingUserWallet = userWalletJpaRepository.findByWalletIdAndWalletType(testUserWallet.getWalletId(),testUserWallet.getWalletType());
+			}
+		}
+		System.out.println("::::::::::" + existingUserWallet);
+		if ((existingUserWallet != null) && (flagWalletType == 1)) {
+			/*Integer newBalance = existingUserWallet.getBalance() + userWalletDTO.getAmount();*/
+			Transaction transaction=new Transaction();
+			transaction.setBuyerId(user.getUserId());
+			transaction.setNetAmount(userWalletDTO.getAmount());
+			transaction.setStatus("pending");
+			transaction.setDescription("Deposit transaction");
+			transaction.setTransactionCreatedOn(new Date());
+			transactionJpaRepository.save(transaction);
+			/*existingUserWallet.setBalance(newBalance);
+			existingUserWallet.setShadowBalance(newBalance+existingUserWallet.getShadowBalance());
+			userWalletJpaRepository.save(existingUserWallet);*/
+			map.put("Result", "Pending transaction placed successfully");
+			map.put("isSuccess", true);
+			LOGGER.info("Message on service ::::::::::::::::Pending transaction placed successfully");
+		} 
+		else {
+			map.put("Result", "Unable to place transaction");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("Message on service ::::::::::::::::Unable to place transaction");
+		}
+		return map;
+	}
+	
 }
