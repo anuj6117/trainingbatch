@@ -100,7 +100,7 @@ public class OrderService {
 							if(type.getBalance()<orderModel.getGrossAmount()) {
 								throw new Exception(Constant.LOW_BALANCE);
 							}
-							Float shadowUpdate =type.getBalance()-orderModel.getGrossAmount();
+							Long shadowUpdate =type.getShadowBalance()-orderModel.getGrossAmount();
 							orderRepo.save(orderModel);
 							type.setShadowBalance(shadowUpdate);
 							walletRepo.save(type);
@@ -173,13 +173,29 @@ public class OrderService {
 					orderModel.setQuoteValue(orderModel.getQuoteValue());
 					orderModel.setCoinName(orderModel.getCoinName());
 					logger.info(orderModel.getGrossAmount()+"---------------");
-					
+					Integer temp=0,tap=0;
 					//update this users default wallets shadow balance
 					Set<WalletModel> walletSet = userDetail.get().getUserWallet();
 					for(WalletModel type:walletSet) {
 						if(type.getWalletType().equals(Constant.FIATE)) {
-							orderRepo.save(orderModel);
+							temp=1;
 						}
+						if(type.getWalletType().equalsIgnoreCase("bitcoin")){
+							if(type.getBalance()<orderModel.getQuantity()) {
+								throw new Exception(Constant.LOW_BALANCE);
+							}
+							Long shadowUpdate =type.getShadowBalance()-orderModel.getQuantity();
+							orderRepo.save(orderModel);
+							type.setShadowBalance(shadowUpdate);
+							walletRepo.save(type);
+							tap=1;
+						}
+					}
+					if(temp==0) {
+						throw new Exception("Fiat wallet does not exist");
+					}
+					if(tap==0) {
+						throw new Exception("Wallet does not exist");
 					}
 					
 				}else {

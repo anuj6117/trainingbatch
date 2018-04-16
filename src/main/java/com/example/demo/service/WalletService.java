@@ -39,11 +39,11 @@ public class WalletService {
 		walletModel.setWalletId(generateId());
 		walletRepo.save(walletModel);
 	}
-
+/*
 	public List<WalletModel> withdrawWallet(int walletId, float amount) {
 		Optional<WalletModel> walletOp = walletRepo.findById(walletId);
-		float balance = walletOp.get().getBalance();
-		float newBal = balance - amount;
+		Long balance = walletOp.get().getBalance();
+		Long newBal = balance - amount;
 		walletOp.get().setBalance(newBal);
 		walletRepo.save(walletOp.get());
 		List<WalletModel> walletDetails = new ArrayList<WalletModel>();
@@ -53,14 +53,14 @@ public class WalletService {
 
 	public List<WalletModel> depositWallet(int walletId, float amount) {
 		Optional<WalletModel> walletOp = walletRepo.findById(walletId);
-		float balance = walletOp.get().getBalance();
-		float newBal = balance + amount;
+		Long balance = walletOp.get().getBalance();
+		Long newBal = balance + amount;
 		walletOp.get().setBalance(newBal);
 		walletRepo.save(walletOp.get());
 		List<WalletModel> walletDetails = new ArrayList<WalletModel>();
 		walletRepo.findAll().forEach(walletDetails::add);
 		return walletDetails;
-	}
+	}*/
 	
 	public Object addAmountIntoWallet1(Integer buyerId, String currencyType,Long netAmount)throws Exception {
 		WalletModel wallet=new WalletModel();

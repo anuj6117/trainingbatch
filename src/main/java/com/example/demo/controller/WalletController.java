@@ -34,12 +34,12 @@ public class WalletController {
 		walletService.addWallet(walletModel);
 	}
 
-	@RequestMapping(value = "/withdraw/{id}/{amount}", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/withdraw/{id}/{amount}", method = RequestMethod.POST)
 	public void withdraw(@PathVariable(value = "id") int walletId, @PathVariable(value = "amount") float amount) {
 		walletService.withdrawWallet(walletId, amount);
-	}
+	}*/
 
-	@RequestMapping(value = "/depositinranoumt", method = RequestMethod.POST)
+	@RequestMapping(value = "/depositinramount", method = RequestMethod.POST)
 	public ResponseEntity<Object> deposit(@RequestBody INRDepositDTO inrDepositDTO) {
 	 Object response;
 		try {

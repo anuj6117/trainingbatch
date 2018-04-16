@@ -276,6 +276,11 @@ public class UserService implements UserDetailsService {
 		RoleModel roleOp = roleRepo.findByRoleType(roleType);
 		Optional<UserModel> userData = userRepo.findById(userid);
 		UserModel userModel = userData.get();
+		if(userData.isPresent()) {
+		
+		}else {
+			throw new Exception("user does not exists");
+		}
 
 		if (roleOp != null) {
 			Set<RoleModel> role = userModel.getRoleType();
@@ -381,11 +386,23 @@ public class UserService implements UserDetailsService {
 
 	public Object withdrawAmountFromWallet(Integer userid, Integer amount, String walletType) throws Exception{
 		WalletModel wallet=new WalletModel();
-		if(!(PasswordValidation.positiveNumberValidation(amount))) {
+		
+		if(walletType.equalsIgnoreCase(null)||walletType.equalsIgnoreCase("")) {
+			throw new Exception("wallet Type cannot be null!!");
+		}
+		if(amount==null) {
+			throw new Exception("Amount cannot be null!!");
+		}
+		if(amount<=0) {
 			throw new Exception("Cannot Withdraw Negative Amount!!");
 		}
 		Integer flag=0;
 		Optional<UserModel> userModel = userRepo.findById(userid);
+		if(userModel.isPresent()) {
+			
+		}else {
+			throw new Exception("User Id does not exists!!");
+		}
 		logger.info(userModel.get().getUserName()+"-------");
 		Set<WalletModel> walletModel =  userModel.get().getUserWallet();
 		if(walletModel!=null) {
@@ -397,9 +414,13 @@ public class UserService implements UserDetailsService {
 				flag=1;
 				logger.info(type.getWalletType()+"wallet------------------");
 				wallet = type;
+				break;
 			}
 		}
 		if(flag==1) {
+			if(wallet.getBalance()<amount) {
+				throw new Exception("Cannot withdraw, low on balance!!");
+			}
 			wallet.setBalance(wallet.getBalance() - amount);
 			wallet.setShadowBalance(wallet.getBalance());
 			walletRepo.save(wallet);
@@ -436,6 +457,11 @@ public class UserService implements UserDetailsService {
 			throw new Exception("You cannot update email");
 		}
 		if (userOp.isPresent()) {
+			logger.info(u.getUserName()+"-------user name---------");
+			logger.info(u.getCountry()+"-------user name---------");
+			logger.info(u.getEmail()+"-------user name---------");
+			logger.info(u.getPhoneNumber()+"-------user name---------");
+			logger.info(u.getPassword()+"-------user name---------");
 			userOp.get().setUserName(u.getUserName());
 			userOp.get().setCountry(u.getCountry());
 			userOp.get().setEmail(u.getEmail());

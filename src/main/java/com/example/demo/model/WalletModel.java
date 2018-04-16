@@ -20,8 +20,8 @@ public class WalletModel {
 	private int walletId;
 	@NotNull
 	private int userIdW;
-	private float balance = 0;
-	private float shadowBalance=0;
+	private Long balance = 0l;
+	private Long shadowBalance=0l;
 	private String walletType = WalletEnum.Fiate.toString();
 	private int walletHash;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -53,16 +53,16 @@ public class WalletModel {
 	public void setUserIdW(int userId) {
 		this.userIdW = userId;
 	}
-	public float getBalance() {
+	public Long getBalance() {
 		return balance;
 	}
-	public void setBalance(float balance) {
+	public void setBalance(Long balance) {
 		this.balance = balance;
 	}
-	public float getShadowBalance() {
+	public Long getShadowBalance() {
 		return shadowBalance;
 	}
-	public void setShadowBalance(float shadowBalance) {
+	public void setShadowBalance(Long shadowBalance) {
 		this.shadowBalance = shadowBalance;
 	}
 	public String getWalletType() {
