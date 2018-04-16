@@ -60,7 +60,10 @@ public class OrderService {
 		}
 		LOGGER.info("OrderService:::createBuyingOrder::::before checking user is null or not");
 		Set<String> existingCurrency =coinManagementJpaRepository.findByCoinName();
-		if((user!=null)&&(user.getStatus())&& userAlreadyWallets.containsKey(order.getCoinName())&&(existingCurrency.contains(order.getCoinName())))
+		if((user!=null)&&(user.getStatus())
+				&& userAlreadyWallets.containsKey(order.getCoinName())
+				&&(existingCurrency.contains(order.getCoinName()))
+				&&(order.getCoinQuantity()>0)&&order.getQuoteValue()>0)
 		{   
 			LOGGER.info("OrderService:::createBuyingOrder::::before calculation");
 			Integer tradingAmount=order.getCoinQuantity()*order.getQuoteValue();
@@ -98,7 +101,11 @@ public class OrderService {
 		   }
 		
 		}
-		else if((user!=null)&&(user.getStatus())&& !userAlreadyWallets.containsKey(order.getCoinName())&&(existingCurrency.contains(order.getCoinName())))
+		else if((user!=null)&&(user.getStatus())
+				&& !userAlreadyWallets.containsKey(order.getCoinName())
+				&&(existingCurrency.contains(order.getCoinName()))
+				&&(order.getCoinQuantity()>0)
+				&&order.getQuoteValue()>0)
 		{
 			UserWalletDTO userWalletDTO=new UserWalletDTO();
 			userWalletDTO.setUserId(order.getUserId());
@@ -167,7 +174,9 @@ public class OrderService {
 			userAlreadyWallets.put(userWallet.getWalletType(),userWallet.getWalletId());
 		}
 		LOGGER.info("OrderService:::createSellingOrder::::before checking user is null or not");
-		if((user!=null)&& userAlreadyWallets.containsKey(order.getCoinName()))
+		if((user!=null)&& userAlreadyWallets.containsKey(order.getCoinName())
+				&&(order.getCoinQuantity()>0)
+				&&order.getQuoteValue()>0)
 		{   
 			LOGGER.info("OrderService:::createSellingOrder::::before calculation");
 			Integer tradingAmount=order.getCoinQuantity()*order.getQuoteValue();
@@ -175,7 +184,7 @@ public class OrderService {
 			order.setGrossAmount(grossAmount);
 			UserWallet userWalletAutomaticUpdation=userWalletJpaRepository.findOne(userAlreadyWallets.get(order.getCoinName()));
 			 LOGGER.info("OrderService:::before save::::{}{}{}",tradingAmount,grossAmount,userWalletAutomaticUpdation.getBalance());
-			if(userWalletAutomaticUpdation.getBalance()>=order.getCoinQuantity()) {
+			if(userWalletAutomaticUpdation.getShadowBalance()>=order.getCoinQuantity()) {
 			order.setOrderType("sell");
 		    user.getOrders().add(order);
 		   order.setUser(user);
@@ -185,7 +194,7 @@ public class OrderService {
 /******/   if(isSuccess)//automatic update in userWallet
 		   {  
 		  /*if(userWalletAutomaticUpdation.getBalance()>grossAmount)*/
-		    Integer newShadowBalance=userWalletAutomaticUpdation.getBalance()-order.getCoinQuantity();
+		    Integer newShadowBalance=userWalletAutomaticUpdation.getShadowBalance()-order.getCoinQuantity();
 		    userWalletAutomaticUpdation.setShadowBalance(newShadowBalance);
 		    //fiate wallet automatic updation
 		    

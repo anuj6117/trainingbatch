@@ -226,16 +226,16 @@ public class ServiceTransaction {
 				}
 			}
 			System.out.println("In seller wallet updation:::orderSell.getQuoteValue():::is:::"+orderSell.getQuoteValue());
-			if(pendingQuantity==0)
+			if(pendingQuantity==0) //full settlement with current seller
 			{  Integer selledQuantity=orderSell.getCoinQuantity()-pendingQuantity;
 			   Integer inrConvergence=selledQuantity*orderSell.getQuoteValue();
 				userWalletNew.setBalance(userWalletNew.getShadowBalance());
 				userWalletFiate.setBalance(userWalletFiate.getBalance()+inrConvergence);
 				userWalletFiate.setShadowBalance(userWalletFiate.getShadowBalance()+inrConvergence);
 			}
-			else //if pendingQuantity>0
+			else //if pendingQuantity>0 //No fully settled with current seller
 			{
-				Integer selledQuantity=orderSell.getCoinQuantity()-pendingQuantity;
+				Integer selledQuantity=orderSell.getCoinQuantity();
 				Integer inrConvergence=selledQuantity*orderSell.getQuoteValue();
 				Integer newShadowBalance=userWalletNew.getShadowBalance();
 				userWalletNew.setBalance(userWalletNew.getBalance()-selledQuantity);
@@ -314,18 +314,17 @@ public class ServiceTransaction {
     	else if(("user").equals(transactionWithAdminOrUser)) // if normal user
     	{  
     		if(pendingQuantity==0)
-    		{
-    			Integer moreProfit=(cloneBuyOrders.getCoinQuantity()*cloneBuyOrders.getQuoteValue())*2/100;
+    		{   Integer purchasedQuantity=cloneBuyOrders.getCoinQuantity()-pendingQuantity;
+    			Integer moreProfit=(purchasedQuantity*cloneBuyOrders.getQuoteValue())*2/100;
     			coinManagement.setProfit(coinManagement.getProfit()+moreProfit);
-    			Integer purchasedQuantity=cloneBuyOrders.getCoinQuantity();
+    			
     			Integer newINRConvergent=updatedCoinManagement.getINRConvergent()+((purchasedQuantity*cloneBuyOrders.getQuoteValue())-(purchasedQuantity*orderSell.getQuoteValue()));
     			updatedCoinManagement.setINRConvergent(newINRConvergent);
     		}
     		else //if pendingQuantity>0
-    		{
-    			Integer moreProfit=	(coinManagement.getInitialSupply()*cloneBuyOrders.getQuoteValue())*2/100;
+    		{   Integer purchasedQuantity=cloneBuyOrders.getCoinQuantity()-pendingQuantity;
+    			Integer moreProfit=	(purchasedQuantity*cloneBuyOrders.getQuoteValue())*2/100;//bug
     			coinManagement.setProfit(coinManagement.getProfit()+moreProfit);
-    			Integer purchasedQuantity=cloneBuyOrders.getCoinQuantity();
     			Integer newINRConvergent=updatedCoinManagement.getINRConvergent()+((purchasedQuantity*cloneBuyOrders.getQuoteValue())-(purchasedQuantity*orderSell.getQuoteValue()));
     			updatedCoinManagement.setINRConvergent(newINRConvergent);
     		}

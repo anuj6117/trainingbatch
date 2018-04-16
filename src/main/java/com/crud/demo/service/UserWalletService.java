@@ -271,7 +271,7 @@ public class UserWalletService {
 			map.put("isSuccess", true);
 			LOGGER.info("Message on service ::::::::::::::::Amount saved successfully");
 		}
-		else if(("cancel").equalsIgnoreCase(transaction.getStatus())||("disapproved").equalsIgnoreCase(transaction.getStatus()))
+		else if((("cancel").equalsIgnoreCase(transaction.getStatus())||("disapproved").equalsIgnoreCase(transaction.getStatus()))&&(!("approved").equalsIgnoreCase(existingTransaction.getStatus())))
 		{
 			LOGGER.info("Message on service ::::::::::::::::else part");
 			existingTransaction.setStatus(transaction.getStatus());
@@ -281,9 +281,9 @@ public class UserWalletService {
 		}
 		else
 		{
-			map.put("Result","status value in appropriate");
+			map.put("Result","status value inappropriate");
 			map.put("isSuccess", isSuccess);
-			LOGGER.error("Message on service ::::::::::::::::status value in appropriate");
+			LOGGER.error("Message on service ::::::::::::::::status value inappropriate");
 		}
 		userWalletJpaRepository.save(userWallet);
 		transactionJpaRepository.save(existingTransaction);
@@ -304,7 +304,7 @@ public class UserWalletService {
 			}
 		}
 		System.out.println("::::::::::" + existingUserWallet);
-		if ((existingUserWallet != null) && (flagWalletType == 1)) {
+		if ((existingUserWallet != null) && (flagWalletType == 1)&&userWalletDTO.getAmount()>0) {
 			/*Integer newBalance = existingUserWallet.getBalance() + userWalletDTO.getAmount();*/
 			Transaction transaction=new Transaction();
 			transaction.setBuyerId(user.getUserId());
