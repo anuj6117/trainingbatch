@@ -22,7 +22,7 @@ public class WalletModel {
 	private int userIdW;
 	private Long balance = 0l;
 	private Long shadowBalance=0l;
-	private String walletType = WalletEnum.Fiate.toString();
+	private String walletType = WalletEnum.Fiat.toString();
 	private int walletHash;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")

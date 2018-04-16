@@ -69,10 +69,12 @@ public class OrderService {
 		Optional<UserModel> userOp= userRepo.findById(orderModel.getUserId());
 	
 		Set<WalletModel> walletModel =userOp.get().getUserWallet();
-		
+		WalletModel wallet =new WalletModel();
 		for(WalletModel type:walletModel) {
-			if(type.getWalletType().equalsIgnoreCase("fiate")&&type.getShadowBalance()>=orderModel.getQuantity()) {
+			if(type.getWalletType().equalsIgnoreCase("fiat")) {
 				flag=1;
+				wallet=type;
+				break;
 			}
 		}
 		if(flag==0) {
@@ -89,6 +91,9 @@ public class OrderService {
 					orderModel.setFee(fee);
 					orderModel.setQuantity(orderModel.getQuantity());
 					orderModel.setGrossAmount(orderModel.getQuantity()*orderModel.getQuoteValue()+fee);
+					if(wallet.getShadowBalance()<orderModel.getGrossAmount()) {
+						throw new Exception("Low Balance");
+					}
 					orderModel.setQuoteValue(orderModel.getQuoteValue());
 					
 					logger.info(orderModel.getGrossAmount()+"---------------");
@@ -96,7 +101,7 @@ public class OrderService {
 					//update this users default wallets shadow balance
 					Set<WalletModel> walletSet = userDetail.get().getUserWallet();
 					for(WalletModel type:walletSet) {
-						if(type.getWalletType().equals(Constant.FIATE)) {
+						if(type.getWalletType().equalsIgnoreCase(Constant.FIAT)) {
 							if(type.getBalance()<orderModel.getGrossAmount()) {
 								throw new Exception(Constant.LOW_BALANCE);
 							}
@@ -177,7 +182,7 @@ public class OrderService {
 					//update this users default wallets shadow balance
 					Set<WalletModel> walletSet = userDetail.get().getUserWallet();
 					for(WalletModel type:walletSet) {
-						if(type.getWalletType().equals(Constant.FIATE)) {
+						if(type.getWalletType().equalsIgnoreCase (Constant.FIAT)) {
 							temp=1;
 						}
 						if(type.getWalletType().equalsIgnoreCase("bitcoin")){
