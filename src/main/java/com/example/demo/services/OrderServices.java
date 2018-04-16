@@ -55,10 +55,8 @@ public class OrderServices {
 		order.setOrderCreatedOn(new Date());
 		order.setOrderType(type);
 		order.setStatus("pending");
-		order.setUserId(data.getUserId());
 		order.setCoinQuantity(data.getCoinQuantity());
 		order.setPrice(data.getPrice());
-		order.setSellettype("user");
 		grossamount = fee + (data.getCoinQuantity() * data.getPrice());
 		order.setGrossAmount(grossamount);
 		userModel.getOrderModel().add(order);
@@ -70,7 +68,6 @@ public class OrderServices {
 				WalletModel fiatwallet=walletdata.get(0);
 				if (fiatwallet.getShadoBalance()>= order.getGrossAmount()) {
 					fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()-order.getGrossAmount());
-					walletype.setShadoBalance(walletype.getShadoBalance()+order.getCoinQuantity());
 					userModel.getWalletModel().add(walletype);
 					userModel.getWalletModel().add(fiatwallet);
 					userData.save(userModel);
@@ -89,7 +86,6 @@ public class OrderServices {
 					WalletModel fiatwallet=walletdata.get(0);
 					if (walletype.getAmount() >= order.getCoinQuantity()) {
 						System.out.println(order.getGrossAmount());
-						fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()+order.getGrossAmount());
 						walletype.setShadoBalance(walletype.getShadoBalance()-order.getCoinQuantity());
 						userModel.getWalletModel().add(walletype);
 						userModel.getWalletModel().add(fiatwallet);
@@ -99,8 +95,6 @@ public class OrderServices {
 						throw new RuntimeException("you dont have enough coin in main balance ");
 					}
 				}
-//				else
-//					throw new RuntimeException("you dont have wallet");
 			}
 		}
 		
@@ -113,7 +107,7 @@ public class OrderServices {
 			fiatwallet.setShadoBalance(fiatwallet.getShadoBalance()-order.getGrossAmount());
 			walletModel.setAmount(0);
 			walletModel.setWalletType(data.getCoinName());
-			walletModel.setShadoBalance(data.getCoinQuantity());
+			walletModel.setShadoBalance(0);
 			walletModel.setUserdata(userModel);
 			userModel.getWalletModel().add(walletModel);
 			UserModel result = userData.save(userModel);
@@ -136,33 +130,31 @@ public class OrderServices {
 	}
 //sellorderbyadmin....
 	
-	public OrderModel sellbyadmin(OrderModel data)
-	{
-		if(data.getCoinQuantity()==null||data.getCoinQuantity()<=0||data.getPrice()==null||data.getPrice()<=0)
-			throw new RuntimeException("coinQuantity and price can not be null or less then 0");
-		CoinManagementModel coinresult = coindata.findByCoinIdAndCoinName(data.getCoinId(), data.getCoinName());
-		if (coinresult == null)
-			throw new RuntimeException("coin not exist");
-		if(!(coinresult.getInitialSupply()>=data.getCoinQuantity()))
-			throw new RuntimeException("you dont have enougn amount");
-			
-		OrderModel order = new OrderModel();
-		order.setCoinName(data.getCoinName());
-		int fee = 2 * (data.getCoinQuantity() * data.getPrice()) / 100;
-		order.setFee(0);
-		order.setOrderCreatedOn(new Date());
-		order.setOrderType("seller");
-		order.setStatus("pending");
-		order.setSellettype("admin");
-		order.setUserId(data.getCoinId());
-		order.setCoinQuantity(data.getCoinQuantity());
-		order.setPrice(data.getPrice());
-		int grossamount = (data.getCoinQuantity() * data.getPrice());
-		order.setGrossAmount(grossamount);
-		orderdata.save(order);
-		return data;
-		
-	}
-	
+//	public OrderModel sellbyadmin(OrderModel data)
+//	{
+//		if(data.getCoinQuantity()==null||data.getCoinQuantity()<=0||data.getPrice()==null||data.getPrice()<=0)
+//			throw new RuntimeException("coinQuantity and price can not be null or less then 0");
+//		CoinManagementModel coinresult = coindata.findByCoinIdAndCoinName(data.getCoinId(), data.getCoinName());
+//		if (coinresult == null)
+//			throw new RuntimeException("coin not exist");
+//		if(!(coinresult.getInitialSupply()>=data.getCoinQuantity()))
+//			throw new RuntimeException("you dont have enougn amount");
+//			
+//		OrderModel order = new OrderModel();
+//		order.setCoinName(data.getCoinName());
+//		int fee = 2 * (data.getCoinQuantity() * data.getPrice()) / 100;
+//		order.setFee(0);
+//		order.setOrderCreatedOn(new Date());
+//		order.setOrderType("seller");
+//		order.setStatus("pending");
+//		order.setCoinQuantity(data.getCoinQuantity());
+//		order.setPrice(data.getPrice());
+//		int grossamount = (data.getCoinQuantity() * data.getPrice());
+//		order.setGrossAmount(grossamount);
+//		orderdata.save(order);
+//		return data;
+//		
+//	}
+//	
 	
 }

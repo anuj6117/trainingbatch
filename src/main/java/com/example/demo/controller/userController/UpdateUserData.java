@@ -26,7 +26,7 @@ public class UpdateUserData {
 		model.setUserId(data.getUserId());
 		model.setUserName(data.getUserName());
 		model.setPhoneNumber(data.getPhoneNumber());
-		model.setEmail(data.getEmail());
+		
 		UserModel result = null;
 		try {
 			result = update.updateUserData(model);

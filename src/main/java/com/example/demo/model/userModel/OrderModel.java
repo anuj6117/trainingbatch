@@ -11,9 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class OrderModel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer orderId;
+	private Long orderId;
 	private Integer coinQuantity;
 	private Integer fee;
 	private String orderType;
@@ -30,24 +28,9 @@ public class OrderModel {
 	private Integer grossAmount;
 	private Date orderCreatedOn;
 	private String status;
+	@Transient
 	private Long userId;
 	private String coinName;
-	private String sellettype;
-	public String getSellettype() {
-		return sellettype;
-	}
-	public void setSellettype(String sellettype) {
-		this.sellettype = sellettype;
-	}
-	@Transient
-	private Long coinId;
-	
-	public Long getCoinId() {
-		return coinId;
-	}
-	public void setCoinId(Long coinId) {
-		this.coinId = coinId;
-	}
 	@ManyToOne
 	@JoinColumn(name = "UserOrderId")
 	@JsonIgnore
@@ -93,15 +76,15 @@ public class OrderModel {
 	public void setUser(UserModel user) {
 		this.user = user;
 	}
-	public Integer getOrderId() {
+	
+	
+	
+	public Long getOrderId() {
 		return orderId;
 	}
-	public void setOrderId(Integer orderId) {
+	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
-	
-	
-	
 	public Integer getFee() {
 		return fee;
 	}

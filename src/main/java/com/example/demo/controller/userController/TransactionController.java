@@ -26,10 +26,11 @@ TransactionServices order;
 	@RequestMapping(value="/gettransaction" ,method = RequestMethod.GET)
 	public ResponseEntity<Object> transaction()
 	{
-		OrderModel result=null;
+		String result=null;
 		try {
 			
 			result=order.transactionCheck();
+			
 		}
 		catch (Exception e) {
 			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
@@ -37,6 +38,21 @@ TransactionServices order;
 		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
 		
 	}
+//	@RequestMapping(value="/canciltransaction" ,method = RequestMethod.GET)
+//	public ResponseEntity<Object> transaction()
+//	{
+//		String result=null;
+//		try {
+//			
+//			result=order.canciltranction();
+//			
+//		}
+//		catch (Exception e) {
+//			return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, e.getMessage(), result);
+//		}
+//		return ResponseHandler.generateResponse(HttpStatus.OK, true, "success", result);
+//		
+//	}
 	@GetMapping(value="getbuyerdetails")
 	public ResponseEntity<Object> getAllBuyer()
 	{

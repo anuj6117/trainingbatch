@@ -18,11 +18,18 @@ public class TransactionModel {
 	private Date transactionCreatedOn;
 	private Integer netAmount;
 	private Integer transationFee;
-	private Integer exchangeRate;
 	private Integer grossAmount;
 	private Long buyerId;
 	private Long sellerId;
 	private String description;
+	private Integer price;
+	
+	public Integer getPrice() {
+		return price;
+	}
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 	public Long getTransactionId() {
 		return transactionId;
 	}
@@ -65,12 +72,7 @@ public class TransactionModel {
 	public void setTransationFee(Integer transationFee) {
 		this.transationFee = transationFee;
 	}
-	public Integer getExchangeRate() {
-		return exchangeRate;
-	}
-	public void setExchangeRate(Integer exchangeRate) {
-		this.exchangeRate = exchangeRate;
-	}
+	
 	public Integer getGrossAmount() {
 		return grossAmount;
 	}
