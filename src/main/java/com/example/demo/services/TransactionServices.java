@@ -82,7 +82,7 @@ public class TransactionServices {
 					// coinresult = coinManagementModel;
 					// difference = buy.getGrossAmount()
 					// - ((buy.getCoinQuantity() * coinresult.getPrice() + buy.getFee()));
-					break a;
+					continue;
 				} else {
 					flag = true;
 					if (price >= getresult.getPrice()) {
@@ -169,12 +169,12 @@ public class TransactionServices {
 						int fee = 2 * (grossamount-buy.getFee()) / 100;
 						
 
-						//System.out.println(fee);
+						System.out.println(fee);
 						
 							getfee=buy.getFee();
 						difference = buy.getGrossAmount()
 									- ((buy.getCoinQuantity() * coinresult.getPrice() + buy.getFee()));
-						//buy.setFee(fee);
+						buy.setFee(fee);
 						//System.out.println(grossamount);
 					}
 					
@@ -186,7 +186,7 @@ public class TransactionServices {
 					Integer amount = grossamount;
 					Integer fee = (2 * amount) / 100;
 				
-					coinManagementModel.setProfit(coinManagementModel.getProfit() + buy.getFee());
+					coinManagementModel.setProfit(coinManagementModel.getProfit() + getfee);
 					TransactionModel transactionModel = new TransactionModel();
 					transactionModel.setCointype(buy.getCoinName());
 					transactionModel.setDescription("order successfully accepted");
@@ -219,7 +219,7 @@ public class TransactionServices {
 					orderdata.save(buy);
 					coindata.save(coinManagementModel);
 					updateWalletOfSeller(sellerresult);
-
+					return "success";
 				}
 
 			}

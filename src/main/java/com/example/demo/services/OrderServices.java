@@ -95,6 +95,7 @@ public class OrderServices {
 						throw new RuntimeException("you dont have enough coin in main balance ");
 					}
 				}
+				//throw new RuntimeException("wallet not available");
 			}
 		}
 		
