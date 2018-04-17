@@ -44,5 +44,27 @@ public ResponseEntity<Object> approvetransaction() {
 
 		}
 	}
+	
+	@RequestMapping("/showalltransactions")
+	public ResponseEntity<Object> getAllTransactions() {
+			
+			LOGGER.info("OrderController (approvetransaction):::::::::::::::::controller hit");
+			Map<String, Object> map = null;
+			System.out.println("controller hit");
+			/* user.getRole().forEach(role->role.setUser(user)); important */
+			try {
+				map = serviceTransaction.getAllTransactions();
+				if (map.get("isSuccess").equals(true)) {
+					map.remove("isSuccess", true);
+					return ResponseHandler.generateResponse(HttpStatus.OK, true, "Success", map.get("Result"));
+				} else
+				{
+					return ResponseHandler.generateResponse(HttpStatus.OK, false, "Success", map.get("Result"));
+				}
+			} catch (Exception e) {
+				return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, false, "Failure", map.get("Result"));
+
+			}
+		}
 
 }

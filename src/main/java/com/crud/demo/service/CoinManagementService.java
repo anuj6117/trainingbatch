@@ -61,35 +61,7 @@ public class CoinManagementService {
 		return map;
 	}
 
-	public Map<String, Object> updateCurrency(CoinManagement coinManagement) {
-		Boolean isSuccess = false;
-		Map<String, Object> map = new HashMap<>();
-			
-		Set<String> alreadyAddedCurrency=coinManagementJpaRepository.findByCoinName();
-		Set<String> alreadyAddedSymbol=coinManagementJpaRepository.findBySymbol();
-		CoinManagement existingCoinManagement = coinManagementJpaRepository.findOne(coinManagement.getCoinId());
-		if(coinManagement.getInitialSupply()!=null&&coinManagement.getPrice()!=null&&alreadyAddedCurrency.contains(coinManagement.getCoinName())&&alreadyAddedSymbol.contains(coinManagement.getSymbol())) {
-			System.out.println(":::::"+existingCoinManagement);
-			if (existingCoinManagement != null&&!alreadyAddedCurrency.contains(coinManagement.getCoinName())&&!alreadyAddedSymbol.contains(coinManagement.getSymbol())&&(coinManagement.getInitialSupply()>0)) 
-			{
-			Integer updatedSupply=existingCoinManagement.getInitialSupply()+coinManagement.getInitialSupply();
-				existingCoinManagement.setInitialSupply(updatedSupply);
-				existingCoinManagement.setCoinName(coinManagement.getCoinName());
-				existingCoinManagement.setPrice(coinManagement.getPrice());
-				existingCoinManagement.setSymbol(coinManagement.getSymbol());
-				coinManagementJpaRepository.save(existingCoinManagement);
-				map.put("Result", "CoinManagement record updated successfully");
-				isSuccess = true;
-				map.put("isSuccess", isSuccess);
-				LOGGER.info("Method on service:::::::::::::Coin details updated successfully");
-			}}
-			 else {
-			map.put("Result", "Sorry user doesnot exist for updation");
-			map.put("isSuccess", isSuccess);
-			LOGGER.error("Method on service:::::::::::::Sorry user doesnot exist for updation  or something went wrong");	
-			 }
-			return map;
-		}
+	
 	
 
 	public Map<String, Object> deleteCurrency(Integer currencyId)
@@ -134,27 +106,72 @@ public class CoinManagementService {
 	
 	/*******************************************************************************************/
 	
-public void testUpdateCurrency(CoinManagement newCoinManagement)
-{
-	Set<String> alreadyAddedCurrency=coinManagementJpaRepository.findByCoinName();
-	Set<String> alreadyAddedSymbol=coinManagementJpaRepository.findBySymbol();
-	CoinManagement existingCoinManagement = coinManagementJpaRepository.findOne(newCoinManagement.getCoinId());
-	if(existingCoinManagement!=null)
-	{
-		if(alreadyAddedCurrency.contains(newCoinManagement.getCoinName())&&alreadyAddedSymbol.contains(newCoinManagement.getSymbol()))
-		{
-			
-		}
-		else if(alreadyAddedCurrency.contains(newCoinManagement.getCoinName()) || alreadyAddedSymbol.contains(newCoinManagement.getSymbol()))
-		{
-			
-		}
+
+public Map<String, Object> updateCurrency(CoinManagement newCoinManagement)
+{   Map<String, Object> map=new HashMap<>();
+    Boolean isSuccess = false;
+    Boolean coinNameFlag=false;
+    Boolean symbolFlag=false;
+    Boolean coinNameAssociatedWithAlready=false;
+    Boolean symbolAssociatedWithAlready=false;
+    CoinManagement existingCoinManagement = coinManagementJpaRepository.findOne(newCoinManagement.getCoinId());
+	if(existingCoinManagement!=null&&(newCoinManagement.getInitialSupply()>0)&&(newCoinManagement.getPrice()>0))
+	{    Set<String> alreadyAddedCurrency=coinManagementJpaRepository.findByCoinName();
+	     Set<String> alreadyAddedSymbol=coinManagementJpaRepository.findBySymbol();
+	     // predetermined checking of coin name
+	     if(alreadyAddedCurrency.contains(newCoinManagement.getCoinName()))
+	     {
+	    	 coinNameFlag=true; 
+	    	 if((newCoinManagement.getCoinName()).equalsIgnoreCase(existingCoinManagement.getCoinName()))
+	    	 {
+	    		 coinNameAssociatedWithAlready=true;
+	    	 }
+	     }
+	     // predetermined checking of coin symbol
+	     if(alreadyAddedSymbol.contains(newCoinManagement.getSymbol()))
+	     {
+	    	 symbolFlag=true;
+	    	 if(newCoinManagement.getSymbol().equalsIgnoreCase(existingCoinManagement.getSymbol())) 
+	    	 {
+	    		 symbolAssociatedWithAlready=true;
+	    	 }
+	     }
+	     // now main logic  **************************************************
+	     if(coinNameFlag&&!coinNameAssociatedWithAlready)
+	     {
+	    	 map.put("isSuccess", isSuccess);
+	 		map.put("Result", "Coin Name Already assigned to other coin");
+	 		LOGGER.error("Coin Name Already assigned to other coin"); 
+	     }
+	     else if(symbolFlag&&!symbolAssociatedWithAlready)
+	     {
+	    	 map.put("isSuccess", isSuccess);
+		 		map.put("Result", "Coin Symbol Already assigned to other coin");
+		 		LOGGER.error("Coin Symbol Already assigned to other coin");  
+	     }
+	     else
+	     {
+	    	 Integer updatedSupply=existingCoinManagement.getInitialSupply()+newCoinManagement.getInitialSupply();
+				existingCoinManagement.setInitialSupply(updatedSupply);
+				existingCoinManagement.setCoinName(newCoinManagement.getCoinName());
+				existingCoinManagement.setPrice(newCoinManagement.getPrice());
+				existingCoinManagement.setSymbol(newCoinManagement.getSymbol());
+				coinManagementJpaRepository.save(existingCoinManagement);
+				map.put("Result", "CoinManagement record updated successfully");
+				isSuccess = true;
+				map.put("isSuccess", isSuccess);
+				map.put("Result", "Coin details updated successfully");
+				LOGGER.info("Method on service:::::::::::::Coin details updated successfully");
+	     }
 	}
-	else
+	else //main else
 	{
-		System.out.println("sorry user does not exist");
+		map.put("isSuccess", isSuccess);
+		map.put("Result", "Coin details unable to update");
+		LOGGER.error("Coin details unable to update");
 	}
-	
+    
+return map;
 }
 }
 

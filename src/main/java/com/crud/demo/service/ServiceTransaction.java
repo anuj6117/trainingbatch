@@ -397,5 +397,24 @@ public class ServiceTransaction {
       			transaction.setCoinQuantity(sellOutQuantity);	
       		}	
       		transactionJpaRepository.save(transaction);
-      	}    
+      	}
+	public Map<String, Object> getAllTransactions() {
+		Map<String, Object> map=new HashMap<>();
+		Boolean isSuccess = false;
+		List<Transaction> listAllTransaction=transactionJpaRepository.findAll();
+		if(listAllTransaction!=null)
+		{
+			map.put("Result", listAllTransaction);
+			map.put("isSuccess", true);
+			LOGGER.info("Transaction list  found");
+		}
+		else
+		{
+			map.put("Result", "Transaction No list found");
+			map.put("isSuccess", isSuccess);
+			LOGGER.error("Transaction list not found");
+		}
+		
+		return map;
+	}    
 }

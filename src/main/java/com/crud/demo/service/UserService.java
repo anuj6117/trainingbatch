@@ -155,6 +155,9 @@ if((userJpaRepository.findByEmail(user.getEmail())==null)&&(userJpaRepository.fi
 				//mail can't be changed
 				if(existingUser.getEmail().equals(user.getEmail()))
 				{
+					Set<String> existingPhoneNumbers=userJpaRepository.findByPhoneNumber();
+					if(existingPhoneNumbers.contains(user.getPhoneNumber())&&existingUser.getPhoneNumber().equals(user.getPhoneNumber())) 
+					{
 				existingUser.setEmail(user.getEmail());
 				existingUser.setUserName(user.getUserName());
 				existingUser.setPassword(user.getPassword());
@@ -167,11 +170,18 @@ if((userJpaRepository.findByEmail(user.getEmail())==null)&&(userJpaRepository.fi
 				map.put("Result", "success");
 				map.put("isSuccess", true);
 				LOGGER.info("Message on service::::::::::::::::::Successfull updation");
+					}
+					else
+					{
+						map.put("Result", "Phone number already exist with other user");
+						map.put("isSuccess", isSuccess);
+						LOGGER.error("Phone number already exist with other user");
+					}
 	
 				}
 				else
 				{
-					map.put("Result", "you cannot change your id");
+					map.put("Result", "you cannot change your Email id or email id you entered is null");
 					map.put("isSuccess", isSuccess);
 					LOGGER.error("Message on service::::::::::::::::::You canot change your mail id");	
 				}
