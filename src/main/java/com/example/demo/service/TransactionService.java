@@ -25,6 +25,7 @@ import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.WalletRepository;
+import com.example.demo.utils.DateComparator;
 import com.example.demo.utils.QuoteValueComparator;
 import com.example.demo.utils.Utility;
 
@@ -206,6 +207,7 @@ public class TransactionService {
 					continue;
 				} else {
 					sellerOrder.add(type);
+					logger.info(type.getOrderId()+"-------"+type.getUserModel().getUserid());
 				}
 			}
 			if (sellerOrder.isEmpty()) {
@@ -216,6 +218,7 @@ public class TransactionService {
 			}
 
 			Collections.sort(sellerOrder, new QuoteValueComparator());
+			//Collections.sort(sellerOrder,new DateComparator());
 			OrderModel userSeller = sellerOrder.get(0);
 			logger.info(sellerOrder.get(0).getQuoteValue()
 					+ "----------------------------------seller Quote Value------------------------------");
@@ -254,7 +257,7 @@ public class TransactionService {
     		logger.info("coin----updation");
     		updateCurrency(coin, buyer);
     		updateOrderStatusAsCompleted(buyer);
-			createBuyerUpdateWallet(buyer, buyer.getGrossAmount());
+			createBuyerUpdateWallet(buyer, buyer.getGrossAmount(),buyer.getQuantity());
 			
     	}
     	else {
@@ -272,25 +275,25 @@ public class TransactionService {
 					
 					logger.info(sellerQuote+"------values----"+mainProfit);
 					//updateProfitCurrency(coin, buyer.getFee());
-					logger.info(buyer.getFee()+(mainProfit*buyer.getQuantity())+"-------profit calculation");
-					updateProfitCurrency(coin, buyer.getFee()+(mainProfit*buyer.getQuantity()));// add profit only
+					logger.info(buyer.getFee()+"-<<<----fee----"+(mainProfit*buyer.getQuantity())+"-------profit calculation");
+					updateProfitCurrency(coin, buyer.getFee(),(mainProfit*buyer.getQuantity()));// add profit only
 					updateOrderStatusAsCompleted(buyer);// buyer order status update
 					updateOrderStatusAsCompleted(seller);// seller order status update
-					createBuyerUpdateWallet(buyer, buyer.getGrossAmount());// buyer wallet update
-					createSellerUpdateWallet(seller, buyer.getGrossAmount()-buyer.getFee());// seller wallet update																		// update
+					createBuyerUpdateWallet(buyer, buyer.getGrossAmount(),buyer.getQuantity());// buyer wallet update
+					createSellerUpdateWallet(seller, seller.getGrossAmount()-seller.getFee(),buyer.getQuantity());// seller wallet update																		// update
 					
 					
 					return "sellorder";
 				} else if (seller.getQuantity() > buyer.getQuantity()) {
 					logger.info("-----------approved------22----");
 					logger.info(sellerQuote+"------values----"+mainProfit);
-					logger.info(buyer.getFee()+(mainProfit*buyer.getQuantity())+"-------profit calculation");
+					logger.info(buyer.getFee()+"-<<<----fee----"+(mainProfit*buyer.getQuantity())+"-------profit calculation");
 					
-					updateProfitCurrency(coin, buyer.getFee());
-					//updateProfitCurrency(coin, buyer.getFee()+(mainProfit*buyer.getQuantity()));// add profit only
+					//updateProfitCurrency(coin, buyer.getFee());
+					updateProfitCurrency(coin, buyer.getFee(),(mainProfit*buyer.getQuantity()));// add profit only
 					updateOrderStatusAsCompleted(buyer);// buyer order status update
-					createBuyerUpdateWallet(buyer, buyer.getGrossAmount());// buyer wallet update
-					createSellerUpdateWallet(seller,buyer.getGrossAmount()-buyer.getFee());// seller wallet update
+					createBuyerUpdateWallet(buyer, buyer.getGrossAmount(),seller.getQuantity()-buyer.getQuantity());// buyer wallet update
+					createSellerUpdateWallet(seller,seller.getGrossAmount()-seller.getFee(),seller.getQuantity()-buyer.getQuantity());// seller wallet update
 					updateOrderQuantity(seller, buyer.getQuantity()); // seller order quantity
 					logger.info("-----------approved1-----2-----");
 					return "success444";
@@ -298,14 +301,14 @@ public class TransactionService {
 				} else if (seller.getQuantity() < buyer.getQuantity()) {
 					logger.info("-----------approved------33----");
 					logger.info(sellerQuote+"------values----"+mainProfit);
-					logger.info(buyer.getFee()+(mainProfit*buyer.getQuantity())+"-------profit calculation");
+					logger.info(buyer.getFee()+"-<<<----fee----"+(mainProfit*buyer.getQuantity())+"-------profit calculation");
 					
-					updateProfitCurrency(coin, buyer.getFee());
-					//updateProfitCurrency(coin, buyer.getFee()+(mainProfit*buyer.getQuantity()));// add profit only
+					//updateProfitCurrency(coin, buyer.getFee());
+					updateProfitCurrency(coin, buyer.getFee(),(mainProfit*buyer.getQuantity()));// add profit only
 					updateOrderQuantity(buyer, seller.getQuantity()); // buy order amount update
 					updateOrderStatusAsCompleted(seller); // seller order status update
-					createBuyerUpdateWallet(buyer, buyer.getGrossAmount());// buyer wallet update
-					createSellerUpdateWallet(seller,seller.getGrossAmount()-seller.getFee());// seller wallet
+					createBuyerUpdateWallet(buyer, buyer.getGrossAmount(),buyer.getQuantity()-seller.getQuantity());// buyer wallet update
+					createSellerUpdateWallet(seller,seller.getGrossAmount()-seller.getFee(),buyer.getQuantity()-seller.getQuantity());// seller wallet
 					
 					
 					logger.info("-----------approved1------3----");
@@ -372,7 +375,7 @@ public class TransactionService {
 	}
 
 	// for Admin profit update
-	public void updateProfitCurrency(CoinModel coinModel, Long profit) {
+	public void updateProfitCurrency(CoinModel coinModel, Long profit, Long extraprofit) {
 		coinModel.setCoinName(coinModel.getCoinName());
 		coinModel.setSymbol(coinModel.getSymbol());
 		coinModel.setPrice(coinModel.getPrice());
@@ -381,11 +384,11 @@ public class TransactionService {
 		logger.info( profit+"---profit----");
 		logger.info(coinModel.getProfit()+"---coinprofit----");
 		coinModel.setProfit(coinModel.getProfit() + profit);
-		coinModel.setINRConvergent(coinModel.getINRConvergent());
+		coinModel.setINRConvergent(coinModel.getINRConvergent()+extraprofit);
 		coinRepo.save(coinModel);
 	}
 
-	private Object createBuyerUpdateWallet(OrderModel orderModel, Long amount) {
+	private Object createBuyerUpdateWallet(OrderModel orderModel, Long amount,Long sellout) {
 		String coinName = orderModel.getCoinName();
 		UserModel userDetail = orderModel.getUserModel();
 		Set<WalletModel> walletSet = userDetail.getUserWallet();
@@ -404,8 +407,8 @@ public class TransactionService {
 			Optional<WalletModel> walletOptionalObject = walletRepo.findById(walletId);
 			WalletModel walletModel = walletOptionalObject.get();
 			logger.info(walletModel.getWalletType()+"---------------");
-			walletModel.setBalance(walletModel.getBalance() + orderModel.getQuantity());
-			walletModel.setShadowBalance(walletModel.getBalance());
+			walletModel.setBalance(walletModel.getBalance() + sellout);
+			walletModel.setShadowBalance(walletModel.getShadowBalance());
 			walletRepo.save(walletModel);
 		} else {
 			// add wallet
@@ -414,8 +417,8 @@ public class TransactionService {
 			walletModel.setUserModel(userDetail);
 			walletModel.setWalletHash(Utility.generateId(100));
 			walletModel.setWalletType(coinName);
-			walletModel.setBalance(orderModel.getQuantity());
-			walletModel.setShadowBalance(orderModel.getQuantity());
+			walletModel.setBalance(sellout);
+			walletModel.setShadowBalance(sellout);
 			walletRepo.save(walletModel);
 
 		}
@@ -425,7 +428,9 @@ public class TransactionService {
 			if ("fiat".equalsIgnoreCase(type.getWalletType())) {
 				Optional<WalletModel> wallet = walletRepo.findById(type.getWalletId());
 				if(orderModel.getStatus().equalsIgnoreCase("Pending")) {
-					Long bal = type.getShadowBalance()+(orderModel.getQuantity()*orderModel.getQuoteValue());
+					logger.info("------pending shadow value"+type.getShadowBalance());
+					logger.info("------pending quote value"+(sellout*orderModel.getQuoteValue()));
+					Long bal = type.getShadowBalance()+(sellout*orderModel.getQuoteValue());
 					wallet.get().setBalance(bal);
 					walletRepo.save(wallet.get());
 					logger.info("pending-----entry"+bal);
@@ -433,7 +438,8 @@ public class TransactionService {
 					
 				}else if(orderModel.getStatus().equalsIgnoreCase("Completed")) {
 					wallet.get().setBalance(type.getBalance()-amount);
-					//type.setShadowBalance(type.getBalance());
+					//wallet.get().setShadowBalance(type.getShadowBalance()-amount);
+					
 					logger.info("comppleted-----entry"+amount);
 					walletRepo.save(wallet.get());
 				    break;
@@ -447,7 +453,7 @@ public class TransactionService {
 
 	}
 
-	private Object createSellerUpdateWallet(OrderModel orderModel, Long amount) {
+	private Object createSellerUpdateWallet(OrderModel orderModel, Long amount,Long sellout) {
 		String coinName = orderModel.getCoinName();
 		logger.info(coinName+"-----coin?name-----");
 		UserModel userDetail = orderModel.getUserModel();
@@ -469,14 +475,15 @@ public class TransactionService {
 			WalletModel fiatewalletModel = fiatewalletOptionalObject.get();
 			logger.info(amount+"---amount-----");
 			logger.info(fiatewalletModel.getBalance()+"----------fiateamount------");
-			fiatewalletModel.setBalance(fiatewalletModel.getBalance() + amount);
+			fiatewalletModel.setBalance(fiatewalletModel.getBalance() + (sellout*orderModel.getQuoteValue()));
 			
 			//fiatewalletModel.setShadowBalance(fiatewalletModel.getBalance());
 			walletRepo.save(fiatewalletModel);
 
 			Optional<WalletModel> currencywalletOptionalObject = walletRepo.findById(currencywallet.getWalletId());
 			WalletModel currencywalletModel = currencywalletOptionalObject.get();
-			currencywalletModel.setBalance(currencywalletModel.getBalance() - orderModel.getQuantity());
+			//Integer pending = currencywalletModel.getShadowBalance()-orderModel.getQuantity();
+			currencywalletModel.setBalance(currencywalletModel.getBalance()-sellout);
 			walletRepo.save(currencywalletModel);
 
 		}
@@ -532,12 +539,21 @@ public class TransactionService {
 		transactionModel.setCurrencyType(buyerModel.getCoinName());
 		transactionModel.setTransactionCreatedOn(new Date());
 		transactionModel.setDescription("transaction Made by userSeller");
+		if(buyerModel.getQuantity()>sellerModel.getQuantity()) {
+			transactionModel.setNetAmount(buyerModel.getQuantity()-sellerModel.getQuantity());
+		}else if(buyerModel.getQuantity()<sellerModel.getQuantity()){
+			transactionModel.setNetAmount(sellerModel.getQuantity()-buyerModel.getQuantity());
+		}
+		else if(sellerModel.getQuantity()==buyerModel.getQuantity()){
+			transactionModel.setNetAmount(buyerModel.getQuantity());
+		}
 		transactionModel.setExchangeRate(buyerModel.getQuoteValue());
 		Long fee = 2l;
-		Long grossAmount = ((sellerModel.getQuoteValue() * buyerModel.getQuantity()) * fee) / 100;
-		transactionModel.setTransactionFee(buyerModel.getFee());
-		transactionModel.setGrossAmount((buyerModel.getQuoteValue() * buyerModel.getQuantity()) + buyerModel.getFee());
-		transactionModel.setNetAmount(buyerModel.getQuantity());
+		Long grossAmount = ((buyerModel.getQuoteValue() * transactionModel.getNetAmount()) * fee) / 100;
+		transactionModel.setTransactionFee(grossAmount);
+		transactionModel.setGrossAmount((buyerModel.getQuoteValue() * transactionModel.getNetAmount()) + grossAmount);
+		
+		
 		transactionModel.setSellerId(sellerModel.getOrderId());
 		transactionModel.setStatus("Pending");
 	

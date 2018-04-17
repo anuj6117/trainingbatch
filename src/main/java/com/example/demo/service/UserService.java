@@ -203,10 +203,16 @@ public class UserService implements UserDetailsService {
 		if (userOp.isPresent()) {
 			AuthToken authToken = authRepo.findByOtp(userModel.getTokenOTP());
 			if (authToken != null) {
-				userOp.get().setStatus(true);
-				userRepo.save(userOp.get());
-				authRepo.deleteById(authToken.getTokenId());
-				return "Success";
+				if(authToken.getUserName().equalsIgnoreCase(userOp.get().getUserName())) {
+					userOp.get().setStatus(true);
+					userRepo.save(userOp.get());
+					authRepo.deleteById(authToken.getTokenId());
+					return "Success";
+				}
+				else {
+					throw new Exception("user name does not match");
+				}
+				
 			} else {
 				// re-send the One time password
 				throw new Exception("not a valid otp");
