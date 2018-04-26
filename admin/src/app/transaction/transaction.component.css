@@ -1,0 +1,69 @@
+/* full page content side bar margin */
+.page-content.sidebar-page {
+  margin-left: 210px;
+}
+/* page content margin left */
+.page-content {
+  min-height: 100%;
+  margin-left: 210px;
+}
+/* page content wrap here */
+.page-content .page-content-wrapper {
+  float: left;
+  width: 100%;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+  margin-top: 65px;
+}
+/* page  content inner */
+.page-content .page-content-inner {
+  position: relative;
+  padding: 0 20px;
+}
+/* set position page content header id */
+.page-content #page-header {
+  background-color: #fcfcfc;
+  margin-top: 1px;
+  padding: 0 20px;
+  margin-right: -20px;
+  margin-left: -20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.1);
+}
+/* set page content header */
+.page-content #page-header .page-header {
+  margin-top: 0px;
+  margin-bottom: 15px;
+  border-bottom: none;
+  float: left;
+  margin-right: 20px;
+}
+/* page content header bottom border */
+.page-header {
+  padding-bottom: 0;
+  margin: 0px 0 15px;
+  border-bottom: 1px solid #d6d6d6;
+}
+/* page table conntant start here */
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+/* set table margin */
+table{
+margin-top: 10px;
+}
+/* set table design */
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 10px;
+  overflow: scroll;
+  position: relative;
+}
+/* table row background color */
+.table tr{
+  background-color:rgb(245, 238, 238);
+}

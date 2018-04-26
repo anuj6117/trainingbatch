@@ -1,0 +1,147 @@
+<div class="signup_container">
+    <div class="wrap_signup">
+        <form class="for_form" (ngSubmit)="submitSignUp()" #signUpForm="ngForm" method="post" name="SignUp">
+            <span class="form_title">
+                <img src="assets/img/newlogo2.png" height="80px" />
+            </span>
+
+
+            <span class="input_label">Username</span>
+            <div class="icon_input">
+                <i class="far fa-user icon"></i>
+                <input name="userName" type="text" placeholder="Type your username" [(ngModel)]="formData.userName" #userName="ngModel" minlength="6"
+                    maxlength="25" pattern="[a-zA-Z][a-zA-Z ]+" [ngClass]="{'error':userName.errors && userName.touched}" required=""
+                />
+
+                <div *ngIf="userName.errors && userName.touched" class="red error">
+
+                    <div *ngIf="userName.errors.required">&nbsp;Full name required,</div>
+
+                    <div *ngIf="userName.errors.minlength"> &nbsp;Minimum 6 Cheracter required,</div>
+
+                    <div *ngIf="userName.errors.maxlength">&nbsp; Maximum 25 required,</div>
+
+                    <div *ngIf="userName.errors.pattern"> &nbsp;Only Alphabet Allowed,</div>
+                </div>
+
+            </div>
+            <br>
+            <span class="input_label">Email</span>
+            <div class="icon_input">
+                <i class="far fa-envelope icon"></i>
+                <input name="email" type="email" placeholder="Type your email" [(ngModel)]="formData.email" #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    minlength="10" [ngClass]="{'error':email.errors && email.touched}" required="" />
+
+                <div *ngIf="email.errors && email.touched" class="red error">
+
+                    <div *ngIf="email.errors.required">&nbsp;Email Id required,</div>
+
+                    <div *ngIf="email.errors.minlength">&nbsp; Minimum 10 Cheracter required,</div>
+
+                    <div *ngIf="email.errors.pattern">&nbsp; Enter Valid Email ID,</div>
+
+                </div>
+
+            </div>
+            <br>
+            <span class="input_label">Password</span>
+            <div class="icon_input">
+                <i class="fas fa-unlock-alt icon"></i>
+                <input name="password" type="password" placeholder="Type your password" [(ngModel)]="formData.password" minlength="8" maxlength="32"
+                    #password="ngModel" [ngClass]="{'errors':password.errors && password.touched}" pattern="((?=.*\d)(?=.*[a-zA-Z]).*[0-9])"
+                    reverse="true" required="" />
+
+                <div *ngIf="password.errors && password.touched" class="red error">
+                    <div *ngIf="password.errors.required">&nbsp;Password required,</div>
+                    <div *ngIf="password.errors.minlength"> &nbsp;Minimum 8 Cheracter required,</div>
+                    <div *ngIf="password.errors.maxlength">&nbsp; Maximum 32 Cheracter required</div>
+                    <div *ngIf="password.errors.pattern">&nbsp;Example:- @abcDEF12,</div>
+                </div>
+
+            </div>
+            <br>
+
+            <span class="input_label">Confirm Password</span>
+            <div class="icon_input">
+                <i class="fas fa-unlock-alt icon"></i>
+                <input name="confirmPassword" type="password" placeholder="Confirm password" [(ngModel)]="formData.confirmPassword" validateEqual="password"
+                    #confirmPassword="ngModel" minlength="8" maxlength="32" [ngClass]="{'errors':confirmPassword.errors && confirmPassword.touched}"
+                    reverse="false" required="" />
+                <div *ngIf="confirmPassword.errors && confirmPassword.touched" class="red error">
+                    <div *ngIf="confirmPassword.errors.required">&nbsp;Password required,</div>
+                    <div *ngIf="confirmPassword.errors.minlength">&nbsp; Minimum 8 Cheracter required,</div>
+                    <div *ngIf="confirmPassword.errors.maxlength">&nbsp; Maximum 32 Cheracter required,</div>
+                    <small [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)">
+                        Password mismatch,
+                    </small>
+
+                </div>
+
+            </div>
+            <br>
+            <span class="input_label">Mobile Number</span>
+            <div class="icon_input">
+                <i class="fas fa-phone icon"></i>
+                <input [(ngModel)]="formData.phoneNumber" pattern="[0-9]*" #phoneNumber="ngModel" type="text" name="phoneNumber" placeholder="Mobile Number"
+                    minlength="10" maxlength="10" [ngClass]="{'error':phoneNumber.errors && phoneNumber.touched}" required=""
+                />
+
+                <div *ngIf="phoneNumber.errors && phoneNumber.touched" class="red error">
+
+                    <div *ngIf="phoneNumber.errors.required">Mobile number required.</div>
+
+                    <div *ngIf="phoneNumber.errors.minlength">minimum 10 required</div>
+
+                    <div *ngIf="phoneNumber.errors.maxlength">maximum 10 cheracter required</div>
+
+                    <div *ngIf="phoneNumber.errors.pattern"> Mobile number not valid.</div>
+
+                </div>
+            </div>
+            <br>
+            <span class="input_label">Country</span>
+            <div class="icon_input">
+                <i class="fas fa-globe icon"></i>
+                <select name="country" class="country" [(ngModel)]="formData.country" #country="ngModel" required>
+                    <option value="" hidden>Select Your Country</option>
+                    <option value="India">India</option>
+                    <option value="Shree Lanka">Shree Lanka</option>
+                    <option value="Nepal">Nepal</option>
+                    <option value="australia">Australia</option>
+                </select>
+            </div>
+            <br>
+            <span class="login_button">
+                <a routerLink="/login">Log In</a>
+            </span>
+
+            <span class="forget_button">
+                <a routerLink="/forgetPassword">Forget Password</a>
+            </span>
+            <button class="signup_button" type="submit" value="submit" name="signUpForm" [disabled]="signUpForm.invalid">SIGNUP</button>
+        </form>
+
+        <span class="or_signup_social">Or Sign Up Using</span>
+
+        <div class="social_icon">
+
+            <a href="#">
+                <i class="fab fa-facebook-f fb"></i>
+            </a>
+
+
+
+            <a href="#">
+                <i class="fab fa-twitter twitter"></i>
+            </a>
+
+            <a href="#">
+                <i class="fab fa-google google"></i>
+            </a>
+
+
+
+        </div>
+    </div>
+
+</div>

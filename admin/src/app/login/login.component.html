@@ -1,0 +1,77 @@
+<div class="login_container">
+    <div class="wrap_login">
+        <form class="for_form" (ngSubmit)="submitLogIn()" #logInForm="ngForm" method="post" name="LogIn">
+            <span class="form_title">
+                <img src="assets/img/newlogo2.png" height="80px" />
+            </span>
+            <span class="input_label">Email</span>
+            <div class="icon_input">
+                <i class="far fa-envelope icon"></i>
+                <input name="email" type="email" placeholder="Type your email" [(ngModel)]="formData.email" #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    minlength="10" [ngClass]="{'error':email.errors && email.touched}" required="" />
+
+                <div *ngIf="email.errors && email.touched" class="red error">
+
+                    <div *ngIf="email.errors.required">&nbsp;Email Id required,</div>
+
+                    <div *ngIf="email.errors.minlength">&nbsp; Minimum 10 Cheracter required,</div>
+
+                    <div *ngIf="email.errors.pattern">&nbsp; Enter Valid Email ID,</div>
+
+                </div>
+
+            </div>
+            <br>
+            <span class="input_label">Password</span>
+            <div class="icon_input">
+                <i class="fas fa-unlock-alt icon"></i>
+                <input name="password" type="password" placeholder="Type your password" [(ngModel)]="formData.password" #password="ngModel"
+                    maxlength="32" [ngClass]="{'errors':password.errors && password.touched}" 
+                    reverse="true" required="" />
+
+                <div *ngIf="password.errors && password.touched" class="red error">
+                    <div *ngIf="password.errors.required">&nbsp;Password required,</div>
+                    <div *ngIf="password.errors.minlength"> &nbsp;Minimum 8 Cheracter required,</div>
+                    <div *ngIf="password.errors.maxlength">&nbsp; Maximum 32 Cheracter required</div>
+                    <div *ngIf="password.errors.pattern">&nbsp;Example:- @abcDEF12,</div>
+                </div>
+
+            </div>
+            <br>
+            <span class="signup_button">
+                <a href="/signup">Sign Up</a>
+            </span>
+
+            <span class="forget_button">
+                <a href="/forgetPassword">Forget Password</a>
+            </span>
+            <button class="login_button" type="submit" value="submit" name="logInForm" [disabled]="logInForm.invalid">LOGIN</button>
+        </form>
+
+        <span class="or_signup_social">Or Sign Up Using</span>
+
+        <div class="social_icon">
+            <span>
+                <a href="#">
+                    <i class="fab fa-facebook-f fb">
+                    </i>
+                </a>
+            </span>
+
+            <span>
+                <a href="#">
+                    <i class="fab fa-twitter twitter"></i>
+                </a>
+            </span>
+
+            <span>
+                <a href="#">
+                    <i class="fab fa-google google"></i>
+                </a>
+            </span>
+
+
+        </div>
+    </div>
+
+</div>

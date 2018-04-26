@@ -1,0 +1,95 @@
+
+<!-- full page contant start here -->
+<div class="page-content clearfix collapsed-sidebar">
+  <!-- wrap full page -->
+  <div class="page-content-wrapper">
+    <!-- page content wrapper -->
+    <div class="page-content-inner">
+      <!-- page content header -->
+      <div id="#page-header" class="clearfix">
+        <div class="page-header">
+          <h3>Transaction</h3>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <!-- page table conntant start here -->
+  <div class="row">
+    <!-- page content width -->
+    <div class="col-lg-12 col-mg-12 col-sm-12 col-xs-12">
+      <!-- page content table width -->
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow: scroll;background-color:#dff0d8;    padding: 10px 5px 10px 10px;">
+        <!-- page content transection table -->
+        <div class="sell-table">
+          <!-- table start here -->
+          <table class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table">
+            <!-- table head section -->
+            <tr>
+              <th>Order Id</th>
+
+              <th>Coin Type</th>
+
+              <th>Status</th>
+
+              <th>Quantity</th>
+
+              <th>Price</th>
+
+              <th>Date</th>
+
+              <th>Amount</th>
+
+              <th>Transection Fee</th>
+
+              <th>Gross Amount</th>
+
+              <th>Status</th>
+
+              <th>Buyer Id</th>
+
+              <th>Seller Id</th>
+
+              <th>Description</th>
+            </tr>
+            <!-- table data start here -->
+
+            <tr *ngFor="let allTransection of getAllTransection">
+              <td>{{allTransection.transactionId}}</td>
+
+              <td>{{allTransection.cointype}}</td>
+
+              <td>{{allTransection.status}}</td>
+
+              <td>{{allTransection.coinQuantity}}</td>
+
+              <td>{{allTransection.price}}</td>
+
+              <td>{{allTransection.transactionCreatedOn}}</td>
+
+              <td>{{allTransection.netAmount}}</td>
+
+              <td>{{allTransection.transationFee}}</td>
+
+              <td>{{allTransection.grossAmount}}</td>
+
+              <td>{{allTransection.status}}</td>
+
+              <td>{{allTransection.buyerId}}</td>
+
+              <td>{{allTransection.sellerId}}</td>
+
+              <td>{{allTransection.description}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>

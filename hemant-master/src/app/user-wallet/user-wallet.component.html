@@ -1,0 +1,129 @@
+<app-user-nav></app-user-nav>
+<!-- this is the parent conatiner -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <!-- add coin parent container -->
+    <div class="add-coin-container">
+        <!-- add coin full form conatiner -->
+        <div class="sub-container">
+            <!-- add coin form wraper -->
+            <div class="wrap-add-coin">
+                <!-- add coin form title -->
+                <div class="form_title">Add New Wallet</div>
+                <!-- form start here -->
+                <form class="for_form" method="post" name="Add Wallet">
+                    <!-- first row for label and input for 100% width -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <!-- for first label and input width 50% to 100% -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <!-- input label -->
+                            <span class="input_label">Wallet Type</span>
+                            <!-- input box for coin name-->
+                            <input type="text" name="walletType" value="fiat" placeholder="Wallet Type" class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                minlength="3" maxlength="25">
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <!-- input label -->
+                            <span class="input_label">Amount</span>
+                            <!-- input box for supply -->
+                            <input type="text" name="supply" placeholder="Amount" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" minlength="1" maxlength="10">
+                        </div>
+                        <!-- add coin submit button -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 button-parent">
+                            <button value="Submit" name="Add Wallet" type="submit" class="add-coin-button">Add Wallet</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+        </div>
+        <br>
+        <ul class="col-lg-3 col-md-3 col-sm-12 col-xs-12 for_ul">
+            <li class="wallet_balance" *ngFor="let wallet of walletBalance">
+                <ul>
+                    <li>Wallet Amount:{{wallet.amount}}</li>
+                    <li>wallet shadow balance:{{wallet.shadoBalance}}</li>
+                    <li>Wallet Type:{{wallet.walletType}}</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <br>
+
+
+
+</div>
+
+<app-footer></app-footer>
+
+
+
+
+
+
+
+<!-- <div class="page-content-wrapper">
+        <div class="page-content-inner">
+            <div id="#page-header">
+                <div class="page-header">
+                    <h2>Wallet</h2>
+                    <span class="text">Welcome</span>
+                </div>
+
+                <div class="header-stats">
+                    <!-- for total visitor 
+                    <div class="spark clearfix">
+                        <div class="spark-info">
+                            <span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 add_wallet_button">
+                                <a href="">Add Wallet</a>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div> -->
+
+
+<!-- page content start here
+        <div class="row">
+                <!-- total sell card start here 
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <!-- total sell card title 
+                    <div class="panel panel-info tile">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">BTC Balance</h4>
+                            <div class="panel-controls panel-controls-right">
+        
+                            </div>
+        
+                        </div>
+                        <!-- total sale card body start here 
+                        <div class="panel-body pt0">
+                            <!-- total sale card prgressbar 
+                            <div class="progressbar-stats-1">
+        
+                                <div class="stats">
+                                    <i class="fab fa-bitcoin" style="font-size:70px;padding:10px;"></i>
+                                    <!-- total number of sale 
+                                    <span id="visitor_number" class="stats-number" data-from="0" data-to="4757">78745</span>
+        
+                                </div>
+        
+                            </div>
+        
+                        </div>
+        
+                    </div>
+        
+                </div>
+        
+        
+            </div> -->

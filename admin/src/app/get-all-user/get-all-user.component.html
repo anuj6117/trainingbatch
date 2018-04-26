@@ -1,0 +1,47 @@
+
+
+<div class="page-content clearfix collapsed-sidebar">
+  <div class="page-content-wrapper">
+    <div class="page-content-inner">
+      <div id="#page-header" class="clearfix">
+        <div class="page-header">
+          <h2>All User List</h2>
+        </div>
+        <div class="header-stats">
+          <div class="spark clearfix">
+            <div class="spark-info">
+
+              Total Users:
+              <span class="number">3</span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <table class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table">
+
+      <tr style="background-color:#E8E8E8;">
+        <th>User Id</th>
+        <th>User Name</th>
+        <th>User Role</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>Created On</th>
+        <th>Phone Number</th>
+      </tr>
+      <tr *ngFor="let allUser of getAllUser">
+        <td>{{allUser.userId}}</td>
+        <td>{{allUser.userName}}</td>
+        <td>{{allUser.role[0].roleType}}</td>
+        <td>{{allUser.email}}</td>
+        <td>{{allUser.country}}</td>
+        <td>{{allUser.createdOn | date}}</td>
+        <td>{{allUser.phoneNumber}}</td>
+      </tr>
+
+    </table>
+  </div>
+</div>

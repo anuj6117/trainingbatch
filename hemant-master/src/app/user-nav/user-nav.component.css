@@ -1,0 +1,274 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  
+/* scroll style */
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+::-webkit-scrollbar:hover {
+  width: 6px;
+}
+/* ---- */
+
+
+/* full page start here */
+
+  .full_page_container{
+    width: 100%;
+    height: auto;
+    background-color: #F2F2F2;
+    position: relative;
+  }
+  
+  /* this is navbar container  */
+  .nav_container{
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    z-index: 10;
+    background-color:#FFFFFF;
+    border-bottom: 1px solid #A9A9A9;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
+  
+  }
+  /* for all ul list */
+  ul{
+    list-style-type: none;
+  }
+  /* for left header menu */
+  .left_header{
+   width: 50%; 
+   position: absolute;
+  }
+  /* for left header image */
+  .left_header ul li img{
+    width: 210px;
+    height: 88px;
+    padding: 10px 15px;
+    background-color: #2e3743;
+    margin-left: -13px;
+  }
+  /* nav container ul list */
+  .nav_container ul{
+    list-style-type: none;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  /* for all ul list child */
+  .nav_container ul li{
+  line-height: 60px;
+  padding: 0px 18px 0px 3px;
+  }
+  /* for all icon */
+  .nav_container ul li i{
+    line-height: 60px;
+    height: 60px;
+    font-size:30px;
+    color:#303946;
+  }
+  /* for left header left list */
+  .left_header ul li{
+    float: left;
+    width: auto;
+  
+  }
+  /* for right header right list */
+  .right_header{
+    margin-right: 0px;
+  }
+  /* for right header li */
+  .right_header li{
+    float: right !important;
+    width: 45px;
+    
+  }
+  /* for right header icon */
+  .right_header ul li i{
+    padding: 15px 20px !important;
+  }
+  /* rap id for side menu */
+  #wrapper {
+    height: auto;
+    min-height: 100%;
+    position: relative;
+    overflow-y: auto;
+  }
+  /* for side menu */
+  .page-sidebar.sidebar-fixed {
+    position: fixed;
+    margin-top: 38px;
+    height: 100%;
+    background-color: #394263;
+  }
+  /* page side bar set width and height */
+  .page-sidebar {
+    width: 210px;
+    position: absolute;
+    height: auto;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    padding-top: 50px;
+    z-index: 2;
+  }
+  /* page side bar inner */
+  .page-sidebar .sidebar-inner {
+    position: relative;
+    width: auto;
+    height: 100%;
+  }
+  /*inner for scroll  */
+.slimScrollDiv{
+  position: relative;
+  overflow: hidden;
+  width: auto;
+  height: 100%;
+}
+/* side bar scroll */
+.sidebar-scrollarea{
+  overflow: scroll;
+  width: auto;
+  height: 100%;
+}
+/* side bar panel */
+  .sidebar-panel {
+    margin: 0;
+    width: 100%;
+    height: auto;
+    float: left;
+    position: relative;
+  }
+  /* side bar panal title  */
+  .sidebar-panel .sidebar-panel-title {
+    font-size: 13px;
+    padding: 8px 15px 8px 17px;
+    margin: 0;
+    background-color: #394263;
+    color: #ffffff;
+    border-top: 1px solid #394263;
+    border-bottom: 1px solid #2e3743;
+  }
+  /* side bar user info */
+  .page-sidebar .user-info {
+    float: left;
+    background-color: #262d37;
+  }
+  /* for user profile */
+  .user_profile{
+    width: 100%;
+    height: 95px;
+    padding: 15px;
+  }
+  /* for user profile image  */
+  .page-sidebar .user-info img {
+    border-radius: 3px;
+    float: left;
+    margin-right: 15px;
+    width: 64px;
+  }
+  /* for user name */
+  .page-sidebar .user-info .name {
+    color: #ffffff;
+    float: left;
+    width: 100px;
+    font-weight: normal;
+    padding: 5px 0;
+  }
+  /* for edit profile button */
+  .btn-group, .btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  /* start vertical nav here */
+  .page-sidebar .side-nav {
+    width: 100%;
+    float: left;
+  }
+  /* make defult margin padding */
+  .nav {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  /* target for li */
+  .nav > li {
+    position: relative;
+    display: block;
+  }
+  /* link background color */
+  .page-sidebar .side-nav .nav > li a.active {
+    background-color: #262d37;
+    color: #ffffff;
+  }
+  /* design for link */
+  .page-sidebar .side-nav .nav > li a {
+    padding: 18px 18px 18px 18px;
+    color: #8b929a;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    transition: background;
+    transition-duration: 0.4s;
+    background-color: #394263;
+  }
+  
+  
+  /* hover effect vertical menu  */
+  .page-sidebar .side-nav .nav > li a:hover {
+    padding: 18px 18px 18px 18px;
+    color: #8b929a;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    transition: background;
+    transition-duration: 0.4s;
+    background-color: #5e678a;
+    color: white;
+  }
+  /* style when link is active */
+  .page-sidebar .side-nav .nav > li a:active {
+    padding: 18px 18px 18px 18px;
+    color: white;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    transition: background;
+    transition-duration: 0.4s;
+    background-color: #5e678a;
+  }
+  /* for sub menu
+  .page-sidebar .side-nav .nav > li ul.sub {
+    display: none;
+    position: relative;
+  }
+  
+  .show:hover {
+    display: block !important;
+  } */
+  

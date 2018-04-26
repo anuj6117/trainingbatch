@@ -1,0 +1,193 @@
+/* full page container */
+.add-coin-container{
+  margin-left: 210px;
+  margin-top: 76px;
+  overflow: scroll;
+}
+/* sub container of this page */
+.sub-container{
+  background-color: white;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* wrap add coin form */
+.wrap-add-coin {
+  width: 700px;
+  background: rgb(230, 230, 230);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0px 15px 14px 15px;
+  align-items: center;
+  margin-top: 20px;
+  box-shadow: 1px 3px 5px #888888;
+  
+}
+/* add coin form */
+.for_form{
+  width: 100%;
+}
+/* add coin table */
+.form_title{
+  width: 200%;
+  padding: 20px 0px 20px 0px;
+  line-height: 1.2;
+  font-family: Poppins-Bold;
+  text-align: center;
+  display: block;
+  background: -webkit-linear-gradient(top, rgb(230, 230, 230), white);
+  margin-left: -50%;
+  margin-right: -50%;
+  font-size: 20px;
+
+}
+/* input lael */
+.input_label{
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #333333;
+  line-height: 1.5;
+  padding: 10px 0px 0px 0px;
+  height: 20px;
+  display: block;
+}
+/* style for input box*/
+input[type="text"]{
+  font-family: Poppins-Medium;
+  font-size: 16px;
+  width: 100%;
+  color: #333333;
+  line-height: 1.2;
+  display: block;
+  height: 55px;
+  background: transparent;
+  padding: 0 7px 0 0px;
+  border: 0px;
+  border-bottom: 2px solid #adadad;
+}
+/* style for input focous */
+input:focus {
+  outline: none !important;
+  border-bottom: 2px solid #3c3838;
+}
+/* button parent container */
+.button-parent{
+  width: 100%;
+  display: flex;
+  outline: none;
+  justify-content: center;
+  align-items: center;
+}
+
+/* add coin button */
+.add-coin-button{
+  display: flex;
+  outline: none;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: auto;
+  height: 50px;
+  border-radius: 100px;
+  border:1px solid #333;
+  color: #333;
+  font-size: 16px;
+  background-color: #E6E6E6;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  
+}
+/* add coin hover effect */
+.add-coin-button:hover{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  height: 50px;
+  border-radius: 100px;
+  border: 1px solid rgb(119, 119, 119);
+  color: rgb(119, 119, 119);
+  font-size: 16px;
+  background-color: white;
+  
+}
+/* table bottom border */
+table{
+  border-bottom: 1px solid #E8E8E8;
+}
+/* table header */
+.table>thead>tr>th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+  background-color: #E8E8E8;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px; 
+
+}
+/* table data */
+th,td{
+  text-align: center;
+}
+/* table icon */
+td i{
+  text-align: center;
+}
+/* table update and delete button */
+.update, .delete-button{
+  display: flex;
+  outline: none;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
+  padding: 3px;
+  border: none;
+  color: rgb(114, 114, 114);
+}
+/* update button hover efect */
+.update:hover{
+  display: flex;
+  outline: none;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
+  padding: 3px;
+  border: none;
+  color: blue;
+  
+}
+/* delete button hover effect */
+.delete-button:hover{
+  display: flex;
+  outline: none;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
+  padding: 3px;
+  border: none;
+  color: red;
+  cursor: pointer;
+  
+}
+
+/* modal header */
+
+.modal-header {
+ text-align: center;
+}
+/* model body */
+.modal-body {
+  position: relative;
+  padding: 0px;
+}

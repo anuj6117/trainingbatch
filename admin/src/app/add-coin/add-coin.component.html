@@ -1,0 +1,172 @@
+
+<!-- this is the parent conatiner -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <!-- add coin parent container -->
+  <div class="add-coin-container">
+    <!-- add coin input box width -->
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <!--add coin title -->
+      <h3>Total Currency: 3</h3>
+    </div>
+    <!-- add coin full form conatiner -->
+    <div class="sub-container">
+      <!-- add coin form wraper -->
+      <div class="wrap-add-coin">
+        <!-- add coin form title -->
+        <div class="form_title">Add New Coin</div>
+        <!-- form start here -->
+        <form class="for_form" (ngSubmit)="submitAddCoin()" #AddCoinForm="ngForm" method="post" name="AddCoin">
+          <!-- first row for label and input for 100% width -->
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <!-- for first label and input width 50% to 100% -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <!-- input label -->
+              <span class="input_label">Coin Name</span>
+              <!-- input box for coin name-->
+              <input type="text" name="coinName" placeholder="Coin name here" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" [(ngModel)]="formData.coinName"
+                #coinName="ngModel" minlength="3" maxlength="25">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <!-- input label -->
+              <span class="input_label">Coin Symbol</span>
+              <!-- input box  for symbol -->
+              <input type="text" name="symbol" placeholder="Coin symbol here" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" [(ngModel)]="formData.symbol"
+                #symbol="ngModel" minlength="1" maxlength="1">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <!-- input label -->
+              <span class="input_label">Initial Supply</span>
+              <!-- input box for supply -->
+              <input type="text" name="supply" placeholder="Coin supply" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" [(ngModel)]="formData.supply"
+                #supply="ngModel" minlength="1" maxlength="10">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <span class="input_label">Price</span>
+              <!-- input box for coin price -->
+              <input type="text" name="coin price" placeholder="Coin price here" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" [(ngModel)]="formData.price"
+                #price="ngModel" minlength="1" maxlength="10">
+            </div>
+            <!-- add coin submit button -->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 button-parent">
+              <button value="Submit" name="AddCurrency" type="submit" class="add-coin-button">Add Coin</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+
+      <!-- table for all coin -->
+
+      <!-- table container -->
+      <div class="container">
+        <!-- table header -->
+        <h2>Add Coin Table</h2>
+        <!-- all table start here with hover effect  -->
+        <table class="table table-hover">
+          <!-- table header -->
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Coin Name</th>
+              <th>Coin Symbol</th>
+              <th>Initial Supply</th>
+              <th>Price</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <!-- table body start here -->
+          <tbody>
+            <!-- table data goes here by ngFor loop -->
+            <tr *ngFor="let AllCurrency of allCurrency">
+              <td>{{AllCurrency.coinId}}</td>
+              <td>{{AllCurrency.coinName}}</td>
+              <td>{{AllCurrency.symbol}}</td>
+              <td>{{AllCurrency.initialSupply}}</td>
+              <td>{{AllCurrency.price}}</td>
+              <td>
+                <!-- this is the coin update button/ in this button we call the modal -->
+                <a (click)="editCurrency(AllCurrency)" type="submit" name="updateCurrency" class="update" data-toggle="modal" data-target="#updateCurrency">
+                  <i class="far fa-edit" style="font-size:20px; text-align: center;"></i>
+                </a>
+              </td>
+              <td>
+                <!-- this is the delete coin button -->
+                <a class="delete-button" (click)="deleteCoin(AllCurrency.coinId)">
+                  <i class="far fa-trash-alt" style="font-size:20px; text-align: center; background-color:none;"></i>
+                </a>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- update coin modal form start here -->
+
+<!-- The Modal -->
+<div class="modal fade" id="updateCurrency">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Update Coin</h4>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <!-- update coin form start here -->
+        <form class="for_form" (ngSubmit)="submitUpdateCurrency()" #updateCurrency="ngForm" method="post" name="updateCurrency">
+          <!-- first row for label and input for 100% width -->
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <!-- for first label and input width 50% to 100% -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <!-- input label-->
+              <span class="input_label">Coin Name</span>
+              <!-- input box for coin name-->
+              <input type="text" name="updateCoinName" placeholder="Coin name here" class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+              [(ngModel)]="formData.name" #updateCoinName="ngModel" minlength="3" maxlength="25">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <!-- input label -->
+              <span class="input_label">Coin Symbol</span>
+              <!-- input box for coin symbol-->
+              <input type="text" name="updateSymbol" placeholder="Coin symbol here" class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+              [(ngModel)]="formData.symbol" #updateSymbol="ngModel" minlength="1" maxlength="1">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <!-- input label -->
+              <span class="input_label">Initial Supply</span>
+              <!-- input box for coin supply-->
+              <input type="text" name="updateSupply" placeholder="Coin supply" class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+              [(ngModel)]="formData.supply" #updateSupply="ngModel" minlength="1" maxlength="10">
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <!-- input label -->
+              <span class="input_label">Price</span>
+              <input type="text" name="updateCoinPrice" placeholder="Coin price here" class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+              [(ngModel)]="formData.price" #updateCoinPrice="ngModel" minlength="1" maxlength="10">
+            </div>
+            <!-- update coin submit button -->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 button-parent">
+              <button value="Submit" name="updateCurrency" type="submit" class="add-coin-button">Update Coin</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- modal end here -->
